@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{913613E0-C6E7-4511-A079-BACC7BC9089C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YongAnFrame</RootNamespace>
+    <AssemblyName>YongAnFrame</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>REFERENCES\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.API, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CreditTags, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.CreditTags.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CustomItems, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.CustomItems.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CustomRoles, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Loader, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.Loader.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions, Version=8.11.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>REFERENCES\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="NorthwoodLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\NorthwoodLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PluginAPI, Version=13.1.3.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\PluginAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="SCPSLAudioApi">
+      <HintPath>REFERENCES\SCPSLAudioApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>REFERENCES\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>REFERENCES\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\YamlDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command\CommandPlus.cs" />
+    <Compile Include="Core\Data\PlayerTitle.cs" />
+    <Compile Include="Events\EventArgs\FramePlayer\InvalidFramePlayerEventArgs.cs" />
+    <Compile Include="Events\EventArgs\FramePlayer\CreateFramePlayerEventArgs.cs" />
+    <Compile Include="Events\Handlers\FramePlayer.cs" />
+    <Compile Include="Role\Core\CustomRolePlus.cs" />
+    <Compile Include="Role\Core\CustomRolePlusData.cs" />
+    <Compile Include="Role\Core\Interfaces\ISkill.cs" />
+    <Compile Include="Role\Core\Interfaces\ISkillActiveEnd.cs" />
+    <Compile Include="Role\Core\Interfaces\ISkillActiveStart.cs" />
+    <Compile Include="Role\Core\Interfaces\ISkillBurialEnd.cs" />
+    <Compile Include="YongAnFrameConfig.cs" />
+    <Compile Include="YongAnFrameCore.cs" />
+    <Compile Include="Command\MessageCommand.cs" />
+    <Compile Include="Command\SkillCommand.cs" />
+    <Compile Include="Core\HintManager.cs" />
+    <Compile Include="Core\MusicManager.cs" />
+    <Compile Include="Core\Data\FramePlayer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role\Core\Enums\RefreshTeamType.cs" />
+    <Compile Include="Role\Core\MoreAttributes.cs" />
+    <Compile Include="Role\Core\SkillsAttributes.cs" />
+    <Compile Include="Role\Core\SkillsManager.cs" />
+    <Compile Include="Role\Core\SpawnAttributes.cs" />
+    <Compile Include="YongAnTool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy C:\Users\Administrator\source\repos\SCPSL\YongAnFrame\bin\Debug\YongAnFrame.dll C:\Users\Administrator\AppData\Roaming\EXILED\Plugins</PostBuildEvent>
+  </PropertyGroup>
+</Project>
