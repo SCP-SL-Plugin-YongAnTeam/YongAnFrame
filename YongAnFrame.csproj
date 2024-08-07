@@ -131,6 +131,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy C:\Users\Administrator\source\repos\SCPSL\YongAnFrame\bin\Debug\YongAnFrame.dll C:\Users\Administrator\AppData\Roaming\EXILED\Plugins</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
