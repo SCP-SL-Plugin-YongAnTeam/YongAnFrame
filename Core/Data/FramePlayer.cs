@@ -6,27 +6,50 @@ using System.Collections.Generic;
 using System.Linq;
 using YongAnFrame.Events.EventArgs.FramePlayer;
 using YongAnFrame.Role.Core;
+using static ServerRoles;
 
 namespace YongAnFrame.Core.Data
 {
     public class FramePlayer
     {
-        public Player ExPlayer { get; private set; }
-
-        private static readonly Dictionary<int, FramePlayer> dictionary = [];
-        public static IReadOnlyCollection<FramePlayer> List => dictionary.Values.Where((p) => !p.IsInvalid).ToList();
-        public bool IsInvalid { get => ExPlayer == null; }
-
-        public HintManager HintManager { get; private set; }
-        public CustomRolePlusData CustomRoleData { get; set; }
-        public ulong Level { get; set; }
         private PlayerTitle usingTitles = null;
-        public PlayerTitle UsingTitles { get => usingTitles; set { if (value != null && !value.Pro) { usingTitles = value; } } }
+        private PlayerTitle usingRankTitles = null;
+        private static readonly Dictionary<int, FramePlayer> dictionary = [];
 
-        private PlayerTitle usingProTitles = null;
-        public PlayerTitle UsingProTitles { get => usingProTitles; set { if (value != null && value.Pro) { usingProTitles = value; } } }
+        /// <summary>
+        /// 拥有该实例的Exiled玩家
+        /// </summary>
+        public Player ExPlayer { get; private set; }
+        /// <summary>
+        /// 有效的框架玩家列表
+        /// </summary>
+        public static IReadOnlyCollection<FramePlayer> List => dictionary.Values.Where((p) => !p.IsInvalid).ToList();
+        /// <summary>
+        /// 是否有效
+        /// </summary>
+        public bool IsInvalid { get => ExPlayer == null; }
+        /// <summary>
+        /// 实例拥有的自定义角色
+        /// </summary>
+        public CustomRolePlus CustomRolePlus { get; internal set; }
+        /// <summary>
+        /// 提示系统管理器
+        /// </summary>
+        public HintManager HintManager { get; private set; }
+        /// <summary>
+        /// 玩家等级
+        /// </summary>
+        public ulong Level { get; set; }
 
+        /// <summary>
+        /// 正在使用的名称称号
+        /// </summary>
+        public PlayerTitle UsingTitles { get => usingTitles; set { if (value != null && !value.IsRank) { usingTitles = value; } } }
 
+        /// <summary>
+        /// 正在使用的排名称号
+        /// </summary>
+        public PlayerTitle UsingRankTitles { get => usingRankTitles; set { if (value != null && value.IsRank) { usingRankTitles = value; } } }
 
         #region Static
         public static void SubscribeStaticEvents()
@@ -54,6 +77,10 @@ namespace YongAnFrame.Core.Data
 
         #endregion
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="player">Exiled玩家</param>
         public FramePlayer(Player player)
         {
             ExPlayer = player;
@@ -62,25 +89,20 @@ namespace YongAnFrame.Core.Data
             Events.Handlers.FramePlayer.OnCreateFramePlayer(new CreateFramePlayerEventArgs(this));
         }
 
-        #region Show
+        #region ShowRank
 
-        private CoroutineHandle[] coroutines = new CoroutineHandle[2];
-        private string showName;
-        private string showColor;
+        private readonly CoroutineHandle[] coroutines = new CoroutineHandle[2];
 
-        public void ShowRank(string name = null, string color = null)
+        internal void UpdateShowInfoList()
         {
             if (ExPlayer.IsNPC) return;
-
-            showName = name;
-            showColor = color;
 
             if (ExPlayer.GlobalBadge != null)
             {
                 ExPlayer.CustomName = $"[LV:{Level}][全球徽章]{ExPlayer.Nickname}";
-                if (showName != null)
+                if (!string.IsNullOrEmpty(CustomRolePlus.Name))
                 {
-                    ExPlayer.RankName = $"*{ExPlayer.GlobalBadge.Value.Text}* {showName}";
+                    ExPlayer.RankName = $"*{ExPlayer.GlobalBadge.Value.Text}* {CustomRolePlus.Name}";
                 }
                 else
                 {
@@ -90,31 +112,38 @@ namespace YongAnFrame.Core.Data
                 return;
             }
 
-            if (usingProTitles != null)
+            if (usingRankTitles != null)
             {
-                if (usingProTitles.DynamicCommand != null)
+                if (usingRankTitles.DynamicCommand != null)
                 {
                     Timing.KillCoroutines(coroutines[0]);
-                    coroutines[0] = Timing.RunCoroutine(DynamicProTitlesShow(showName));
+                    coroutines[0] = Timing.RunCoroutine(DynamicProTitlesShow(CustomRolePlus.NameColor));
                 }
                 else
                 {
-                    if (usingProTitles.Color != null)
+                    if (!string.IsNullOrEmpty(usingRankTitles.Color))
                     {
-                        ExPlayer.RankColor = usingProTitles.Color;
+                        ExPlayer.RankColor = usingRankTitles.Color;
                     }
                     else
                     {
-                        ExPlayer.RankColor = showColor ?? null;
+                        if (!string.IsNullOrEmpty(CustomRolePlus.NameColor))
+                        {
+                            ExPlayer.RankColor = CustomRolePlus.NameColor;
+                        }
+                        else
+                        {
+                            ExPlayer.RankColor = null;
+                        }
                     }
 
-                    if (showName != null)
+                    if (!string.IsNullOrEmpty(CustomRolePlus.Name))
                     {
-                        ExPlayer.RankName = $"{showName} *{usingProTitles.Name}*";
+                        ExPlayer.RankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
                     }
                     else
                     {
-                        ExPlayer.RankName = usingProTitles.Name;
+                        ExPlayer.RankName = usingRankTitles.Name;
                     }
                 }
             }
@@ -129,7 +158,7 @@ namespace YongAnFrame.Core.Data
                 else
                 {
                     ExPlayer.CustomName = $"[LV:{Level}][{usingTitles.Name}]{ExPlayer.Nickname}";
-                    if (usingTitles.Color != null)
+                    if (!string.IsNullOrEmpty(usingTitles.Color))
                     {
                         ExPlayer.RankColor = usingTitles.Color;
                     }
@@ -137,13 +166,13 @@ namespace YongAnFrame.Core.Data
             }
             else
             {
-                if (showName != null)
+                if (!string.IsNullOrEmpty(CustomRolePlus.Name))
                 {
-                    ExPlayer.RankName = showName;
+                    ExPlayer.RankName = CustomRolePlus.Name;
                 }
-                if (showColor != null)
+                if (!string.IsNullOrEmpty(CustomRolePlus.NameColor))
                 {
-                    ExPlayer.RankColor = showColor;
+                    ExPlayer.RankColor = CustomRolePlus.NameColor;
                 }
             }
 
@@ -154,7 +183,7 @@ namespace YongAnFrame.Core.Data
         {
             while (true)
             {
-                foreach (var command in usingProTitles.DynamicCommand)
+                foreach (var command in usingRankTitles.DynamicCommand)
                 {
                     if (name != null)
                     {
@@ -177,7 +206,7 @@ namespace YongAnFrame.Core.Data
                 foreach (var command in usingTitles.DynamicCommand)
                 {
                     ExPlayer.CustomName = $"[LV:{Level}][{command[0]}]{ExPlayer.Nickname}";
-                    if (usingProTitles == null)
+                    if (usingRankTitles == null)
                     {
                         ExPlayer.RankColor = command[1] != "null" ? command[1] : ExPlayer.RankColor;
                     }
@@ -187,6 +216,11 @@ namespace YongAnFrame.Core.Data
         }
         #endregion
 
+        /// <summary>
+        /// 获取框架玩家
+        /// </summary>
+        /// <param name="player">Exiled玩家</param>
+        /// <returns>框架玩家</returns>
         public static FramePlayer Get(Player player)
         {
             if (dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
@@ -195,11 +229,21 @@ namespace YongAnFrame.Core.Data
             }
             return null;
         }
+        /// <summary>
+        /// 获取框架玩家
+        /// </summary>
+        /// <param name="numId">玩家数字ID</param>
+        /// <returns>框架玩家</returns>
         public static FramePlayer Get(int numId)
         {
             return Get(Player.Get(numId));
         }
 
+        /// <summary>
+        /// 调用后该实例会立刻无效<br/>
+        /// 调用后该实例会立刻无效<br/>
+        /// 调用后该实例会立刻无效
+        /// </summary>
         public void Invalid()
         {
             Events.Handlers.FramePlayer.OnInvalidFramePlayer(new InvalidFramePlayerEventArgs(this));

@@ -78,40 +78,41 @@ namespace YongAnFrame.Role.Core
             AddRole(player.ToFPlayer());
         }
 
-        public virtual void AddRole(FramePlayer yPlayer)
+        public virtual void AddRole(FramePlayer fPlayer)
         {
-            if (Check(yPlayer.ExPlayer)) return;
+            if (Check(fPlayer.ExPlayer)) return;
 
-            Log.Debug($"已添加{yPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-            AddRoleData(yPlayer);
+            Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
 
-            base.AddRole(yPlayer.ExPlayer);
+            base.AddRole(fPlayer.ExPlayer);
+            AddRoleData(fPlayer);
+            fPlayer.CustomRolePlus = this;
 
             if (MoreAttributes.BaseMovementSpeedMultiplier < 1f)
             {
-                yPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
-                yPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Disabled, 1);
+                fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
+                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Disabled, 1);
             }
 
             if (MoreAttributes.BaseMovementSpeedMultiplier > 1f)
             {
-                yPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
-                yPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreAttributes.BaseMovementSpeedMultiplier - 1f) * 100));
+                fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
+                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreAttributes.BaseMovementSpeedMultiplier - 1f) * 100));
             }
             if (!string.IsNullOrEmpty(SpawnAttributes.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnAttributes.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnAttributes.MusicFileName))
             {
                 MusicManager.Instance.Play(SpawnAttributes.MusicFileName, "Spawn@localhost", $"{Name}", new MusicManager.TrackEvent());
             }
-            yPlayer.ShowRank(Name, NameColor);
+            fPlayer.UpdateShowInfoList();
         }
-        public virtual void AddRoleData(FramePlayer yPlayer)
+        public virtual void AddRoleData(FramePlayer fPlayer)
         {
-            BaseData.Add(yPlayer, new CustomRolePlusData());
+            BaseData.Add(fPlayer, new CustomRolePlusData());
             if (this is ISkill skill)
             {
-                SkillsManager skillsManager = new(yPlayer, skill);
-                BaseData[yPlayer].SkillsManager = skillsManager;
+                SkillsManager skillsManager = new(fPlayer, skill);
+                BaseData[fPlayer].SkillsManager = skillsManager;
             }
         }
         public override void RemoveRole(Player player)
@@ -119,36 +120,37 @@ namespace YongAnFrame.Role.Core
             RemoveRole(player.ToFPlayer());
         }
 
-        public virtual void RemoveRole(FramePlayer yPlayer)
+        public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(yPlayer)) return;
-            Log.Debug($"已删除{yPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-            NoCustomRole.Add(yPlayer);
-            if (Check(yPlayer, out CustomRolePlusData data) && !data.IsDeatHandling)
+            if (!Check(fPlayer)) return;
+            Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
+            if (Check(fPlayer, out CustomRolePlusData data) && !data.IsDeatHandling)
             {
                 Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
             }
-            BaseData.Remove(yPlayer);
-            yPlayer.ExPlayer.ShowHint($"", 0.1f);
-            base.RemoveRole(yPlayer.ExPlayer);
-            yPlayer.HintManager.RoleText.Clear();
-            yPlayer.ShowRank(null, null);
+            base.RemoveRole(fPlayer.ExPlayer);
+            BaseData.Remove(fPlayer);
+            fPlayer.CustomRolePlus = null;
+            NoCustomRole.Add(fPlayer);
+            fPlayer.ExPlayer.ShowHint($"", 0.1f);
+            fPlayer.HintManager.RoleText.Clear();
+            fPlayer.UpdateShowInfoList();
         }
         #region TrySpawn
         private uint limitCount = 0;
         private uint spawnCount = 0;
-        public virtual bool TrySpawn(FramePlayer yPlayer, bool chanceRef = false)
+        public virtual bool TrySpawn(FramePlayer fPlayer, bool chanceRef = false)
         {
             if (chanceRef)
             {
                 limitCount = 0;
             }
-            if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && yPlayer.ExPlayer.GetCustomRoles().Count == 0)
+            if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && fPlayer.ExPlayer.GetCustomRoles().Count == 0)
             {
-                NoCustomRole.Remove(yPlayer);
+                NoCustomRole.Remove(fPlayer);
                 limitCount++;
                 spawnCount++;
-                AddRole(yPlayer);
+                AddRole(fPlayer);
                 return true;
             }
             return false;
@@ -188,18 +190,18 @@ namespace YongAnFrame.Role.Core
         }
         private void OnDroppingItem(DroppingItemEventArgs args)
         {
-            FramePlayer yPlayer = args.Player.ToFPlayer();
-            if (Check(yPlayer, out CustomRolePlusData data))
+            FramePlayer fPlayer = args.Player.ToFPlayer();
+            if (Check(fPlayer, out CustomRolePlusData data))
             {
                 if (args.Item.Type == ItemType.Coin && data.SkillsManager != null)
                 {
                     if (data.SkillsManager.IsActive)
                     {
-                        yPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                        fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
                     }
                     else if (data.SkillsManager.IsBurial)
                     {
-                        yPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{data.SkillsManager.BurialRemainingTime})", 5));
+                        fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{data.SkillsManager.BurialRemainingTime})", 5));
                     }
                     else
                     {
@@ -251,8 +253,8 @@ namespace YongAnFrame.Role.Core
 
         private void OnDying(DyingEventArgs args)
         {
-            FramePlayer yPlayer = args.Player.ToFPlayer();
-            if (Check(yPlayer, out CustomRolePlusData data))
+            FramePlayer fPlayer = args.Player.ToFPlayer();
+            if (Check(fPlayer, out CustomRolePlusData data))
             {
                 if (args.Attacker == null)
                 {
@@ -337,13 +339,13 @@ namespace YongAnFrame.Role.Core
             return false;
         }
 
-        public override void AddRoleData(FramePlayer yPlayer)
+        public override void AddRoleData(FramePlayer fPlayer)
         {
-            BaseData.Add(yPlayer, new T());
+            BaseData.Add(fPlayer, new T());
             if (this is ISkill skill)
             {
-                SkillsManager skillsManager = new(yPlayer, skill);
-                BaseData[yPlayer].SkillsManager = skillsManager;
+                SkillsManager skillsManager = new(fPlayer, skill);
+                BaseData[fPlayer].SkillsManager = skillsManager;
             }
         }
     }

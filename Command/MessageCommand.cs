@@ -8,12 +8,15 @@ using YongAnFrame.Core.Data;
 
 namespace YongAnFrame.Command
 {
+    /// <summary>
+    /// 发送消息指令
+    /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class MessageCommand : CommandPlus
     {
         public override string Command => "message";
 
-        public override string[] Aliases => new string[2] { "mes", "msg" };
+        public override string[] Aliases => ["mes", "msg"];
 
         public override string Description => "用于发送消息";
 

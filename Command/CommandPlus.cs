@@ -3,6 +3,9 @@ using System;
 
 namespace YongAnFrame.Command
 {
+    /// <summary>
+    /// 防止不兼容目标框架
+    /// </summary>
     public abstract class CommandPlus : ICommand
     {
         public bool SanitizeResponse => true;

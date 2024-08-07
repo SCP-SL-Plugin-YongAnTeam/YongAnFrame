@@ -5,6 +5,9 @@ using YongAnFrame.Command;
 
 namespace BAPlugin.SkillCommand
 {
+    /// <summary>
+    /// 未完成请勿乱用
+    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public class SkillsCommand : CommandPlus
     {

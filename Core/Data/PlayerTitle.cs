@@ -2,20 +2,23 @@
 
 namespace YongAnFrame.Core.Data
 {
+    /// <summary>
+    /// 玩家称号
+    /// </summary>
     public class PlayerTitle
     {
         public uint Id { get; private set; }
         public string Name { get; set; }
         public string Color { get; set; }
-        public bool Pro { get; set; }
+        public bool IsRank { get; set; }
         public List<string[]> DynamicCommand { get; set; }
 
-        public PlayerTitle(uint id, string name, string color, bool pro, string dynamicCommandString)
+        public PlayerTitle(uint id, string name, string color, bool isRank, string dynamicCommandString)
         {
             Id = id;
             Name = name;
             Color = color;
-            Pro = pro;
+            IsRank = isRank;
             SetDynamicCommand(dynamicCommandString);
         }
 

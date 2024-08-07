@@ -5,11 +5,21 @@ using YongAnFrame.Core.Data;
 
 namespace YongAnFrame.Core
 {
+    /// <summary>
+    /// 提示系统管理器
+    /// </summary>
     public class HintManager
     {
+        /// <summary>
+        /// 拥有该实例的框架玩家
+        /// </summary>
         private readonly FramePlayer fPlayer;
 
         private readonly CoroutineHandle coroutine;
+
+        /// <summary>
+        /// 存在一些问题，暂不开放
+        /// </summary>
         private readonly Text[] customText = new Text[20];
         public List<Text> RoleText { get; } = [];
         public List<Text> MessageTexts { get; } = [];
