@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.0.0-alpha3</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">LGPL-2.1-only</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/YongAn404/YongAnFrame</projectUrl>
+    <description>$description$</description>
+    <releaseNotes>$version$</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>EXILED SCPSL</tags>
+  </metadata>
+  <files>
+    <file src="lib\net48\SCPSLAudioApi.dll" target="lib/net48/SCPSLAudioApi.dll" />
+  </files>
+</package>

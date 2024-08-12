@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("YongAnFrame")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("基于EXILED写的框架")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("YongAn404")]
 [assembly: AssemblyProduct("YongAnFrame")]
