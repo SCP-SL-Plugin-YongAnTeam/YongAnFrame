@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="Command\CommandPlus.cs" />
     <Compile Include="Core\Data\PlayerTitle.cs" />
+    <Compile Include="Core\CustomPlayer.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\InvalidFramePlayerEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\CreateFramePlayerEventArgs.cs" />
     <Compile Include="Events\Handlers\FramePlayer.cs" />
@@ -112,9 +113,9 @@
     <Compile Include="YongAnFrameCore.cs" />
     <Compile Include="Command\MessageCommand.cs" />
     <Compile Include="Command\SkillCommand.cs" />
-    <Compile Include="Core\HintManager.cs" />
-    <Compile Include="Core\MusicManager.cs" />
-    <Compile Include="Core\Data\FramePlayer.cs" />
+    <Compile Include="Core\Manager\HintManager.cs" />
+    <Compile Include="Core\Manager\MusicManager.cs" />
+    <Compile Include="Core\FramePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\Core\Enums\RefreshTeamType.cs" />
     <Compile Include="Role\Core\MoreAttributes.cs" />

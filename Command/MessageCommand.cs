@@ -4,7 +4,7 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 using YongAnFrame.Core;
-using YongAnFrame.Core.Data;
+using YongAnFrame.Core.Manager;
 
 namespace YongAnFrame.Command
 {

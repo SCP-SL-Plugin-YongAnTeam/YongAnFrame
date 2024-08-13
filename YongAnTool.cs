@@ -3,7 +3,7 @@ using Respawning;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using YongAnFrame.Core.Data;
+using YongAnFrame.Core;
 using YongAnFrame.Role.Core.Enums;
 
 namespace YongAnFrame

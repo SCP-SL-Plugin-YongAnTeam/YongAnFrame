@@ -1,9 +1,8 @@
 ﻿using MEC;
 using System.Collections.Generic;
 using System.Reflection;
-using YongAnFrame.Core.Data;
 
-namespace YongAnFrame.Core
+namespace YongAnFrame.Core.Manager
 {
     /// <summary>
     /// 提示系统管理器

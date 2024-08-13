@@ -7,7 +7,7 @@ namespace YongAnFrame.Core.Data
     /// </summary>
     public class PlayerTitle
     {
-        public uint Id { get; private set; }
+        public uint Id { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
         public bool IsRank { get; set; }

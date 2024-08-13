@@ -1,4 +1,4 @@
-﻿using YongAnFrame.Core.Data;
+﻿using YongAnFrame.Core;
 
 namespace YongAnFrame.Role.Core.Interfaces
 {

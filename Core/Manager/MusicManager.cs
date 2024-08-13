@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 
-namespace YongAnFrame.Core
+namespace YongAnFrame.Core.Manager
 {
     public class MusicManager
     {

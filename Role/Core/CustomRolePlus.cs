@@ -11,7 +11,7 @@ using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
 using YongAnFrame.Core;
-using YongAnFrame.Core.Data;
+using YongAnFrame.Core.Manager;
 using YongAnFrame.Role.Core.Enums;
 using YongAnFrame.Role.Core.Interfaces;
 
@@ -205,7 +205,7 @@ namespace YongAnFrame.Role.Core
                     }
                     else
                     {
-                        data.SkillsManager.Run(1);
+                        data.SkillsManager.Run(0);
                     }
                     args.IsAllowed = false;
                 }

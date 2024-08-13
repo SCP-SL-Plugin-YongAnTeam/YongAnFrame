@@ -4,11 +4,12 @@ using Exiled.Events.Features;
 using MEC;
 using System.Collections.Generic;
 using System.Linq;
+using YongAnFrame.Core.Data;
+using YongAnFrame.Core.Manager;
 using YongAnFrame.Events.EventArgs.FramePlayer;
 using YongAnFrame.Role.Core;
-using static ServerRoles;
 
-namespace YongAnFrame.Core.Data
+namespace YongAnFrame.Core
 {
     public class FramePlayer
     {

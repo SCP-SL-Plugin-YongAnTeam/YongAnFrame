@@ -1,8 +1,8 @@
 ﻿using MEC;
 using System.Collections.Generic;
-using YongAnFrame.Core.Data;
+using YongAnFrame.Core;
 using YongAnFrame.Role.Core.Interfaces;
-using static YongAnFrame.Core.MusicManager;
+using static YongAnFrame.Core.Manager.MusicManager;
 
 namespace YongAnFrame.Role.Core
 {

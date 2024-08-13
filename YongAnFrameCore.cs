@@ -2,7 +2,7 @@
 using Exiled.API.Features;
 using SCPSLAudioApi;
 using YongAnFrame.Core;
-using YongAnFrame.Core.Data;
+using YongAnFrame.Core.Manager;
 using YongAnFrame.Role.Core;
 
 namespace YongAnFrame
