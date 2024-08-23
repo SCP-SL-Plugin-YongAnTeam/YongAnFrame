@@ -60,6 +60,13 @@ namespace YongAnFrame.Core
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
 
+        public static void UnsubscribeStaticEvents()
+        {
+            Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
+            Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
+            Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
+        }
+
         private static void OnStaticVerified(VerifiedEventArgs args)
         {
             CustomRolePlus.NoCustomRole.Add(new(args.Player));

@@ -28,6 +28,7 @@ namespace YongAnFrame
         public override void OnDisabled()
         {
             instance = null;
+            FramePlayer.UnsubscribeStaticEvents();
             CustomRolePlus.UnsubscribeStaticEvents();
             base.OnDisabled();
         }
