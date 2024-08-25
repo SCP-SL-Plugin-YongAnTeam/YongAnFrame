@@ -12,6 +12,6 @@
         /// <summary>
         /// 是否正常死亡
         /// </summary>
-        public bool IsDeatHandling { get; set; }
+        public bool IsDeathHandling { get; set; }
     }
 }

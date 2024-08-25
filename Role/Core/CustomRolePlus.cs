@@ -124,7 +124,7 @@ namespace YongAnFrame.Role.Core
         {
             if (!Check(fPlayer)) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-            if (Check(fPlayer, out CustomRolePlusData data) && !data.IsDeatHandling)
+            if (Check(fPlayer, out CustomRolePlusData data) && !data.IsDeathHandling)
             {
                 Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
             }
@@ -259,7 +259,7 @@ namespace YongAnFrame.Role.Core
                 if (args.Attacker == null)
                 {
                     Cassie.MessageTranslated($"Died", $"{Name}被充满恶意的游戏环境草飞了");
-                    data.IsDeatHandling = true;
+                    data.IsDeathHandling = true;
                 }
                 else
                 {
@@ -280,7 +280,7 @@ namespace YongAnFrame.Role.Core
                         Cassie.MessageTranslated($"Died", $"({Name})被({args.Attacker.Nickname})斩杀");
                     }
                 }
-                data.IsDeatHandling = true;
+                data.IsDeathHandling = true;
             }
         }
 
