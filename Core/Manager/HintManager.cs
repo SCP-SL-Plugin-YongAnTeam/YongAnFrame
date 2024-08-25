@@ -37,7 +37,7 @@ namespace YongAnFrame.Core.Manager
 
                 int usedMex = text.Length - 1;
                 int used = 0;
-                text[used] += "YongAnFrame Bata v0.0.1";
+                text[used] += "YongAnFrame Beta v0.0.1";
                 //used++;
 
                 used = 20;
