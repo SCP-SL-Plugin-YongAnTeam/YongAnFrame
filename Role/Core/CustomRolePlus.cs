@@ -29,9 +29,7 @@ namespace YongAnFrame.Role.Core
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
         #region Static
-        public static List<FramePlayer> NoCustomRole { get; private set; } = [];
         public static List<FramePlayer> RespawnTeamPlayer { get; private set; } = [];
-        public static Queue<CustomRole> RespawnCustomRole { get; private set; } = [];
         public static int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
         public static int RespawnWave { get; private set; } = 0;
         public static void SubscribeStaticEvents()
@@ -60,7 +58,6 @@ namespace YongAnFrame.Role.Core
             }
 
             Log.Info(Player.List.Select(FramePlayer.Get));
-            NoCustomRole = Player.List.Select(FramePlayer.Get).ToList();
             RespawnWave = 0;
         }
         private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)
@@ -131,7 +128,6 @@ namespace YongAnFrame.Role.Core
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
             fPlayer.CustomRolePlus = null;
-            NoCustomRole.Add(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
             fPlayer.HintManager.RoleText.Clear();
             fPlayer.UpdateShowInfoList();
@@ -147,7 +143,6 @@ namespace YongAnFrame.Role.Core
             }
             if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && fPlayer.ExPlayer.GetCustomRoles().Count == 0)
             {
-                NoCustomRole.Remove(fPlayer);
                 limitCount++;
                 spawnCount++;
                 AddRole(fPlayer);
@@ -181,7 +176,7 @@ namespace YongAnFrame.Role.Core
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (NoCustomRole.Contains(fPlayer)
+            if (fPlayer.CustomRolePlus == null
                 && IStaetSpawn && (SpawnAttributes.RefreshTeam != RefreshTeamType.Start || (RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave))
                 && (OldRole == RoleTypeId.None || args.Player.Role.Type == OldRole))
             {
