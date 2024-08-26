@@ -171,11 +171,11 @@ namespace YongAnFrame.Role.Core
         //}
 
 
-        private void OnSpawning(SpawningEventArgs args)
+        private void OnSpawned(SpawnedEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
             if (fPlayer.CustomRolePlus == null
-                && IStaetSpawn && (SpawnAttributes.RefreshTeam != RefreshTeamType.Start || (RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave))
+                && IStaetSpawn && (SpawnAttributes.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave)
                 && (OldRole == RoleTypeId.None || args.Player.Role.Type == OldRole))
             {
                 TrySpawn(fPlayer);
@@ -280,7 +280,7 @@ namespace YongAnFrame.Role.Core
         protected override void SubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
-            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
+            Exiled.Events.Handlers.Player.Spawned += new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
             Exiled.Events.Handlers.Player.Hurting += new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem += new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
@@ -299,7 +299,7 @@ namespace YongAnFrame.Role.Core
             Exiled.Events.Handlers.Player.Hurting -= new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem -= new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
-            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
+            Exiled.Events.Handlers.Player.Spawned += new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
             Exiled.Events.Handlers.Player.Dying -= new CustomEventHandler<DyingEventArgs>(OnDying);
             base.UnsubscribeEvents();
 
