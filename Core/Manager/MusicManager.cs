@@ -77,7 +77,7 @@ namespace YongAnFrame.Core.Manager
                     audioPlayerBase.AudioToPlay = playerListId;
                 }
 
-                audioPlayerBase.Enqueue(@$"{Paths.Plugins}\{Server.Port}\YongAnPluginData\{musicFile}.ogg", 0);
+                audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);
                 audioPlayerBase.Volume = volume;
                 audioPlayerBase.Loop = isLoop;
                 audioPlayerBase.Play(0);

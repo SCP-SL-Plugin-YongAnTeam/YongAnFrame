@@ -42,6 +42,8 @@ namespace YongAnFrame.Core.Manager
 
                 used = 20;
 
+                text[used] = "<align=left>";
+
                 if (ChatTexts.Count > 28 - used)
                 {
                     for (int i = 0; i < ChatTexts.Count - (28 - used); i++)
@@ -64,6 +66,8 @@ namespace YongAnFrame.Core.Manager
                         i--;
                     }
                 }
+
+                used = 29;
 
                 if (usedMex - RoleText.Count < used + MessageTexts.Count + 1)
                 {

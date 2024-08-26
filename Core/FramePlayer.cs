@@ -73,8 +73,7 @@ namespace YongAnFrame.Core
         }
         private static void OnStaticDestroying(DestroyingEventArgs args)
         {
-            FramePlayer fPlayer = args.Player.ToFPlayer();
-            fPlayer.Invalid();
+            args.Player.ToFPlayer().Invalid();
         }
         private static void OnStaticWaitingForPlayers()
         {
@@ -253,6 +252,7 @@ namespace YongAnFrame.Core
         public void Invalid()
         {
             Events.Handlers.FramePlayer.OnInvalidFramePlayer(new InvalidFramePlayerEventArgs(this));
+            dictionary.Remove(ExPlayer.Id);
             HintManager?.Clean();
             ExPlayer = null;
         }
