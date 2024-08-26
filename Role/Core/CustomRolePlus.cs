@@ -54,10 +54,8 @@ namespace YongAnFrame.Role.Core
         {
             foreach (var item in Player.List)
             {
-                Log.Info(item);
+                Log.Debug(item);
             }
-
-            Log.Info(Player.List.Select(FramePlayer.Get));
             RespawnWave = 0;
         }
         private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)

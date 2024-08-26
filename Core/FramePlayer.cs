@@ -69,15 +69,13 @@ namespace YongAnFrame.Core
 
         private static void OnStaticVerified(VerifiedEventArgs args)
         {
-            CustomRolePlus.NoCustomRole.Add(new(args.Player));
+            new FramePlayer(args.Player);
         }
         private static void OnStaticDestroying(DestroyingEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
             fPlayer.Invalid();
-            CustomRolePlus.NoCustomRole.Remove(fPlayer);
         }
-
         private static void OnStaticWaitingForPlayers()
         {
             dictionary.Clear();
@@ -89,7 +87,7 @@ namespace YongAnFrame.Core
         /// 构造函数
         /// </summary>
         /// <param name="player">Exiled玩家</param>
-        public FramePlayer(Player player)
+        internal FramePlayer(Player player)
         {
             ExPlayer = player;
             HintManager = new HintManager(this);
