@@ -169,21 +169,21 @@ namespace YongAnFrame.Role.Core
             spawnCount = 0;
         }
 
-        private void OnRoundStarted()
-        {
-            if (IStaetSpawn && SpawnAttributes.RefreshTeam == RefreshTeamType.Start)
-            {
-                TrySpawn(NoCustomRole.FindAll((p) => OldRole == RoleTypeId.None && Role == p.ExPlayer.Role.Type || p.ExPlayer.Role.Type == OldRole));
-            }
-        }
+        //private void OnRoundStarted()
+        //{
+        //    if (IStaetSpawn && SpawnAttributes.RefreshTeam == RefreshTeamType.Start)
+        //    {
+        //        TrySpawn(NoCustomRole.FindAll((p) => OldRole == RoleTypeId.None && Role == p.ExPlayer.Role.Type || p.ExPlayer.Role.Type == OldRole));
+        //    }
+        //}
 
 
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (RespawnTeamPlayer.Contains(fPlayer) && NoCustomRole.Contains(fPlayer)
-                && IStaetSpawn && SpawnAttributes.StartWave <= RespawnWave
-                && (OldRole == RoleTypeId.None && args.Player.Role.Type == OldRole))
+            if (NoCustomRole.Contains(fPlayer)
+                && IStaetSpawn && (SpawnAttributes.RefreshTeam != RefreshTeamType.Start || (RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave))
+                && (OldRole == RoleTypeId.None || args.Player.Role.Type == OldRole))
             {
                 TrySpawn(fPlayer);
             }
@@ -286,7 +286,7 @@ namespace YongAnFrame.Role.Core
 
         protected override void SubscribeEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
+            //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
             Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
             Exiled.Events.Handlers.Player.Hurting += new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnRestartingRound);
@@ -302,7 +302,7 @@ namespace YongAnFrame.Role.Core
         }
         protected override void UnsubscribeEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= new CustomEventHandler(OnRoundStarted);
+            //Exiled.Events.Handlers.Server.RoundStarted -= new CustomEventHandler(OnRoundStarted);
             Exiled.Events.Handlers.Player.Hurting -= new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem -= new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
