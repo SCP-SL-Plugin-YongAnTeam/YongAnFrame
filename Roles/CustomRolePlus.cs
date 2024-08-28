@@ -10,20 +10,20 @@ using Exiled.Loader;
 using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
-using YongAnFrame.Core;
-using YongAnFrame.Core.Manager;
-using YongAnFrame.Role.Core.Enums;
-using YongAnFrame.Role.Core.Interfaces;
+using YongAnFrame.Players;
+using YongAnFrame.Role.Properties;
+using YongAnFrame.Roles.Enums;
+using YongAnFrame.Roles.Interfaces;
 
-namespace YongAnFrame.Role.Core
+namespace YongAnFrame.Roles
 {
     public abstract class CustomRolePlus : CustomRole
     {
         public override bool IgnoreSpawnSystem { get; set; } = false;
-        public virtual SpawnAttributes SpawnAttributes { get; set; } = new SpawnAttributes();
+        public virtual Role.Properties.SpawnProperties SpawnAttributes { get; set; } = new Role.Properties.SpawnProperties();
         public bool IStaetSpawn { get; set; } = true;
-        public Dictionary<FramePlayer, CustomRolePlusData> BaseData { get; } = [];
-        public virtual MoreAttributes MoreAttributes { get; set; } = new MoreAttributes();
+        public Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
+        public virtual MoreProperties MoreAttributes { get; set; } = new MoreProperties();
         public abstract string NameColor { get; set; }
         public Dictionary<uint, string> DeathText { get; } = [];
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
@@ -64,7 +64,7 @@ namespace YongAnFrame.Role.Core
         }
         #endregion
 
-        public virtual bool Check(FramePlayer player, out CustomRolePlusData data)
+        public virtual bool Check(FramePlayer player, out CustomRolePlusProperties data)
         {
             return BaseData.TryGetValue(player, out data);
         }
@@ -97,16 +97,16 @@ namespace YongAnFrame.Role.Core
             if (!string.IsNullOrEmpty(SpawnAttributes.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnAttributes.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnAttributes.MusicFileName))
             {
-                MusicManager.Instance.Play(SpawnAttributes.MusicFileName, "Spawn@localhost", $"{Name}", new MusicManager.TrackEvent());
+                MusicManager.Instance.Play(SpawnAttributes.MusicFileName, $"{Name}", new MusicManager.TrackEvent());
             }
             fPlayer.UpdateShowInfoList();
         }
         public virtual void AddRoleData(FramePlayer fPlayer)
         {
-            BaseData.Add(fPlayer, new CustomRolePlusData());
+            BaseData.Add(fPlayer, new CustomRolePlusProperties());
             if (this is ISkill skill)
             {
-                SkillsManager skillsManager = new(fPlayer, skill);
+                SkillManager skillsManager = new(fPlayer, skill);
                 BaseData[fPlayer].SkillsManager = skillsManager;
             }
         }
@@ -119,7 +119,7 @@ namespace YongAnFrame.Role.Core
         {
             if (!Check(fPlayer)) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-            if (Check(fPlayer, out CustomRolePlusData data) && !data.IsDeathHandling)
+            if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
             {
                 Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
             }
@@ -139,7 +139,7 @@ namespace YongAnFrame.Role.Core
             {
                 limitCount = 0;
             }
-            if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && fPlayer.ExPlayer.GetCustomRoles().Count == 0)
+            if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && fPlayer.CustomRolePlus == null)
             {
                 limitCount++;
                 spawnCount++;
@@ -171,20 +171,30 @@ namespace YongAnFrame.Role.Core
         //}
 
 
-        private void OnSpawned(SpawnedEventArgs args)
+        private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (fPlayer.CustomRolePlus == null
-                && IStaetSpawn && (SpawnAttributes.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave)
-                && (OldRole == RoleTypeId.None || args.Player.Role.Type == OldRole))
+            if (IStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
-                TrySpawn(fPlayer);
+                switch (SpawnAttributes.RefreshTeam)
+                {
+                    case RefreshTeamType.Start:
+                        TrySpawn(fPlayer);
+                        break;
+                    case RefreshTeamType.MTF:
+                    case RefreshTeamType.CI:
+                        if (SpawnAttributes.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave)
+                        {
+                            TrySpawn(fPlayer);
+                        }
+                        break;
+                }
             }
         }
         private void OnDroppingItem(DroppingItemEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out CustomRolePlusData data))
+            if (Check(fPlayer, out CustomRolePlusProperties data))
             {
                 if (args.Item.Type == ItemType.Coin && data.SkillsManager != null)
                 {
@@ -247,7 +257,7 @@ namespace YongAnFrame.Role.Core
         private void OnDying(DyingEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out CustomRolePlusData data))
+            if (Check(fPlayer, out CustomRolePlusProperties data))
             {
                 if (args.Attacker == null)
                 {
@@ -280,7 +290,7 @@ namespace YongAnFrame.Role.Core
         protected override void SubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
-            Exiled.Events.Handlers.Player.Spawned += new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
+            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
             Exiled.Events.Handlers.Player.Hurting += new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem += new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
@@ -299,7 +309,7 @@ namespace YongAnFrame.Role.Core
             Exiled.Events.Handlers.Player.Hurting -= new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem -= new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
-            Exiled.Events.Handlers.Player.Spawned += new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
+            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
             Exiled.Events.Handlers.Player.Dying -= new CustomEventHandler<DyingEventArgs>(OnDying);
             base.UnsubscribeEvents();
 
@@ -319,11 +329,11 @@ namespace YongAnFrame.Role.Core
         }
 
     }
-    public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusData, new()
+    public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusProperties, new()
     {
         public virtual bool Check(FramePlayer player, out T data)
         {
-            if (BaseData.TryGetValue(player, out CustomRolePlusData baseData))
+            if (BaseData.TryGetValue(player, out CustomRolePlusProperties baseData))
             {
                 data = (T)baseData;
                 return true;
@@ -337,7 +347,7 @@ namespace YongAnFrame.Role.Core
             BaseData.Add(fPlayer, new T());
             if (this is ISkill skill)
             {
-                SkillsManager skillsManager = new(fPlayer, skill);
+                SkillManager skillsManager = new(fPlayer, skill);
                 BaseData[fPlayer].SkillsManager = skillsManager;
             }
         }

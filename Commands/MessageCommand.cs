@@ -3,10 +3,9 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
-using YongAnFrame.Core;
-using YongAnFrame.Core.Manager;
+using YongAnFrame.Players;
 
-namespace YongAnFrame.Command
+namespace YongAnFrame.Commands
 {
     /// <summary>
     /// 发送消息指令

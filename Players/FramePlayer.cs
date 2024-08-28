@@ -4,12 +4,10 @@ using Exiled.Events.Features;
 using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using YongAnFrame.Core.Data;
-using YongAnFrame.Core.Manager;
 using YongAnFrame.Events.EventArgs.FramePlayer;
-using YongAnFrame.Role.Core;
+using YongAnFrame.Roles;
 
-namespace YongAnFrame.Core
+namespace YongAnFrame.Players
 {
     public class FramePlayer
     {
@@ -69,6 +67,7 @@ namespace YongAnFrame.Core
 
         private static void OnStaticVerified(VerifiedEventArgs args)
         {
+            if (args.Player.IsNPC) return;
             new FramePlayer(args.Player);
         }
         private static void OnStaticDestroying(DestroyingEventArgs args)

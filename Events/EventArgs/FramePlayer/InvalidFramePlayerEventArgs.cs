@@ -7,9 +7,9 @@ namespace YongAnFrame.Events.EventArgs.FramePlayer
     /// </summary>
     public class InvalidFramePlayerEventArgs : IExiledEvent
     {
-        public Core.FramePlayer FPlayer { get; }
+        public Players.FramePlayer FPlayer { get; }
 
-        public InvalidFramePlayerEventArgs(Core.FramePlayer fPlayer)
+        public InvalidFramePlayerEventArgs(Players.FramePlayer fPlayer)
         {
             FPlayer = fPlayer;
         }

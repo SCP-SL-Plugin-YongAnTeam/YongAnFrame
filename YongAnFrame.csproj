@@ -97,31 +97,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\CommandPlus.cs" />
-    <Compile Include="Core\Data\PlayerTitle.cs" />
-    <Compile Include="Core\CustomPlayer.cs" />
+    <Compile Include="Commands\CommandPlus.cs" />
+    <Compile Include="Players\PlayerTitle.cs" />
+    <Compile Include="Players\CustomPlayer.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\InvalidFramePlayerEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\CreateFramePlayerEventArgs.cs" />
     <Compile Include="Events\Handlers\FramePlayer.cs" />
-    <Compile Include="Role\Core\CustomRolePlus.cs" />
-    <Compile Include="Role\Core\CustomRolePlusData.cs" />
-    <Compile Include="Role\Core\Interfaces\ISkill.cs" />
-    <Compile Include="Role\Core\Interfaces\ISkillActiveEnd.cs" />
-    <Compile Include="Role\Core\Interfaces\ISkillActiveStart.cs" />
-    <Compile Include="Role\Core\Interfaces\ISkillBurialEnd.cs" />
+    <Compile Include="Roles\CustomRolePlus.cs" />
+    <Compile Include="Roles\Properties\CustomRolePlusProperties.cs" />
+    <Compile Include="Roles\Interfaces\ISkill.cs" />
+    <Compile Include="Roles\Interfaces\ISkillActiveEnd.cs" />
+    <Compile Include="Roles\Interfaces\ISkillActiveStart.cs" />
+    <Compile Include="Roles\Interfaces\ISkillBurialEnd.cs" />
     <Compile Include="YongAnFrameConfig.cs" />
     <Compile Include="YongAnFrameCore.cs" />
-    <Compile Include="Command\MessageCommand.cs" />
-    <Compile Include="Command\SkillCommand.cs" />
-    <Compile Include="Core\Manager\HintManager.cs" />
-    <Compile Include="Core\Manager\MusicManager.cs" />
-    <Compile Include="Core\FramePlayer.cs" />
+    <Compile Include="Commands\MessageCommand.cs" />
+    <Compile Include="Commands\SkillCommand.cs" />
+    <Compile Include="Players\HintManager.cs" />
+    <Compile Include="Roles\MusicManager.cs" />
+    <Compile Include="Players\FramePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role\Core\Enums\RefreshTeamType.cs" />
-    <Compile Include="Role\Core\MoreAttributes.cs" />
-    <Compile Include="Role\Core\SkillsAttributes.cs" />
-    <Compile Include="Role\Core\SkillsManager.cs" />
-    <Compile Include="Role\Core\SpawnAttributes.cs" />
+    <Compile Include="Roles\Enums\RefreshTeamType.cs" />
+    <Compile Include="Roles\Properties\MoreProperties.cs" />
+    <Compile Include="Roles\Properties\SkillProperties.cs" />
+    <Compile Include="Roles\SkillManager.cs" />
+    <Compile Include="Roles\Properties\SpawnProperties.cs" />
     <Compile Include="YongAnTool.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +130,10 @@
     <None Include="README.md" />
     <None Include="YongAnFrame.nuspec" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\" />
+    <Folder Include="Roles\Manager\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

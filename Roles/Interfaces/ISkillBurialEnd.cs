@@ -1,6 +1,6 @@
-﻿using YongAnFrame.Core;
+﻿using YongAnFrame.Players;
 
-namespace YongAnFrame.Role.Core.Interfaces
+namespace YongAnFrame.Roles.Interfaces
 {
     public interface ISkillBurialEnd : ISkill
     {

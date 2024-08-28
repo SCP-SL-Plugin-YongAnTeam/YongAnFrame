@@ -1,8 +1,8 @@
-﻿namespace YongAnFrame.Role.Core
+﻿namespace YongAnFrame.Role.Properties
 {
-    public struct SkillsAttributes
+    public struct SkillProperties
     {
-        public SkillsAttributes(string name, string statement, string description, float activeMaxTime, float burialMaxTime)
+        public SkillProperties(string name, string statement, string description, float activeMaxTime, float burialMaxTime)
         {
             Name = name;
             Statement = statement;

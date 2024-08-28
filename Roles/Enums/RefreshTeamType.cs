@@ -1,10 +1,9 @@
-﻿namespace YongAnFrame.Role.Core.Enums
+﻿namespace YongAnFrame.Roles.Enums
 {
     public enum RefreshTeamType
     {
-        None = 0,
+        Start = 0,
         MTF = 1,
         CI = 2,
-        Start = 3
     }
 }

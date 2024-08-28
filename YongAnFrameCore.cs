@@ -1,9 +1,8 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using SCPSLAudioApi;
-using YongAnFrame.Core;
-using YongAnFrame.Core.Manager;
-using YongAnFrame.Role.Core;
+using YongAnFrame.Players;
+using YongAnFrame.Roles;
 
 namespace YongAnFrame
 {

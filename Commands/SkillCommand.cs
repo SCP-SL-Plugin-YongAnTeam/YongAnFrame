@@ -1,9 +1,8 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
-using YongAnFrame.Command;
 
-namespace BAPlugin.SkillCommand
+namespace YongAnFrame.Commands
 {
     /// <summary>
     /// 未完成请勿乱用

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace YongAnFrame.Core.Manager
+namespace YongAnFrame.Players
 {
     /// <summary>
     /// 提示系统管理器
@@ -16,10 +16,9 @@ namespace YongAnFrame.Core.Manager
 
         private readonly CoroutineHandle coroutine;
 
-        /// <summary>
-        /// 存在一些问题，暂不开放
-        /// </summary>
-        private readonly Text[] customText = new Text[20];
+
+        public Text[] CustomText1 = new Text[10];
+        public Text[] CustomText2 = new Text[20];
         public List<Text> RoleText { get; } = [];
         public List<Text> MessageTexts { get; } = [];
         public List<Text> ChatTexts { get; } = [];
@@ -37,12 +36,16 @@ namespace YongAnFrame.Core.Manager
 
                 int usedMex = text.Length - 1;
                 int used = 0;
-                text[used] += "YongAnFrame Beta v0.0.1";
-                //used++;
-
-                used = 20;
-
+                text[used] = $"YongAnFrame 1.0.0-alpha6";
+                used++;
                 text[used] = "<align=left>";
+                used++;
+                foreach (string data in CustomText1)
+                {
+                    text[used] = data;
+                    used++;
+                }
+                used++;
 
                 if (ChatTexts.Count > 28 - used)
                 {
@@ -52,6 +55,7 @@ namespace YongAnFrame.Core.Manager
                     }
                 }
 
+                used = 22;
                 for (int i = 0; i < ChatTexts.Count; i++)
                 {
                     Text textData = ChatTexts[i];

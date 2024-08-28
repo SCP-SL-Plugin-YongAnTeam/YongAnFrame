@@ -3,8 +3,8 @@ using Respawning;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using YongAnFrame.Core;
-using YongAnFrame.Role.Core.Enums;
+using YongAnFrame.Players;
+using YongAnFrame.Roles.Enums;
 
 namespace YongAnFrame
 {
@@ -41,14 +41,12 @@ namespace YongAnFrame
         {
             switch (stp)
             {
-                case SpawnableTeamType.None:
-                    return RefreshTeamType.None;
                 case SpawnableTeamType.ChaosInsurgency:
                     return RefreshTeamType.CI;
                 case SpawnableTeamType.NineTailedFox:
                     return RefreshTeamType.MTF;
                 default:
-                    return RefreshTeamType.None;
+                    return RefreshTeamType.Start;
             }
         }
     }

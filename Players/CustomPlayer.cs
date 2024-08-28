@@ -1,7 +1,4 @@
-﻿using YongAnFrame.Core.Data;
-using YongAnFrame.Core.Manager;
-
-namespace YongAnFrame.Core
+﻿namespace YongAnFrame.Players
 {
     public abstract class CustomPlayer(FramePlayer player)
     {

@@ -1,10 +1,10 @@
-﻿using YongAnFrame.Role.Core.Enums;
+﻿using YongAnFrame.Roles.Enums;
 
-namespace YongAnFrame.Role.Core
+namespace YongAnFrame.Role.Properties
 {
-    public struct SpawnAttributes
+    public struct SpawnProperties
     {
-        public SpawnAttributes()
+        public SpawnProperties()
         {
         }
 

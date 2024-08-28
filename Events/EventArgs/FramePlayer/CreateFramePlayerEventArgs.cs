@@ -7,9 +7,9 @@ namespace YongAnFrame.Events.EventArgs.FramePlayer
     /// </summary>
     public class CreateFramePlayerEventArgs : IExiledEvent
     {
-        public Core.FramePlayer FPlayer { get; }
+        public Players.FramePlayer FPlayer { get; }
 
-        public CreateFramePlayerEventArgs(Core.FramePlayer fPlayer)
+        public CreateFramePlayerEventArgs(Players.FramePlayer fPlayer)
         {
             FPlayer = fPlayer;
         }

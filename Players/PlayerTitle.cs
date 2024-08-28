@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YongAnFrame.Core.Data
+namespace YongAnFrame.Players
 {
     /// <summary>
     /// 玩家称号
