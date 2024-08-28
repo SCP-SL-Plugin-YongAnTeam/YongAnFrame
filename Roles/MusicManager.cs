@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 
-namespace YongAnFrame.Players
+namespace YongAnFrame.Roles
 {
     public class MusicManager
     {

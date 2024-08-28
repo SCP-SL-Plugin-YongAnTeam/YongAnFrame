@@ -14,6 +14,7 @@ using YongAnFrame.Players;
 using YongAnFrame.Role.Properties;
 using YongAnFrame.Roles.Enums;
 using YongAnFrame.Roles.Interfaces;
+using YongAnFrame.Roles.Properties;
 
 namespace YongAnFrame.Roles
 {

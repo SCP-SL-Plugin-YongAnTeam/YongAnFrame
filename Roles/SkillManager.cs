@@ -1,9 +1,9 @@
 ﻿using MEC;
 using System.Collections.Generic;
 using YongAnFrame.Players;
-using YongAnFrame.Role.Properties;
 using YongAnFrame.Roles.Interfaces;
-using static YongAnFrame.Players.MusicManager;
+using YongAnFrame.Roles.Properties;
+using static YongAnFrame.Roles.MusicManager;
 
 namespace YongAnFrame.Roles
 {

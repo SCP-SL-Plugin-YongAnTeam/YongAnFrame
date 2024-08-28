@@ -1,4 +1,4 @@
-﻿namespace YongAnFrame.Role.Properties
+﻿namespace YongAnFrame.Roles.Properties
 {
     public struct SkillProperties
     {

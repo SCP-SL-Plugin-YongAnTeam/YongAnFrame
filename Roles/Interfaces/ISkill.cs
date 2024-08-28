@@ -1,4 +1,4 @@
-﻿using YongAnFrame.Role.Properties;
+﻿using YongAnFrame.Roles.Properties;
 
 namespace YongAnFrame.Roles.Interfaces
 {
