@@ -23,7 +23,7 @@ namespace YongAnFrame.Roles
         public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
         public bool IStaetSpawn { get; set; } = true;
         public Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
-        public virtual MoreProperties MoreAttributes { get; set; } = new MoreProperties();
+        public virtual MoreProperties MoreProperties { get; set; } = new MoreProperties();
         public abstract string NameColor { get; set; }
         public Dictionary<uint, string> DeathText { get; } = [];
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
@@ -83,16 +83,16 @@ namespace YongAnFrame.Roles
             AddRoleData(fPlayer);
             fPlayer.CustomRolePlus = this;
 
-            if (MoreAttributes.BaseMovementSpeedMultiplier < 1f)
+            if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
             {
                 fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
                 fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Disabled, 1);
             }
 
-            if (MoreAttributes.BaseMovementSpeedMultiplier > 1f)
+            if (MoreProperties.BaseMovementSpeedMultiplier > 1f)
             {
                 fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
-                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreAttributes.BaseMovementSpeedMultiplier - 1f) * 100));
+                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreProperties.BaseMovementSpeedMultiplier - 1f) * 100));
             }
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnProperties.MusicFileName))
@@ -220,20 +220,20 @@ namespace YongAnFrame.Roles
             {
                 if (Check(args.Player))
                 {
-                    args.Amount *= MoreAttributes.DamageResistanceMultiplier;
+                    args.Amount *= MoreProperties.DamageResistanceMultiplier;
                 }
                 else if (Check(args.Attacker))
                 {
                     DamageHandler damageHandler = args.DamageHandler;
-                    float damage = damageHandler.Damage * MoreAttributes.AttackDamageMultiplier;
-                    if (MoreAttributes.IsAttackIgnoresArmor)
+                    float damage = damageHandler.Damage * MoreProperties.AttackDamageMultiplier;
+                    if (MoreProperties.IsAttackIgnoresArmor)
                     {
                         if (damageHandler is FirearmDamageHandler firearmDamageHandler)
                         {
                             damage += ((Exiled.API.Features.Roles.HumanRole)damageHandler.Target.Role).GetArmorEfficacy(firearmDamageHandler.Hitbox);
                         }
                     }
-                    if (MoreAttributes.IsAttackIgnoresAhp)
+                    if (MoreProperties.IsAttackIgnoresAhp)
                     {
                         damage += damageHandler.AbsorbedAhpDamage;
                     }
