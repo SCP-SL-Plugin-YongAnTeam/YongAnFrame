@@ -20,7 +20,7 @@ namespace YongAnFrame.Roles
     public abstract class CustomRolePlus : CustomRole
     {
         public override bool IgnoreSpawnSystem { get; set; } = false;
-        public virtual Role.Properties.SpawnProperties SpawnAttributes { get; set; } = new Role.Properties.SpawnProperties();
+        public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
         public bool IStaetSpawn { get; set; } = true;
         public Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
         public virtual MoreProperties MoreAttributes { get; set; } = new MoreProperties();
@@ -94,10 +94,10 @@ namespace YongAnFrame.Roles
                 fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
                 fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreAttributes.BaseMovementSpeedMultiplier - 1f) * 100));
             }
-            if (!string.IsNullOrEmpty(SpawnAttributes.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnAttributes.Info, true, true, true);
-            if (!string.IsNullOrEmpty(SpawnAttributes.MusicFileName))
+            if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
+            if (!string.IsNullOrEmpty(SpawnProperties.MusicFileName))
             {
-                MusicManager.Instance.Play(SpawnAttributes.MusicFileName, $"{Name}", new MusicManager.TrackEvent());
+                MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}", new MusicManager.TrackEvent());
             }
             fPlayer.UpdateShowInfoList();
         }
@@ -139,7 +139,7 @@ namespace YongAnFrame.Roles
             {
                 limitCount = 0;
             }
-            if (spawnCount < SpawnAttributes.MaxCount && Server.PlayerCount >= SpawnAttributes.MinPlayer && SpawnChanceNum <= SpawnAttributes.Chance && SpawnProperties.Limit > limitCount && fPlayer.CustomRolePlus == null)
+            if (spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount && fPlayer.CustomRolePlus == null)
             {
                 limitCount++;
                 spawnCount++;
@@ -164,7 +164,7 @@ namespace YongAnFrame.Roles
 
         //private void OnRoundStarted()
         //{
-        //    if (IStaetSpawn && SpawnAttributes.RefreshTeam == RefreshTeamType.Start)
+        //    if (IStaetSpawn && SpawnProperties.RefreshTeam == RefreshTeamType.Start)
         //    {
         //        TrySpawn(NoCustomRole.FindAll((p) => OldRole == RoleTypeId.None && Role == p.ExPlayer.Role.Type || p.ExPlayer.Role.Type == OldRole));
         //    }
@@ -176,14 +176,14 @@ namespace YongAnFrame.Roles
             FramePlayer fPlayer = args.Player.ToFPlayer();
             if (IStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
-                switch (SpawnAttributes.RefreshTeam)
+                switch (SpawnProperties.RefreshTeam)
                 {
                     case RefreshTeamType.Start:
                         TrySpawn(fPlayer);
                         break;
                     case RefreshTeamType.MTF:
                     case RefreshTeamType.CI:
-                        if (SpawnAttributes.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnAttributes.StartWave <= RespawnWave)
+                        if (SpawnProperties.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnProperties.StartWave <= RespawnWave)
                         {
                             TrySpawn(fPlayer);
                         }

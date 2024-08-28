@@ -4,6 +4,6 @@ namespace YongAnFrame.Roles.Interfaces
 {
     public interface ISkill
     {
-        SkillProperties[] SkillsAttributes { get; }
+        SkillProperties[] SkillProperties { get; }
     }
 }

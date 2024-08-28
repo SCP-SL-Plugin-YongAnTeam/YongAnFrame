@@ -45,7 +45,7 @@ namespace YongAnFrame.Roles
                 return null;
             }
         }
-        public SkillProperties[] SkillsAttributes { get => skill.SkillsAttributes; }
+        public SkillProperties[] SkillProperties { get => skill.SkillProperties; }
 
         public int SkillsEffectSwitchId { get; set; }
         /// <summary>
@@ -65,7 +65,7 @@ namespace YongAnFrame.Roles
         {
             this.fPlayer = fPlayer;
             this.skill = skill;
-            coroutineHandle = new CoroutineHandle[SkillsAttributes.Length];
+            coroutineHandle = new CoroutineHandle[SkillProperties.Length];
         }
 
 
@@ -80,8 +80,8 @@ namespace YongAnFrame.Roles
                 coroutineHandle = null;
             }
 
-            ActiveRemainingTime = SkillsAttributes[id].ActiveMaxTime;
-            BurialRemainingTime = SkillsAttributes[id].BurialMaxTime;
+            ActiveRemainingTime = SkillProperties[id].ActiveMaxTime;
+            BurialRemainingTime = SkillProperties[id].BurialMaxTime;
 
             coroutineHandle[id] = Timing.RunCoroutine(Timer(id));
         }
