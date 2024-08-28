@@ -8,19 +8,19 @@ namespace YongAnFrame.Events.Handlers
         /// <summary>
         /// FramePlayer被创建时的事件
         /// </summary>
-        public static Event<CreateFramePlayerEventArgs> CreateFramePlayer { get; set; } = new Event<CreateFramePlayerEventArgs>();
+        public static Event<FramePlayerCreatedEventArgs> FramePlayerCreated { get; set; } = new Event<FramePlayerCreatedEventArgs>();
         /// <summary>
         /// FramePlayer被无效时的事件
         /// </summary>
-        public static Event<InvalidFramePlayerEventArgs> InvalidFramePlayer { get; set; } = new Event<InvalidFramePlayerEventArgs>();
+        public static Event<FramePlayerInvalidatingEventArgs> FramePlayerInvalidating { get; set; } = new Event<FramePlayerInvalidatingEventArgs>();
 
-        public static void OnCreateFramePlayer(CreateFramePlayerEventArgs args)
+        public static void OnFramePlayerCreated(FramePlayerCreatedEventArgs args)
         {
-            CreateFramePlayer.InvokeSafely(args);
+            FramePlayerCreated.InvokeSafely(args);
         }
-        public static void OnInvalidFramePlayer(InvalidFramePlayerEventArgs args)
+        public static void OnFramePlayerInvalidating(FramePlayerInvalidatingEventArgs args)
         {
-            InvalidFramePlayer.InvokeSafely(args);
+            FramePlayerInvalidating.InvokeSafely(args);
         }
     }
 }

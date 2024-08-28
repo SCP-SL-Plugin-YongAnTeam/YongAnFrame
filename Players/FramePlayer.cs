@@ -22,7 +22,7 @@ namespace YongAnFrame.Players
         /// <summary>
         /// 有效的框架玩家列表
         /// </summary>
-        public static IReadOnlyCollection<FramePlayer> List => dictionary.Values.Where((p) => !p.IsInvalid).ToList();
+        public static IReadOnlyCollection<FramePlayer> List => [.. dictionary.Values];
         /// <summary>
         /// 是否有效
         /// </summary>
@@ -54,14 +54,14 @@ namespace YongAnFrame.Players
         public static void SubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
-            Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
+            //Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
 
         public static void UnsubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
-            Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
+            //Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
 
@@ -74,10 +74,10 @@ namespace YongAnFrame.Players
         {
             args.Player.ToFPlayer().Invalid();
         }
-        private static void OnStaticWaitingForPlayers()
-        {
-            dictionary.Clear();
-        }
+        //private static void OnStaticWaitingForPlayers()
+        //{
+        //    dictionary.Clear();
+        //}
 
         #endregion
 
@@ -90,7 +90,7 @@ namespace YongAnFrame.Players
             ExPlayer = player;
             HintManager = new HintManager(this);
             dictionary.Add(ExPlayer.Id, this);
-            Events.Handlers.FramePlayer.OnCreateFramePlayer(new CreateFramePlayerEventArgs(this));
+            Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
         }
 
         #region ShowRank
@@ -250,7 +250,7 @@ namespace YongAnFrame.Players
         /// </summary>
         public void Invalid()
         {
-            Events.Handlers.FramePlayer.OnInvalidFramePlayer(new InvalidFramePlayerEventArgs(this));
+            Events.Handlers.FramePlayer.OnFramePlayerInvalidating(new FramePlayerInvalidatingEventArgs(this));
             dictionary.Remove(ExPlayer.Id);
             HintManager?.Clean();
             ExPlayer = null;

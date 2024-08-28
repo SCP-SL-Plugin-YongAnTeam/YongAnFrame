@@ -3,13 +3,13 @@
 namespace YongAnFrame.Events.EventArgs.FramePlayer
 {
     /// <summary>
-    /// FramePlayer被创建时的事件数据
+    /// FramePlayer被无效时的事件数据
     /// </summary>
-    public class CreateFramePlayerEventArgs : IExiledEvent
+    public class FramePlayerInvalidatingEventArgs : IExiledEvent
     {
         public Players.FramePlayer FPlayer { get; }
 
-        public CreateFramePlayerEventArgs(Players.FramePlayer fPlayer)
+        public FramePlayerInvalidatingEventArgs(Players.FramePlayer fPlayer)
         {
             FPlayer = fPlayer;
         }

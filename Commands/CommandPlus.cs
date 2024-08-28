@@ -6,6 +6,7 @@ namespace YongAnFrame.Commands
     /// <summary>
     /// 防止不兼容目标框架
     /// </summary>
+    [Obsolete("官方开眼了，终于没有SanitizeResponse这个答辩了")]
     public abstract class CommandPlus : ICommand
     {
         public bool SanitizeResponse => true;

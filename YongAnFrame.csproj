@@ -98,10 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandPlus.cs" />
+    <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
+    <Compile Include="Events\EventArgs\FramePlayer\FramePlayerInvalidingEventArgs.cs" />
     <Compile Include="Players\PlayerTitle.cs" />
     <Compile Include="Players\CustomPlayer.cs" />
-    <Compile Include="Events\EventArgs\FramePlayer\InvalidFramePlayerEventArgs.cs" />
-    <Compile Include="Events\EventArgs\FramePlayer\CreateFramePlayerEventArgs.cs" />
     <Compile Include="Events\Handlers\FramePlayer.cs" />
     <Compile Include="Roles\CustomRolePlus.cs" />
     <Compile Include="Roles\Properties\CustomRolePlusProperties.cs" />
