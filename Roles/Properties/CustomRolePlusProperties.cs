@@ -10,7 +10,7 @@ namespace YongAnFrame.Role.Properties
         /// <summary>
         /// 技能管理器
         /// </summary>
-        public SkillManager SkillsManager { get; set; }
+        public SkillManager[] SkillManagers { get; set; }
         /// <summary>
         /// 是否正常死亡
         /// </summary>

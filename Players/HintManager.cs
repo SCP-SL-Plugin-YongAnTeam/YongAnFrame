@@ -42,7 +42,7 @@ namespace YongAnFrame.Players
                 used++;
                 foreach (string data in CustomText1)
                 {
-                    text[used] = data;
+                    text[used] = data ?? string.Empty;
                     used++;
                 }
                 used++;

@@ -4,6 +4,6 @@ namespace YongAnFrame.Roles.Interfaces
 {
     public interface ISkillActiveStart : ISkill
     {
-        string ActiveStart(FramePlayer yPlayer);
+        string ActiveStart(FramePlayer yPlayer,byte id);
     }
 }

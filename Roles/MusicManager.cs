@@ -59,7 +59,7 @@ namespace YongAnFrame.Roles
             AudioPlayerBase audioPlayerBase = null;
             try
             {
-                OnTrackLoaded += trackEvent.TrackLoaded ?? trackEvent.TrackLoaded;
+                OnTrackLoaded += trackEvent.TrackLoaded;
                 if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
                 {
                     npc = CreateMusicNpc(npcName);

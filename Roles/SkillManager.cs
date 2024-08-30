@@ -12,6 +12,7 @@ namespace YongAnFrame.Roles
         private readonly FramePlayer fPlayer;
 
         private readonly ISkill skill;
+        public byte Id { get; }
         private ISkillActiveStart SkillActiveStart
         {
             get
@@ -45,7 +46,7 @@ namespace YongAnFrame.Roles
                 return null;
             }
         }
-        public SkillProperties[] SkillProperties { get => skill.SkillProperties; }
+        public SkillProperties SkillProperties { get => skill.SkillProperties[Id]; }
 
         public int SkillsEffectSwitchId { get; set; }
         /// <summary>
@@ -59,50 +60,49 @@ namespace YongAnFrame.Roles
         public float ActiveRemainingTime { get; private set; }
         public float BurialRemainingTime { get; private set; }
 
-        private CoroutineHandle[] coroutineHandle;
+        private CoroutineHandle coroutineHandle;
 
-        public SkillManager(FramePlayer fPlayer, ISkill skill)
+        public SkillManager(FramePlayer fPlayer, ISkill skill,byte Id)
         {
             this.fPlayer = fPlayer;
             this.skill = skill;
-            coroutineHandle = new CoroutineHandle[SkillProperties.Length];
+            this.Id = Id;
         }
 
 
         /// <summary>
         /// 有计时任务会直接覆盖
         /// </summary>
-        public void Run(int id)
+        public void Run()
         {
             if (coroutineHandle != null)
             {
-                Timing.KillCoroutines(coroutineHandle[id]);
-                coroutineHandle = null;
+                Timing.KillCoroutines(coroutineHandle);
             }
 
-            ActiveRemainingTime = SkillProperties[id].ActiveMaxTime;
-            BurialRemainingTime = SkillProperties[id].BurialMaxTime;
+            ActiveRemainingTime = SkillProperties.ActiveMaxTime;
+            BurialRemainingTime = SkillProperties.BurialMaxTime;
 
-            coroutineHandle[id] = Timing.RunCoroutine(Timer(id));
+            coroutineHandle = Timing.RunCoroutine(Timer());
         }
 
-        private IEnumerator<float> Timer(int id)
+        private IEnumerator<float> Timer()
         {
-            string musicFileName = SkillActiveStart?.ActiveStart(fPlayer);
+            string musicFileName = SkillActiveStart?.ActiveStart(fPlayer, Id);
             if (musicFileName != null) Instance.Play(musicFileName, $"技能发动语音", new TrackEvent(), fPlayer, 10);
             while (IsActive)
             {
                 ActiveRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicFileName = SkillActiveEnd?.ActiveEnd(fPlayer);
+            musicFileName = SkillActiveEnd?.ActiveEnd(fPlayer, Id);
             if (musicFileName != null) Instance.Play(musicFileName, $"技能结束语音", new TrackEvent(), fPlayer, 10);
             while (IsBurial)
             {
                 BurialRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicFileName = SkillBurialEnd?.BurialEnd(fPlayer);
+            musicFileName = SkillBurialEnd?.BurialEnd(fPlayer,Id);
             if (musicFileName != null) Instance.Play(musicFileName, $"技能准备好语音", new TrackEvent(), fPlayer, 10);
         }
     }

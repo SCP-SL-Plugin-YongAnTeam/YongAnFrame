@@ -131,7 +131,7 @@ namespace YongAnFrame.Players
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(CustomRolePlus.NameColor))
+                        if (CustomRolePlus != null)
                         {
                             ExPlayer.RankColor = CustomRolePlus.NameColor;
                         }
@@ -141,7 +141,7 @@ namespace YongAnFrame.Players
                         }
                     }
 
-                    if (!string.IsNullOrEmpty(CustomRolePlus.Name))
+                    if (CustomRolePlus != null)
                     {
                         ExPlayer.RankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
                     }
@@ -170,11 +170,11 @@ namespace YongAnFrame.Players
             }
             else
             {
-                if (!string.IsNullOrEmpty(CustomRolePlus.Name))
+                if (CustomRolePlus != null)
                 {
                     ExPlayer.RankName = CustomRolePlus.Name;
                 }
-                if (!string.IsNullOrEmpty(CustomRolePlus.NameColor))
+                if (CustomRolePlus != null)
                 {
                     ExPlayer.RankColor = CustomRolePlus.NameColor;
                 }
@@ -191,7 +191,7 @@ namespace YongAnFrame.Players
                 {
                     if (name != null)
                     {
-                        ExPlayer.RankName = $"{name ?? name} *{command[0]}*";
+                        ExPlayer.RankName = $"{name} *{command[0]}*";
                     }
                     else
                     {

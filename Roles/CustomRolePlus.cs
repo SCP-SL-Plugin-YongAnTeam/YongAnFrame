@@ -30,7 +30,6 @@ namespace YongAnFrame.Roles
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
         #region Static
-        public static List<FramePlayer> RespawnTeamPlayer { get; private set; } = [];
         public static int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
         public static int RespawnWave { get; private set; } = 0;
         public static void SubscribeStaticEvents()
@@ -61,7 +60,7 @@ namespace YongAnFrame.Roles
         }
         private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)
         {
-            RespawnTeamPlayer = args.Players.Select(FramePlayer.Get).ToList();
+            RespawnWave++;
         }
         #endregion
 
@@ -104,11 +103,15 @@ namespace YongAnFrame.Roles
         }
         public virtual void AddRoleData(FramePlayer fPlayer)
         {
-            BaseData.Add(fPlayer, new CustomRolePlusProperties());
+            CustomRolePlusProperties properties = new();
+            BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
-                SkillManager skillsManager = new(fPlayer, skill);
-                BaseData[fPlayer].SkillsManager = skillsManager;
+                properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
+                for (int i = 0; i < skill.SkillProperties.Length; i++)
+                {
+                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)(i + 1));
+                }
             }
         }
         public override void RemoveRole(Player player)
@@ -184,7 +187,7 @@ namespace YongAnFrame.Roles
                         break;
                     case RefreshTeamType.MTF:
                     case RefreshTeamType.CI:
-                        if (SpawnProperties.RefreshTeam != RefreshTeamType.Start && RespawnTeamPlayer.Contains(fPlayer) && SpawnProperties.StartWave <= RespawnWave)
+                        if (SpawnProperties.StartWave <= RespawnWave)
                         {
                             TrySpawn(fPlayer);
                         }
@@ -197,22 +200,26 @@ namespace YongAnFrame.Roles
             FramePlayer fPlayer = args.Player.ToFPlayer();
             if (Check(fPlayer, out CustomRolePlusProperties data))
             {
-                if (args.Item.Type == ItemType.Coin && data.SkillsManager != null)
+                foreach (var skillsManager in data.SkillManagers)
                 {
-                    if (data.SkillsManager.IsActive)
+                    if (skillsManager != null && args.Item.Type == skillsManager.SkillProperties.UseItem)
                     {
-                        fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                        if (skillsManager.IsActive)
+                        {
+                            fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                        }
+                        else if (skillsManager.IsBurial)
+                        {
+                            fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{skillsManager.BurialRemainingTime})", 5));
+                        }
+                        else
+                        {
+                            skillsManager.Run();
+                        }
+                        args.IsAllowed = false;
                     }
-                    else if (data.SkillsManager.IsBurial)
-                    {
-                        fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{data.SkillsManager.BurialRemainingTime})", 5));
-                    }
-                    else
-                    {
-                        data.SkillsManager.Run(0);
-                    }
-                    args.IsAllowed = false;
                 }
+
             }
         }
         private void OnHurting(HurtingEventArgs args)
@@ -345,11 +352,15 @@ namespace YongAnFrame.Roles
 
         public override void AddRoleData(FramePlayer fPlayer)
         {
-            BaseData.Add(fPlayer, new T());
+            T properties = new T();
+            BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
-                SkillManager skillsManager = new(fPlayer, skill);
-                BaseData[fPlayer].SkillsManager = skillsManager;
+                properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
+                for (int i = 0; i < skill.SkillProperties.Length; i++)
+                {
+                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)(i + 1));
+                }
             }
         }
     }

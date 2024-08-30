@@ -9,6 +9,6 @@ namespace YongAnFrame.Roles.Interfaces
         /// </summary>
         /// <param name="yPlayer"></param>
         /// <returns>方法的音乐文件名称</returns>
-        string ActiveEnd(FramePlayer yPlayer);
+        string ActiveEnd(FramePlayer yPlayer,byte id);
     }
 }
