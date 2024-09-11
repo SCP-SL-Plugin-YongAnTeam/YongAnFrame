@@ -8,7 +8,7 @@ namespace YongAnFrame.Commands
     /// 未完成请勿乱用
     /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
-    public class SkillsCommand : CommandPlus
+    public sealed class SkillsCommand : CommandPlus
     {
         public override string Command => "skills";
 

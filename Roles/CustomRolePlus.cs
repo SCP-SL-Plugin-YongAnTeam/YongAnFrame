@@ -8,6 +8,7 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Features;
 using Exiled.Loader;
 using PlayerRoles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using YongAnFrame.Players;
@@ -80,8 +81,9 @@ namespace YongAnFrame.Roles
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
 
             base.AddRole(fPlayer.ExPlayer);
-            AddRoleData(fPlayer);
+            fPlayer.CustomRolePlus?.RemoveRole(fPlayer);
             fPlayer.CustomRolePlus = this;
+            AddRoleData(fPlayer);
 
             if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
             {
@@ -110,7 +112,7 @@ namespace YongAnFrame.Roles
                 properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)(i + 1));
+                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)i);
                 }
             }
         }
@@ -129,9 +131,8 @@ namespace YongAnFrame.Roles
             }
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
-            fPlayer.CustomRolePlus = null;
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.HintManager.RoleText.Clear();
+            fPlayer.CustomRolePlus = null;
             fPlayer.UpdateShowInfoList();
         }
         #region TrySpawn
@@ -143,7 +144,7 @@ namespace YongAnFrame.Roles
             {
                 limitCount = 0;
             }
-            if (spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount && fPlayer.CustomRolePlus == null)
+            if (spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
             {
                 limitCount++;
                 spawnCount++;
@@ -152,6 +153,7 @@ namespace YongAnFrame.Roles
             }
             return false;
         }
+        [Obsolete("旧算法遗留方法，不再进行兼容性维护")]
         public virtual bool TrySpawn(List<FramePlayer> noCustomRole, bool chanceRef = false)
         {
             if (noCustomRole == null || noCustomRole.Count == 0) { return false; }
@@ -178,7 +180,7 @@ namespace YongAnFrame.Roles
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (IStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
+            if (fPlayer.CustomRolePlus == null && IStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
                 switch (SpawnProperties.RefreshTeam)
                 {
@@ -200,26 +202,28 @@ namespace YongAnFrame.Roles
             FramePlayer fPlayer = args.Player.ToFPlayer();
             if (Check(fPlayer, out CustomRolePlusProperties data))
             {
-                foreach (var skillsManager in data.SkillManagers)
+                if (data.SkillManagers != null)
                 {
-                    if (skillsManager != null && args.Item.Type == skillsManager.SkillProperties.UseItem)
+                    foreach (var skillsManager in data.SkillManagers)
                     {
-                        if (skillsManager.IsActive)
+                        if (args.Item.Type == skillsManager.SkillProperties.UseItem)
                         {
-                            fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                            if (skillsManager.IsActive)
+                            {
+                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                            }
+                            else if (skillsManager.IsBurial)
+                            {
+                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{skillsManager.BurialRemainingTime})", 5));
+                            }
+                            else
+                            {
+                                skillsManager.Run();
+                            }
+                            args.IsAllowed = false;
                         }
-                        else if (skillsManager.IsBurial)
-                        {
-                            fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{skillsManager.BurialRemainingTime})", 5));
-                        }
-                        else
-                        {
-                            skillsManager.Run();
-                        }
-                        args.IsAllowed = false;
                     }
                 }
-
             }
         }
         private void OnHurting(HurtingEventArgs args)
@@ -330,10 +334,7 @@ namespace YongAnFrame.Roles
 
         protected override void ShowMessage(Player player)
         {
-            HintManager hintManager = player.ToFPlayer().HintManager;
-            hintManager.RoleText.Clear();
-            hintManager.RoleText.Add($"你是<b><color={NameColor}>{Name}</color></b>");
-            hintManager.RoleText.Add($"{Description}");
+            
         }
 
     }
@@ -352,14 +353,14 @@ namespace YongAnFrame.Roles
 
         public override void AddRoleData(FramePlayer fPlayer)
         {
-            T properties = new T();
+            T properties = new();
             BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
                 properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)(i + 1));
+                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)i);
                 }
             }
         }

@@ -1,13 +1,14 @@
 ﻿using MEC;
 using System.Collections.Generic;
 using System.Reflection;
+using YongAnFrame.Components;
 
 namespace YongAnFrame.Players
 {
     /// <summary>
     /// 提示系统管理器
     /// </summary>
-    public class HintManager
+    public sealed class HintManager
     {
         /// <summary>
         /// 拥有该实例的框架玩家
@@ -17,11 +18,9 @@ namespace YongAnFrame.Players
         private readonly CoroutineHandle coroutine;
 
 
-        public Text[] CustomText1 = new Text[10];
-        public Text[] CustomText2 = new Text[20];
-        public List<Text> RoleText { get; } = [];
-        public List<Text> MessageTexts { get; } = [];
-        public List<Text> ChatTexts { get; } = [];
+        public Text[] CustomText = new Text[20];
+        public CapacityList<Text> MessageTexts { get; } = new(7);
+        public CapacityList<Text> ChatTexts { get; } = new(6);
         public HintManager(FramePlayer player)
         {
             fPlayer = player;
@@ -37,25 +36,9 @@ namespace YongAnFrame.Players
                 int usedMex = text.Length - 1;
                 int used = 0;
                 text[used] = $"YongAnFrame 1.0.0-alpha6";
-                used++;
+                used = 1;
                 text[used] = "<align=left>";
-                used++;
-                foreach (string data in CustomText1)
-                {
-                    text[used] = data ?? string.Empty;
-                    used++;
-                }
-                used++;
 
-                if (ChatTexts.Count > 28 - used)
-                {
-                    for (int i = 0; i < ChatTexts.Count - (28 - used); i++)
-                    {
-                        ChatTexts.Remove(ChatTexts[i]);
-                    }
-                }
-
-                used = 22;
                 for (int i = 0; i < ChatTexts.Count; i++)
                 {
                     Text textData = ChatTexts[i];
@@ -71,15 +54,12 @@ namespace YongAnFrame.Players
                     }
                 }
 
-                used = 29;
-
-                if (usedMex - RoleText.Count < used + MessageTexts.Count + 1)
+                foreach (Text data in CustomText)
                 {
-                    for (int i = 0; i < usedMex - RoleText.Count - (used + MessageTexts.Count + 1); i++)
-                    {
-                        MessageTexts.Remove(MessageTexts[i]);
-                    }
+                    text[used] = data ?? string.Empty;
+                    used++;
                 }
+
 
                 for (int i = 0; i < MessageTexts.Count; i++)
                 {
@@ -94,22 +74,14 @@ namespace YongAnFrame.Players
                     }
                 }
 
-                used = usedMex - RoleText.Count;
                 text[used] += "</align>";
 
-                foreach (Text roleText in RoleText)
+                if (fPlayer.CustomRolePlus != null)
                 {
-                    text[used] += roleText;
-                    used++;
+                    text[34] = fPlayer.CustomRolePlus.Name;
+                    text[35] = fPlayer.CustomRolePlus.Description;
                 }
-
-                for (int i = 0; i < usedMex; i++)
-                {
-                    if (string.IsNullOrEmpty(text[i]))
-                    {
-                        text[i] = "<color=#00000000>占</color>";
-                    }
-                }
+                 
                 fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 2f);
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -142,20 +114,6 @@ namespace YongAnFrame.Players
             public static implicit operator Text(string text)
             {
                 return new Text(text, -1);
-            }
-        }
-        public struct Registry
-        {
-            public Assembly Assembly { get; }
-            public int StartLineNum { get; }
-            public int EndLineNum { get; }
-            public int LineNum => EndLineNum - StartLineNum + 1;
-
-            public Registry(Assembly assembly, int startLineNum, int endLineNum)
-            {
-                Assembly = assembly;
-                StartLineNum = startLineNum;
-                EndLineNum = endLineNum;
             }
         }
     }

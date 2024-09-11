@@ -2,7 +2,7 @@
 
 namespace YongAnFrame
 {
-    public class YongAnFrameConfig : IConfig
+    public sealed class YongAnFrameConfig : IConfig
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; }

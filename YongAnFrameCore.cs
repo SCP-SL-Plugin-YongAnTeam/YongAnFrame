@@ -6,7 +6,7 @@ using YongAnFrame.Roles;
 
 namespace YongAnFrame
 {
-    public class YongAnFramePlugin : Plugin<YongAnFrameConfig>
+    public sealed class YongAnFramePlugin : Plugin<YongAnFrameConfig>
     {
         private static YongAnFramePlugin instance;
         public static YongAnFramePlugin Instance => instance;

@@ -10,7 +10,7 @@ using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 
 namespace YongAnFrame.Roles
 {
-    public class MusicManager
+    public sealed class MusicManager
     {
         private static readonly MusicManager instance = new();
 

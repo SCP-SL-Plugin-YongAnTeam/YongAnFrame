@@ -7,12 +7,10 @@ using static YongAnFrame.Roles.MusicManager;
 
 namespace YongAnFrame.Roles
 {
-    public class SkillManager
+    public sealed class SkillManager(FramePlayer fPlayer, ISkill skill, byte Id)
     {
-        private readonly FramePlayer fPlayer;
 
-        private readonly ISkill skill;
-        public byte Id { get; }
+        public byte Id { get; } = Id;
         private ISkillActiveStart SkillActiveStart
         {
             get
@@ -61,13 +59,6 @@ namespace YongAnFrame.Roles
         public float BurialRemainingTime { get; private set; }
 
         private CoroutineHandle coroutineHandle;
-
-        public SkillManager(FramePlayer fPlayer, ISkill skill,byte Id)
-        {
-            this.fPlayer = fPlayer;
-            this.skill = skill;
-            this.Id = Id;
-        }
 
 
         /// <summary>

@@ -5,7 +5,7 @@ namespace YongAnFrame.Players
     /// <summary>
     /// 玩家称号
     /// </summary>
-    public class PlayerTitle
+    public sealed class PlayerTitle
     {
         public uint Id { get; set; }
         public string Name { get; set; }

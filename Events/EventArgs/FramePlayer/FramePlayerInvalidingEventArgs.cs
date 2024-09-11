@@ -5,7 +5,7 @@ namespace YongAnFrame.Events.EventArgs.FramePlayer
     /// <summary>
     /// FramePlayer被无效时的事件数据
     /// </summary>
-    public class FramePlayerInvalidatingEventArgs : IExiledEvent
+    public sealed class FramePlayerInvalidatingEventArgs : IExiledEvent
     {
         public Players.FramePlayer FPlayer { get; }
 

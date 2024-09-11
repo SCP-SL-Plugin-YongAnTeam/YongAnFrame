@@ -3,7 +3,7 @@ using YongAnFrame.Events.EventArgs.FramePlayer;
 
 namespace YongAnFrame.Events.Handlers
 {
-    public class FramePlayer
+    public sealed class FramePlayer
     {
         /// <summary>
         /// FramePlayer被创建时的事件

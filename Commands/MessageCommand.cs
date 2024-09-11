@@ -11,7 +11,7 @@ namespace YongAnFrame.Commands
     /// 发送消息指令
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class MessageCommand : CommandPlus
+    public sealed class MessageCommand : CommandPlus
     {
         public override string Command => "message";
 

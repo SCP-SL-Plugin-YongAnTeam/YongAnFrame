@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandPlus.cs" />
+    <Compile Include="Components\CapacityList.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerInvalidingEventArgs.cs" />
     <Compile Include="Players\PlayerTitle.cs" />
@@ -130,9 +131,7 @@
     <None Include="README.md" />
     <None Include="YongAnFrame.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

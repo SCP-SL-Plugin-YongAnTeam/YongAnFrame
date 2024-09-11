@@ -9,7 +9,7 @@ using YongAnFrame.Roles;
 
 namespace YongAnFrame.Players
 {
-    public class FramePlayer
+    public sealed class FramePlayer
     {
         private PlayerTitle usingTitles = null;
         private PlayerTitle usingRankTitles = null;
@@ -121,7 +121,7 @@ namespace YongAnFrame.Players
                 if (usingRankTitles.DynamicCommand != null)
                 {
                     Timing.KillCoroutines(coroutines[0]);
-                    coroutines[0] = Timing.RunCoroutine(DynamicProTitlesShow(CustomRolePlus.NameColor));
+                    coroutines[0] = Timing.RunCoroutine(DynamicRankTitlesShow());
                 }
                 else
                 {
@@ -173,9 +173,6 @@ namespace YongAnFrame.Players
                 if (CustomRolePlus != null)
                 {
                     ExPlayer.RankName = CustomRolePlus.Name;
-                }
-                if (CustomRolePlus != null)
-                {
                     ExPlayer.RankColor = CustomRolePlus.NameColor;
                 }
             }
@@ -183,15 +180,15 @@ namespace YongAnFrame.Players
             if (usingTitles == null) ExPlayer.CustomName = $"[LV:{Level}]{ExPlayer.Nickname}";
         }
 
-        private IEnumerator<float> DynamicProTitlesShow(string name = null)
+        private IEnumerator<float> DynamicRankTitlesShow()
         {
             while (true)
             {
                 foreach (var command in usingRankTitles.DynamicCommand)
                 {
-                    if (name != null)
+                    if (CustomRolePlus != null)
                     {
-                        ExPlayer.RankName = $"{name} *{command[0]}*";
+                        ExPlayer.RankName = $"{CustomRolePlus.Name} *{command[0]}*";
                     }
                     else
                     {
