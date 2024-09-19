@@ -6,17 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YongAnFrame.Players;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 
 namespace YongAnFrame.Roles
 {
+    /// <summary>
+    /// 一个通用的音频控制器
+    /// </summary>
     public sealed class MusicManager
     {
         private static readonly MusicManager instance = new();
 
         private int num = 1;
         public static MusicManager Instance => instance;
-        public Dictionary<string, ReferenceHub> MusicNpc { get; set; } = [];
+        /// <summary>
+        /// 放音频的玩家(NPC)
+        /// </summary>
+        public Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
         private MusicManager() { }
 
         internal void Init()
@@ -40,6 +47,10 @@ namespace YongAnFrame.Roles
             return hubNpc;
         }
 
+        /// <summary>
+        /// 立刻停止播放音频
+        /// </summary>
+        /// <param name="playerBase">AudioPlayerBase</param>
         public void Stop(AudioPlayerBase playerBase)
         {
             if (playerBase == null) return;
@@ -50,11 +61,42 @@ namespace YongAnFrame.Roles
             Player.Dictionary.Remove(npc.gameObject);
             UnityEngine.Object.Destroy(npc.gameObject);
         }
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, Player source, float distance, bool isSole = false, float volume = 80, bool isLoop = false)
+        /// <summary>
+        /// 播放音频
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName)
         {
-            return Play(musicFile, npcName, trackEvent, false, 80, false, source, distance);
+            return Play(musicFile, npcName, new TrackEvent(), null, 0, [], false, 80, false);
         }
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, bool isSole = false, float volume = 80, bool isLoop = false, Player source = null, float distance = 0)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="source">传播距离检测源头玩家</param>
+        /// <param name="distance">传播距离</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source, float distance)
+        {
+            return Play(musicFile, npcName, new TrackEvent(), source, distance, [], false, 80, false);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="trackEvent">播放事件</param>
+        /// <param name="source">传播距离检测源头玩家</param>
+        /// <param name="distance">传播距离</param>
+        /// <param name="extraPlay">额外可接收音频的玩家</param>
+        /// <param name="isSole">是否覆盖播放</param>
+        /// <param name="volume">音量大小</param>
+        /// <param name="isLoop">是否循环</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent,FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try
@@ -76,18 +118,18 @@ namespace YongAnFrame.Roles
                     }
                 }
 
-                if (distance > 0)
+                if (extraPlay != null)
                 {
-                    audioPlayerBase.AudioToPlay = [source.UserId];
+                    audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
                 }
-                else if (distance != 0)
+
+                if (distance != 0)
                 {
-                    List<string> playerListId = [];
-                    foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.Position) <= distance))
+                    audioPlayerBase.AudioToPlay ??= [];
+                    foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
                     {
-                        playerListId.Add(player.UserId);
+                        audioPlayerBase.AudioToPlay.Add(player.UserId);
                     }
-                    audioPlayerBase.AudioToPlay = playerListId;
                 }
 
                 audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);

@@ -7,10 +7,25 @@ namespace YongAnFrame.Players
     /// </summary>
     public sealed class PlayerTitle
     {
+        /// <summary>
+        /// 称号ID
+        /// </summary>
         public uint Id { get; set; }
+        /// <summary>
+        /// 称号名称
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 称号颜色
+        /// </summary>
         public string Color { get; set; }
+        /// <summary>
+        /// 是否为Rank
+        /// </summary>
         public bool IsRank { get; set; }
+        /// <summary>
+        /// 动态指令集
+        /// </summary>
         public List<string[]> DynamicCommand { get; set; }
 
         public PlayerTitle(uint id, string name, string color, bool isRank, string dynamicCommandString)
