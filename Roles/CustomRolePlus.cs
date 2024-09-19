@@ -21,13 +21,34 @@ namespace YongAnFrame.Roles
 {
     public abstract class CustomRolePlus : CustomRole
     {
+        /// <summary>
+        /// 不要修改这个值
+        /// </summary>
         public override bool IgnoreSpawnSystem { get; set; } = false;
+        /// <summary>
+        /// 生成属性
+        /// </summary>
         public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
-        public bool IStaetSpawn { get; set; } = true;
-        public Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
+        /// <summary>
+        /// 是否开启生成
+        /// </summary>
+        public bool IsStaetSpawn { get; set; } = true;
+        internal Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
+        /// <summary>
+        /// 更多属性
+        /// </summary>
         public virtual MoreProperties MoreProperties { get; set; } = new MoreProperties();
+        /// <summary>
+        /// 名字颜色
+        /// </summary>
         public abstract string NameColor { get; set; }
-        public Dictionary<uint, string> DeathText { get; } = [];
+        /// <summary>
+        /// 角色联动死亡文本表
+        /// </summary>
+        public Dictionary<uint, string> RoleDeathText { get; } = [];
+        /// <summary>
+        /// 生成前的目标角色
+        /// </summary>
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
         #region Static
@@ -65,15 +86,36 @@ namespace YongAnFrame.Roles
         }
         #endregion
 
+        /// <summary>
+        /// 检查玩家是否拥有该角色
+        /// </summary>
+        /// <param name="player">框架玩家</param>
+        /// <param name="data">返回的数据</param>
+        /// <returns></returns>
         public virtual bool Check(FramePlayer player, out CustomRolePlusProperties data)
         {
             return BaseData.TryGetValue(player, out data);
         }
+        /// <summary>
+        /// 检查玩家是否拥有该角色
+        /// </summary>
+        /// <param name="player">框架玩家</param>
+        public virtual bool Check(FramePlayer player)
+        {
+            return player.CustomRolePlus == this;
+        }
+        /// <summary>
+        /// 给玩家添加这个角色
+        /// </summary>
+        /// <param name="player">EX玩家</param>
         public override void AddRole(Player player)
         {
             AddRole(player.ToFPlayer());
         }
-
+        /// <summary>
+        /// 给玩家添加这个角色
+        /// </summary>
+        /// <param name="fPlayer">框架玩家</param>
         public virtual void AddRole(FramePlayer fPlayer)
         {
             if (Check(fPlayer.ExPlayer)) return;
@@ -103,7 +145,8 @@ namespace YongAnFrame.Roles
             }
             fPlayer.UpdateShowInfoList();
         }
-        public virtual void AddRoleData(FramePlayer fPlayer)
+
+        protected virtual void AddRoleData(FramePlayer fPlayer)
         {
             CustomRolePlusProperties properties = new();
             BaseData.Add(fPlayer, properties);
@@ -116,11 +159,18 @@ namespace YongAnFrame.Roles
                 }
             }
         }
+        /// <summary>
+        /// 给玩家移除这个角色
+        /// </summary>
+        /// <param name="player">EX玩家</param>
         public override void RemoveRole(Player player)
         {
             RemoveRole(player.ToFPlayer());
         }
-
+        /// <summary>
+        /// 给玩家移除这个角色
+        /// </summary>
+        /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
             if (!Check(fPlayer)) return;
@@ -135,9 +185,17 @@ namespace YongAnFrame.Roles
             fPlayer.CustomRolePlus = null;
             fPlayer.UpdateShowInfoList();
         }
+
         #region TrySpawn
         private uint limitCount = 0;
         private uint spawnCount = 0;
+
+        /// <summary>
+        /// 尝试给这个玩家生成这个角色
+        /// </summary>
+        /// <param name="fPlayer">框架玩家</param>
+        /// <param name="chanceRef">是否重置limitCount</param>
+        /// <returns></returns>
         public virtual bool TrySpawn(FramePlayer fPlayer, bool chanceRef = false)
         {
             if (chanceRef)
@@ -153,6 +211,7 @@ namespace YongAnFrame.Roles
             }
             return false;
         }
+
         [Obsolete("旧算法遗留方法，不再进行兼容性维护")]
         public virtual bool TrySpawn(List<FramePlayer> noCustomRole, bool chanceRef = false)
         {
@@ -180,7 +239,7 @@ namespace YongAnFrame.Roles
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (fPlayer.CustomRolePlus == null && IStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
+            if (fPlayer.CustomRolePlus == null && IsStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
                 switch (SpawnProperties.RefreshTeam)
                 {
@@ -281,7 +340,7 @@ namespace YongAnFrame.Roles
                     if (args.Attacker.GetCustomRoles().Count != 0)
                     {
                         CustomRole customRole = args.Attacker.GetCustomRoles()[0];
-                        if (DeathText.TryGetValue(customRole.Id, out string text))
+                        if (RoleDeathText.TryGetValue(customRole.Id, out string text))
                         {
                             Cassie.MessageTranslated($"Died", text.Replace("{Name}", Name).Replace("{Attacker}", customRole.Name));
                         }
@@ -340,6 +399,12 @@ namespace YongAnFrame.Roles
     }
     public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusProperties, new()
     {
+        /// <summary>
+        /// 检查玩家是否拥有该角色
+        /// </summary>
+        /// <param name="player">框架玩家</param>
+        /// <param name="data">返回的数据</param>
+        /// <returns></returns>
         public virtual bool Check(FramePlayer player, out T data)
         {
             if (BaseData.TryGetValue(player, out CustomRolePlusProperties baseData))
@@ -351,7 +416,7 @@ namespace YongAnFrame.Roles
             return false;
         }
 
-        public override void AddRoleData(FramePlayer fPlayer)
+        protected override void AddRoleData(FramePlayer fPlayer)
         {
             T properties = new();
             BaseData.Add(fPlayer, properties);

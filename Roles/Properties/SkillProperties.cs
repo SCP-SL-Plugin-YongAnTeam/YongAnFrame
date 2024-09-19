@@ -1,21 +1,30 @@
 ﻿namespace YongAnFrame.Roles.Properties
 {
-    public struct SkillProperties
+    public struct SkillProperties(string name, string statement, string description, float activeMaxTime, float burialMaxTime, ItemType useItem = ItemType.Coin)
     {
-        public SkillProperties(string name, string statement, string description, float activeMaxTime, float burialMaxTime, ItemType useItem = ItemType.Coin)
-        {
-            Name = name;
-            Statement = statement;
-            Description = description;
-            ActiveMaxTime = activeMaxTime;
-            BurialMaxTime = burialMaxTime;
-            UseItem = useItem;
-        }
-        public string Name { get; }
-        public ItemType UseItem { get; }
-        public string Statement { get; }
-        public string Description { get; }
-        public float ActiveMaxTime { get; }
-        public float BurialMaxTime { get; }
+        /// <summary>
+        /// 技能名称
+        /// </summary>
+        public string Name { get; } = name;
+        /// <summary>
+        /// 使用技能绑定的物品
+        /// </summary>
+        public ItemType UseItem { get; } = useItem;
+        /// <summary>
+        /// 发动技能描述
+        /// </summary>
+        public string Statement { get; } = statement;
+        /// <summary>
+        /// 技能介绍
+        /// </summary>
+        public string Description { get; } = description;
+        /// <summary>
+        /// 最大作用时间
+        /// </summary>
+        public float ActiveMaxTime { get; } = activeMaxTime;
+        /// <summary>
+        /// 最大冷却时间
+        /// </summary>
+        public float BurialMaxTime { get; } = burialMaxTime;
     }
 }
