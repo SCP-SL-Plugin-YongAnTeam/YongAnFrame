@@ -12,10 +12,25 @@ namespace YongAnFrame.Role.Properties
         /// 每次生成最多数量
         /// </summary>
         public int MaxCount { get; set; } = 1;
+        /// <summary>
+        /// 生成最少玩家
+        /// </summary>
         public int MinPlayer { get; set; } = 0;
+        /// <summary>
+        /// 生成最多玩家
+        /// </summary>
         public int MaxPlayer { get; set; } = 1000;
+        /// <summary>
+        /// 生成时播放音频文件
+        /// </summary>
         public string MusicFileName { get; set; } = null;
+        /// <summary>
+        /// 生成跟随的队伍
+        /// </summary>
         public RefreshTeamType RefreshTeam { get; set; } = RefreshTeamType.Start;
+        /// <summary>
+        /// 暂时弃用
+        /// </summary>
         public string Info { get; set; } = null;
         /// <summary>
         /// 角色生成数量限制

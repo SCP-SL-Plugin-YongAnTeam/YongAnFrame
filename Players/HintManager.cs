@@ -35,7 +35,7 @@ namespace YongAnFrame.Players
 
                 int usedMex = text.Length - 1;
                 int used = 0;
-                text[used] = $"YongAnFrame 1.0.0-alpha6";
+                text[used] = $"YongAnFrame 1.0.0-alpha7";
                 used = 1;
                 text[used] = "<align=left>";
 
