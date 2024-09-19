@@ -5,9 +5,13 @@ name: .NET
 
 on:
   push:
-    types: [created, deleted]
+    branches:
+      - master
+      - dev
   pull_request:
-    types: [created, deleted]
+    branches:
+      - master
+      - dev
 
 jobs:
   build:
