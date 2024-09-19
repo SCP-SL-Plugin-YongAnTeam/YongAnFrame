@@ -99,7 +99,7 @@ namespace YongAnFrame.Roles
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnProperties.MusicFileName))
             {
-                MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}", new MusicManager.TrackEvent());
+                MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}");
             }
             fPlayer.UpdateShowInfoList();
         }
