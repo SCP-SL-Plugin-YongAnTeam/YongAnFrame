@@ -17,7 +17,6 @@ namespace YongAnFrame.Players
 
         private readonly CoroutineHandle coroutine;
 
-
         public Text[] CustomText = new Text[20];
         public CapacityList<Text> MessageTexts { get; } = new(7);
         public CapacityList<Text> ChatTexts { get; } = new(6);
@@ -33,13 +32,18 @@ namespace YongAnFrame.Players
             {
                 string[] text = new string[36];
 
-                int usedMex = text.Length - 1;
                 int used = 0;
                 text[used] = $"YongAnFrame 1.0.0-alpha7";
+
+                if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
+                {
+                    text[used] = "[注意]已开启DoNotTrack(DNT)，游戏数据不会被保存，想保存数据请控制台输入pl BDNT查看详情";
+                }
+                
                 used = 1;
                 text[used] = "<align=left>";
 
-                for (int i = 0; i < ChatTexts.Count; i++)
+                for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
                     Text textData = ChatTexts[i];
 
@@ -61,7 +65,7 @@ namespace YongAnFrame.Players
                 }
 
 
-                for (int i = 0; i < MessageTexts.Count; i++)
+                for (int i = 0; i < MessageTexts.Capacity; i++)
                 {
                     Text messageText = MessageTexts[i];
                     text[used] = $"[{messageText.Duration}]{messageText}";
@@ -81,7 +85,13 @@ namespace YongAnFrame.Players
                     text[34] = fPlayer.CustomRolePlus.Name;
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
-                 
+
+                foreach (Text data in CustomText)
+                {
+                    text[used] = data ?? string.Empty;
+                    used++;
+                }
+
                 fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 2f);
                 yield return Timing.WaitForSeconds(1f);
             }

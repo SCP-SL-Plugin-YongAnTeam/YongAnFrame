@@ -39,7 +39,10 @@ namespace YongAnFrame.Players
         /// 玩家等级
         /// </summary>
         public ulong Level { get; set; }
-
+        /// <summary>
+        /// 玩家批准绕过DNT
+        /// </summary>
+        public bool IsBDNT { get; set; }
         /// <summary>
         /// 正在使用的名称称号
         /// </summary>

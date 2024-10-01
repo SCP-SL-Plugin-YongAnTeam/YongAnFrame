@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace YongAnFrame.Components
 {
-    public class CapacityList<T>(int capacity) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
+    public class CapacityList<T>(int capacity) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable 
     {
         private readonly List<T> list = new(capacity);
+
         public int Capacity { get; set; } = capacity;
 
         public int Count => list.Count;
@@ -19,8 +20,18 @@ namespace YongAnFrame.Components
 
         public T this[int index] 
         { 
-            get => list[index]; 
-            set => list[index] = value; 
+            get 
+            {
+                if (Count > index)
+                {
+                    return list[index];
+                }
+                return default;
+            }
+            set
+            {
+
+            }
         }
 
         public int IndexOf(T item)
