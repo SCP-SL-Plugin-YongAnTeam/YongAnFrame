@@ -80,6 +80,15 @@ namespace YongAnFrame.Roles
         #endregion
 
         /// <summary>
+        /// 获取这个角色所有自定义角色的属性
+        /// </summary>
+        /// <returns>获取的值</returns>
+        public virtual CustomRolePlusProperties[] GetAllProperties()
+        {
+            return [.. BaseData.Values];
+        }
+
+        /// <summary>
         /// 检查玩家是否拥有该角色
         /// </summary>
         /// <param name="player">框架玩家</param>
