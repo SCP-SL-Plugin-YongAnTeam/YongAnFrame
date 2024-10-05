@@ -67,10 +67,6 @@ namespace YongAnFrame.Roles
 
         private static void OnStaticRoundStarted()
         {
-            foreach (var item in Player.List)
-            {
-                Log.Debug(item);
-            }
             RespawnWave = 0;
         }
         private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)
@@ -125,8 +121,6 @@ namespace YongAnFrame.Roles
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
 
             base.AddRole(fPlayer.ExPlayer);
-            fPlayer.CustomRolePlus?.RemoveRole(fPlayer);
-            fPlayer.CustomRolePlus = this;
             AddRoleData(fPlayer);
 
             if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
@@ -175,7 +169,7 @@ namespace YongAnFrame.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(fPlayer)) return;
+            if (!Check(fPlayer) || fPlayer == null) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
             if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
             {
@@ -184,7 +178,6 @@ namespace YongAnFrame.Roles
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.CustomRolePlus = null;
             fPlayer.UpdateShowInfoList();
         }
 

@@ -1,4 +1,5 @@
-﻿using MEC;
+﻿using Exiled.API.Features;
+using MEC;
 using System.Collections.Generic;
 using System.Reflection;
 using YongAnFrame.Components;
@@ -45,16 +46,18 @@ namespace YongAnFrame.Players
 
                 for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
-                    Text textData = ChatTexts[i];
-
-                    text[used] += textData;
-                    used++;
-
-                    textData.Duration--;
-                    if (textData.Duration <= 0)
+                    Text chatText = ChatTexts[i];
+                    if(chatText != null)
                     {
-                        ChatTexts.Remove(textData);
-                        i--;
+                        text[used] += chatText;
+                        used++;
+                        chatText.Duration--;
+
+                        if (chatText.Duration <= 0)
+                        {
+                            ChatTexts.Remove(chatText);
+                            i--;
+                        }
                     }
                 }
 
@@ -64,32 +67,28 @@ namespace YongAnFrame.Players
                     used++;
                 }
 
-
                 for (int i = 0; i < MessageTexts.Capacity; i++)
                 {
                     Text messageText = MessageTexts[i];
-                    text[used] = $"[{messageText.Duration}]{messageText}";
-
-                    messageText.Duration--;
-                    if (messageText.Duration <= 0)
+                    if (messageText != null)
                     {
-                        MessageTexts.Remove(messageText);
-                        i--;
+                        text[used] = $"[{messageText.Duration}]{messageText}";
+
+                        messageText.Duration--;
+                        if (messageText.Duration <= 0)
+                        {
+                            MessageTexts.Remove(messageText);
+                            i--;
+                        }
+
                     }
                 }
-
                 text[used] += "</align>";
 
                 if (fPlayer.CustomRolePlus != null)
                 {
                     text[34] = fPlayer.CustomRolePlus.Name;
                     text[35] = fPlayer.CustomRolePlus.Description;
-                }
-
-                foreach (Text data in CustomText)
-                {
-                    text[used] = data ?? string.Empty;
-                    used++;
                 }
 
                 fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 2f);
