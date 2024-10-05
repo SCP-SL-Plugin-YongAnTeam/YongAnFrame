@@ -1,18 +1,16 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: YongAnFrame Master CI
 
 on:
   push:
     branches:
       - master
-      - dev
   pull_request:
     branches:
       - master
-      - dev
-
+  workflow_dispatch:
 jobs:
   build:
     runs-on: windows-latest
