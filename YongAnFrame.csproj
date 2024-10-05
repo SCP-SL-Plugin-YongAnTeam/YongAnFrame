@@ -41,6 +41,7 @@
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EXILEDOFFICIAL.8.11.0\lib\net48\CommandSystem.Core.dll</HintPath>
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandPlus.cs" />
+    <Compile Include="Commands\PlayerCommand.cs" />
     <Compile Include="Components\CapacityList.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerInvalidingEventArgs.cs" />
