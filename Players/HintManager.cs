@@ -50,7 +50,6 @@ namespace YongAnFrame.Players
                     if(chatText != null)
                     {
                         text[used] += chatText;
-                        used++;
                         chatText.Duration--;
 
                         if (chatText.Duration <= 0)
@@ -59,6 +58,11 @@ namespace YongAnFrame.Players
                             i--;
                         }
                     }
+                    else
+                    {
+                        text[used] += string.Empty;
+                    }
+                    used++;
                 }
 
                 foreach (Text data in CustomText)
@@ -73,15 +77,18 @@ namespace YongAnFrame.Players
                     if (messageText != null)
                     {
                         text[used] = $"[{messageText.Duration}]{messageText}";
-
                         messageText.Duration--;
                         if (messageText.Duration <= 0)
                         {
                             MessageTexts.Remove(messageText);
                             i--;
                         }
-
                     }
+                    else
+                    {
+                        text[used] += string.Empty;
+                    }
+                    used++;
                 }
                 text[used] += "</align>";
 
