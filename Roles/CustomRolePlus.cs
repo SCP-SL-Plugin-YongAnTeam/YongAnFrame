@@ -52,32 +52,21 @@ namespace YongAnFrame.Roles
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
         #region Static
-        public static int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
+
         public static int RespawnWave { get; private set; } = 0;
         public static void SubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnStaticRoundStarted);
             Exiled.Events.Handlers.Server.RespawningTeam += new CustomEventHandler<RespawningTeamEventArgs>(OnStaticRespawningTeam);
-            Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnStaticRestartingRound);
         }
         public static void UnsubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= new CustomEventHandler(OnStaticRoundStarted);
             Exiled.Events.Handlers.Server.RespawningTeam -= new CustomEventHandler<RespawningTeamEventArgs>(OnStaticRespawningTeam);
-            Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnStaticRestartingRound);
-        }
-
-        private static void OnStaticRestartingRound()
-        {
-            SpawnChanceNum = Loader.Random.StrictNext(1, 101);
         }
 
         private static void OnStaticRoundStarted()
         {
-            foreach (var item in Player.List)
-            {
-                Log.Debug(item);
-            }
             RespawnWave = 0;
         }
         private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)
@@ -85,6 +74,15 @@ namespace YongAnFrame.Roles
             RespawnWave++;
         }
         #endregion
+
+        /// <summary>
+        /// 获取这个角色所有自定义角色的属性
+        /// </summary>
+        /// <returns>获取的值</returns>
+        public virtual CustomRolePlusProperties[] GetAllProperties()
+        {
+            return [.. BaseData.Values];
+        }
 
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -118,13 +116,11 @@ namespace YongAnFrame.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void AddRole(FramePlayer fPlayer)
         {
-            if (Check(fPlayer.ExPlayer)) return;
+            if (Check(fPlayer)) return;
 
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
 
             base.AddRole(fPlayer.ExPlayer);
-            fPlayer.CustomRolePlus?.RemoveRole(fPlayer);
-            fPlayer.CustomRolePlus = this;
             AddRoleData(fPlayer);
 
             if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
@@ -173,7 +169,7 @@ namespace YongAnFrame.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(fPlayer)) return;
+            if (!Check(fPlayer) || fPlayer == null) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
             if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
             {
@@ -182,7 +178,6 @@ namespace YongAnFrame.Roles
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.CustomRolePlus = null;
             fPlayer.UpdateShowInfoList();
         }
 
@@ -202,7 +197,7 @@ namespace YongAnFrame.Roles
             {
                 limitCount = 0;
             }
-            if (spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
+            if (fPlayer.CustomRolePlus == null && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
             {
                 limitCount++;
                 spawnCount++;
@@ -234,12 +229,18 @@ namespace YongAnFrame.Roles
         //        TrySpawn(NoCustomRole.FindAll((p) => OldRole == RoleTypeId.None && Role == p.ExPlayer.Role.Type || p.ExPlayer.Role.Type == OldRole));
         //    }
         //}
+        public int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
+
+        private void OnStaticRestartingRound()
+        {
+            SpawnChanceNum = Loader.Random.StrictNext(1, 101);
+        }
 
 
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (fPlayer.CustomRolePlus == null && IsStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
+            if (IsStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
                 switch (SpawnProperties.RefreshTeam)
                 {
@@ -366,6 +367,7 @@ namespace YongAnFrame.Roles
             Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem += new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
             Exiled.Events.Handlers.Player.Dying += new CustomEventHandler<DyingEventArgs>(OnDying);
+            Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnStaticRestartingRound);
             base.SubscribeEvents();
 
             if (this is ISkill skill)
@@ -380,8 +382,9 @@ namespace YongAnFrame.Roles
             Exiled.Events.Handlers.Player.Hurting -= new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem -= new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
-            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
+            Exiled.Events.Handlers.Player.Spawning -= new CustomEventHandler<SpawningEventArgs>(OnSpawning);
             Exiled.Events.Handlers.Player.Dying -= new CustomEventHandler<DyingEventArgs>(OnDying);
+            Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnStaticRestartingRound);
             base.UnsubscribeEvents();
 
             if (this is ISkill skill)

@@ -1,4 +1,5 @@
-﻿using MEC;
+﻿using Exiled.API.Features;
+using MEC;
 using System.Collections.Generic;
 using System.Reflection;
 using YongAnFrame.Components;
@@ -17,7 +18,6 @@ namespace YongAnFrame.Players
 
         private readonly CoroutineHandle coroutine;
 
-
         public Text[] CustomText = new Text[20];
         public CapacityList<Text> MessageTexts { get; } = new(7);
         public CapacityList<Text> ChatTexts { get; } = new(6);
@@ -33,25 +33,36 @@ namespace YongAnFrame.Players
             {
                 string[] text = new string[36];
 
-                int usedMex = text.Length - 1;
                 int used = 0;
                 text[used] = $"YongAnFrame 1.0.0-alpha7";
+
+                if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
+                {
+                    text[used] = "[注意]已开启DoNotTrack(DNT)，游戏数据不会被保存，想保存数据请控制台输入pl BDNT查看详情";
+                }
+                
                 used = 1;
                 text[used] = "<align=left>";
 
-                for (int i = 0; i < ChatTexts.Count; i++)
+                for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
-                    Text textData = ChatTexts[i];
-
-                    text[used] += textData;
-                    used++;
-
-                    textData.Duration--;
-                    if (textData.Duration <= 0)
+                    Text chatText = ChatTexts[i];
+                    if(chatText != null)
                     {
-                        ChatTexts.Remove(textData);
-                        i--;
+                        text[used] += chatText;
+                        chatText.Duration--;
+
+                        if (chatText.Duration <= 0)
+                        {
+                            ChatTexts.Remove(chatText);
+                            i--;
+                        }
                     }
+                    else
+                    {
+                        text[used] = string.Empty;
+                    }
+                    used++;
                 }
 
                 foreach (Text data in CustomText)
@@ -60,20 +71,26 @@ namespace YongAnFrame.Players
                     used++;
                 }
 
-
-                for (int i = 0; i < MessageTexts.Count; i++)
+                for (int i = 0; i < MessageTexts.Capacity; i++)
                 {
                     Text messageText = MessageTexts[i];
-                    text[used] = $"[{messageText.Duration}]{messageText}";
-
-                    messageText.Duration--;
-                    if (messageText.Duration <= 0)
+                    if (messageText != null)
                     {
-                        MessageTexts.Remove(messageText);
-                        i--;
-                    }
-                }
+                        text[used] = $"[{messageText.Duration}]{messageText}";
 
+                        messageText.Duration--;
+                        if (messageText.Duration <= 0)
+                        {
+                            MessageTexts.Remove(messageText);
+                            i--;
+                        }
+                    }
+                    else
+                    {
+                        text[used] = string.Empty;
+                    }
+                    used++;
+                }
                 text[used] += "</align>";
 
                 if (fPlayer.CustomRolePlus != null)
@@ -81,7 +98,7 @@ namespace YongAnFrame.Players
                     text[34] = fPlayer.CustomRolePlus.Name;
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
-                 
+
                 fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 2f);
                 yield return Timing.WaitForSeconds(1f);
             }

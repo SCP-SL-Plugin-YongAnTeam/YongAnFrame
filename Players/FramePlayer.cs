@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.CustomRoles.API;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Features;
 using MEC;
@@ -30,7 +31,16 @@ namespace YongAnFrame.Players
         /// <summary>
         /// 实例拥有的自定义角色
         /// </summary>
-        public CustomRolePlus CustomRolePlus { get; internal set; }
+        public CustomRolePlus CustomRolePlus {
+            get
+            {
+                if (ExPlayer.GetCustomRoles().Count != 0)
+                {
+                    return (CustomRolePlus)ExPlayer.GetCustomRoles()[0];
+                }
+                return null;
+            }
+        }
         /// <summary>
         /// 提示系统管理器
         /// </summary>
@@ -39,7 +49,10 @@ namespace YongAnFrame.Players
         /// 玩家等级
         /// </summary>
         public ulong Level { get; set; }
-
+        /// <summary>
+        /// 玩家批准绕过DNT
+        /// </summary>
+        public bool IsBDNT { get; set; }
         /// <summary>
         /// 正在使用的名称称号
         /// </summary>
@@ -72,7 +85,8 @@ namespace YongAnFrame.Players
         }
         private static void OnStaticDestroying(DestroyingEventArgs args)
         {
-            args.Player.ToFPlayer().Invalid();
+            FramePlayer fPlayer = args.Player.ToFPlayer();
+            fPlayer.Invalid();
         }
         //private static void OnStaticWaitingForPlayers()
         //{
@@ -174,6 +188,11 @@ namespace YongAnFrame.Players
                 {
                     ExPlayer.RankName = CustomRolePlus.Name;
                     ExPlayer.RankColor = CustomRolePlus.NameColor;
+                }
+                else
+                {
+                    ExPlayer.RankName = string.Empty;
+                    ExPlayer.RankColor = string.Empty;
                 }
             }
 
