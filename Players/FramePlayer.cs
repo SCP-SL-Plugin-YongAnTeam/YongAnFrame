@@ -60,7 +60,7 @@ namespace YongAnFrame.Players
         /// <summary>
         /// 玩家经验
         /// </summary>
-        public ulong Exp { get; private set; }
+        public ulong Exp { get; set; }
         /// <summary>
         /// 玩家经验倍率
         /// </summary>
