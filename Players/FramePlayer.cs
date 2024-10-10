@@ -3,14 +3,15 @@ using Exiled.CustomRoles.API;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Features;
 using MEC;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using YongAnFrame.Events.EventArgs.FramePlayer;
 using YongAnFrame.Roles;
+using static YongAnFrame.Players.HintManager;
 
 namespace YongAnFrame.Players
 {
-    public sealed class FramePlayer
+    public sealed class FramePlayer : ICustomAlgorithm
     {
         private PlayerTitle usingTitles = null;
         private PlayerTitle usingRankTitles = null;
@@ -31,7 +32,8 @@ namespace YongAnFrame.Players
         /// <summary>
         /// 实例拥有的自定义角色
         /// </summary>
-        public CustomRolePlus CustomRolePlus {
+        public CustomRolePlus CustomRolePlus
+        {
             get
             {
                 if (ExPlayer.GetCustomRoles().Count != 0)
@@ -45,10 +47,24 @@ namespace YongAnFrame.Players
         /// 提示系统管理器
         /// </summary>
         public HintManager HintManager { get; private set; }
+
+        /// <summary>
+        /// 正在使用的主要自定义算法
+        /// </summary>
+        public ICustomAlgorithm CustomAlgorithm { get; set; }
+
         /// <summary>
         /// 玩家等级
         /// </summary>
         public ulong Level { get; set; }
+        /// <summary>
+        /// 玩家经验
+        /// </summary>
+        public ulong Exp { get; private set; }
+        /// <summary>
+        /// 玩家经验倍率
+        /// </summary>
+        public float ExpMultiplier { get; set; }
         /// <summary>
         /// 玩家批准绕过DNT
         /// </summary>
@@ -104,8 +120,35 @@ namespace YongAnFrame.Players
             ExPlayer = player;
             HintManager = new HintManager(this);
             dictionary.Add(ExPlayer.Id, this);
+            CustomAlgorithm = this;
             Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
         }
+
+        public void AddExp(ulong exp, string name = "未知原因")
+        {
+            float globalExpMultiplier = YongAnFramePlugin.Instance.Config.GlobalExpMultiplier;
+            float expMultiplier = ExpMultiplier * globalExpMultiplier;
+            ulong addExp = (ulong)(exp * expMultiplier);
+
+            Exp += addExp;
+            HintManager.MessageTexts.Add(new Text($"{name}，获得{exp}+{addExp - exp}经验({expMultiplier}倍经验)", 5));
+
+            ulong needExp = CustomAlgorithm.GetNeedUpLevel(Level);
+            ulong oldLevel = Level;
+            while (Exp >= needExp)
+            {
+                Log.Debug($"{Exp}/{needExp}");
+                Level++;
+                Exp -= needExp;
+                needExp = CustomAlgorithm.GetNeedUpLevel(Level);
+            }
+            if (oldLevel < Level)
+            {
+                UpdateShowInfoList();
+                HintManager.MessageTexts.Add(new Text($"恭喜你从{oldLevel}级到达{Level}级,距离下一级需要{Exp}/{needExp}经验", 8));
+            }
+        }
+
 
         #region ShowRank
 
@@ -235,6 +278,11 @@ namespace YongAnFrame.Players
             }
         }
         #endregion
+
+        public ulong GetNeedUpLevel(ulong level)
+        {
+            return (ulong)(100 + Math.Floor(level / 10f) * 100);
+        }
 
         /// <summary>
         /// 获取框架玩家

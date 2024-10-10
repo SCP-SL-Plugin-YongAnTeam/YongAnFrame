@@ -103,6 +103,7 @@
     <Compile Include="Components\CapacityList.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerInvalidingEventArgs.cs" />
+    <Compile Include="Players\ICustomAlgorithm.cs" />
     <Compile Include="Players\PlayerTitle.cs" />
     <Compile Include="Players\CustomPlayer.cs" />
     <Compile Include="Events\Handlers\FramePlayer.cs" />

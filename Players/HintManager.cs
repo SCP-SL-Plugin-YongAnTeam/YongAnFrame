@@ -1,7 +1,5 @@
-﻿using Exiled.API.Features;
-using MEC;
+﻿using MEC;
 using System.Collections.Generic;
-using System.Reflection;
 using YongAnFrame.Components;
 
 namespace YongAnFrame.Players
@@ -31,6 +29,7 @@ namespace YongAnFrame.Players
         {
             while (true)
             {
+                Events.Handlers.FramePlayer.OnFramerHintUpdate();
                 string[] text = new string[36];
 
                 int used = 0;
@@ -40,14 +39,14 @@ namespace YongAnFrame.Players
                 {
                     text[used] = "[注意]已开启DoNotTrack(DNT)，游戏数据不会被保存，想保存数据请控制台输入pl BDNT查看详情";
                 }
-                
+
                 used = 1;
                 text[used] = "<align=left>";
 
                 for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
                     Text chatText = ChatTexts[i];
-                    if(chatText != null)
+                    if (chatText != null)
                     {
                         text[used] += chatText;
                         chatText.Duration--;
@@ -109,16 +108,10 @@ namespace YongAnFrame.Players
             Timing.KillCoroutines(coroutine);
         }
 
-        public class Text
+        public class Text(string text, float duration, int size = 0)
         {
-            public string Content { get; private set; }
-            public float Duration { get; internal set; }
-
-            public Text(string text, float duration, int size = 0)
-            {
-                Content = text;
-                Duration = duration;
-            }
+            public string Content { get; private set; } = text;
+            public float Duration { get; internal set; } = duration;
 
             public override string ToString()
             {
