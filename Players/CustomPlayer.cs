@@ -11,6 +11,11 @@
         public PlayerTitle UsingTitles { get { return FramePlayer.UsingTitles; } set { FramePlayer.UsingTitles = value; } }
         public PlayerTitle UsingRankTitles { get { return FramePlayer.UsingRankTitles; } set { FramePlayer.UsingRankTitles = value; } }
 
+        public void AddExp(ulong exp, string name = "未知原因")
+        {
+            FramePlayer.AddExp(exp, name);
+        }
+
         public virtual void Invalid()
         {
             FramePlayer = null;
