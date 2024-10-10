@@ -1,10 +1,4 @@
-﻿using Exiled.API.Features;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace YongAnFrame.Components
 {
@@ -16,9 +10,9 @@ namespace YongAnFrame.Components
 
         public int Count => list.Count;
 
-        public T this[int index] 
-        { 
-            get 
+        public T this[int index]
+        {
+            get
             {
                 if (Count > index)
                 {

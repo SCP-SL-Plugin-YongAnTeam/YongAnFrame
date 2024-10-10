@@ -10,7 +10,6 @@ using Exiled.Loader;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using YongAnFrame.Players;
 using YongAnFrame.Role.Properties;
 using YongAnFrame.Roles.Enums;
@@ -396,7 +395,7 @@ namespace YongAnFrame.Roles
 
         protected override void ShowMessage(Player player)
         {
-            
+
         }
 
     }

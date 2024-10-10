@@ -96,7 +96,7 @@ namespace YongAnFrame.Roles
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent,FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try
@@ -144,13 +144,9 @@ namespace YongAnFrame.Roles
             return audioPlayerBase;
         }
 
-        public readonly struct TrackEvent
+        public readonly struct TrackEvent(TrackLoaded trackLoaded)
         {
-            public TrackEvent(TrackLoaded trackLoaded)
-            {
-                TrackLoaded = trackLoaded;
-            }
-            public TrackLoaded TrackLoaded { get; }
+            public TrackLoaded TrackLoaded { get; } = trackLoaded;
         }
     }
 }

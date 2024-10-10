@@ -8,15 +8,15 @@ namespace YongAnFrame.Commands
     /// 未完成请勿乱用
     /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
-    public sealed class SkillsCommand : CommandPlus
+    public sealed class SkillsCommand : ICommand
     {
-        public override string Command => "skills";
+        public string Command => "skills";
 
-        public override string[] Aliases => ["sk"];
+        public string[] Aliases => ["sk"];
 
-        public override string Description => "skills";
+        public string Description => "skills";
 
-        public override bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "NO";
 

@@ -11,15 +11,15 @@ namespace YongAnFrame.Commands
     /// 发送消息指令
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public sealed class MessageCommand : CommandPlus
+    public sealed class MessageCommand : ICommand
     {
-        public override string Command => "message";
+        public string Command => "message";
 
-        public override string[] Aliases => ["mes", "msg"];
+        public string[] Aliases => ["mes", "msg"];
 
-        public override string Description => "用于发送消息";
+        public string Description => "用于发送消息";
 
-        public override bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             List<FramePlayer> choicePlayer = [];
             if (arguments.Count < 3)

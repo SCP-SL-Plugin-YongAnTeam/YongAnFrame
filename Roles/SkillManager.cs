@@ -99,7 +99,7 @@ namespace YongAnFrame.Roles
                 BurialRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicFileName = SkillBurialEnd?.BurialEnd(fPlayer,Id);
+            musicFileName = SkillBurialEnd?.BurialEnd(fPlayer, Id);
             if (musicFileName != null) Instance.Play(musicFileName, $"技能准备好语音", fPlayer, 10);
         }
     }
