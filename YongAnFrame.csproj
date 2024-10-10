@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandPlus.cs" />
+    <Compile Include="Commands\ExpCommand.cs" />
     <Compile Include="Commands\PlayerCommand.cs" />
     <Compile Include="Components\CapacityList.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
