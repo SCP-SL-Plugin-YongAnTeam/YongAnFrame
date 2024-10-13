@@ -1,10 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YongAnFrame.Players;
 
 namespace YongAnFrame.Commands
@@ -30,14 +26,11 @@ namespace YongAnFrame.Commands
                         {
                             FramePlayer fPlayer = FramePlayer.Get(player);
                             fPlayer.HintManager.Clean();
-                            string[] text = new string[36];
-
-                            fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 10000f);
+                            fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Config.BypassDoNotTrackText.Split('\n')}</size>", 10000f);
                         }
-                        
                         return true;
                 }
-                
+
             }
             return false;
         }
