@@ -124,6 +124,11 @@ namespace YongAnFrame.Players
             Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
         }
 
+        /// <summary>
+        /// 添加经验
+        /// </summary>
+        /// <param name="exp">数值</param>
+        /// <param name="name">原因</param>
         public void AddExp(ulong exp, string name = "未知原因")
         {
             float globalExpMultiplier = YongAnFramePlugin.Instance.Config.GlobalExpMultiplier;
