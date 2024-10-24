@@ -39,15 +39,12 @@ namespace YongAnFrame
 
         public static RefreshTeamType ToRefreshTeamType(this SpawnableTeamType stp)
         {
-            switch (stp)
+            return stp switch
             {
-                case SpawnableTeamType.ChaosInsurgency:
-                    return RefreshTeamType.CI;
-                case SpawnableTeamType.NineTailedFox:
-                    return RefreshTeamType.MTF;
-                default:
-                    return RefreshTeamType.Start;
-            }
+                SpawnableTeamType.ChaosInsurgency => RefreshTeamType.CI,
+                SpawnableTeamType.NineTailedFox => RefreshTeamType.MTF,
+                _ => RefreshTeamType.Start,
+            };
         }
     }
 }
