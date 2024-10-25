@@ -5,9 +5,10 @@
     <version>1.0.0-beta2</version>
     <title>$title$</title>
     <authors>$author$</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">LGPL-2.1-only</license>
     <!-- <icon>icon.png</icon> -->
+	<readme>docs\README.md</readme>
     <projectUrl>https://github.com/YongAn404/YongAnFrame</projectUrl>
     <description>$description$</description>
     <releaseNotes>$version$</releaseNotes>
@@ -15,6 +16,7 @@
     <tags>EXILED SCPSL</tags>
   </metadata>
   <files>
+	<file src="README.md" target="docs\" />
     <file src="lib\net48\SCPSLAudioApi.dll" target="lib/net48/SCPSLAudioApi.dll" />
   </files>
 </package>
