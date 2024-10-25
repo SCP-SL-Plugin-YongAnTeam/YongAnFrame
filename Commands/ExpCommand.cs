@@ -10,7 +10,7 @@ namespace BAPlugin.Command
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExpCommand : ICommand
     {
-        public string Command => "experience";
+        public string Command => "pexperience";
 
         public string[] Aliases => ["pexp"];
 
