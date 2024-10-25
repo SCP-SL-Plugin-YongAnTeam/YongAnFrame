@@ -135,9 +135,6 @@
     <None Include="README.md" />
     <None Include="YongAnFrame.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="nuget.exe" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
