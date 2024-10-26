@@ -159,7 +159,7 @@ namespace YongAnFrame.Players
 
         private readonly CoroutineHandle[] coroutines = new CoroutineHandle[2];
 
-        internal void UpdateShowInfoList()
+        public void UpdateShowInfoList()
         {
             if (ExPlayer.IsNPC) return;
 

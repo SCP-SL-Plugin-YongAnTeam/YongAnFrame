@@ -55,10 +55,10 @@ namespace YongAnFrame.Players
         /// </summary>
         /// <param name="exp">数值</param>
         /// <param name="name">原因</param>
-        public void AddExp(ulong exp, string name = "未知原因")
-        {
-            FramePlayer.AddExp(exp, name);
-        }
+        public void AddExp(ulong exp, string name = "未知原因") => FramePlayer.AddExp(exp, name);
+
+        public void UpdateShowInfoList() => FramePlayer.UpdateShowInfoList();
+
         /// <summary>
         /// 调用后该实例会立刻无效<br/>
         /// 调用后该实例会立刻无效<br/>
