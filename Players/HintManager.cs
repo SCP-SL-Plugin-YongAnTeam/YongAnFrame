@@ -29,6 +29,7 @@ namespace YongAnFrame.Players
         {
             while (true)
             {
+                CustomText = new Text[20];
                 Events.Handlers.FramePlayer.OnFramerHintUpdate();
                 string[] text = new string[36];
 
@@ -59,14 +60,14 @@ namespace YongAnFrame.Players
                     }
                     else
                     {
-                        text[used] = string.Empty;
+                        text[used] += Text.Empty;
                     }
                     used++;
                 }
 
                 foreach (Text data in CustomText)
                 {
-                    text[used] = data ?? string.Empty;
+                    text[used] += data ?? Text.Empty;
                     used++;
                 }
 
@@ -86,15 +87,15 @@ namespace YongAnFrame.Players
                     }
                     else
                     {
-                        text[used] = string.Empty;
+                        text[used] += Text.Empty;
                     }
                     used++;
                 }
-                text[used] += "</align>";
+                text[34] = "</align>";
 
                 if (fPlayer.CustomRolePlus != null)
                 {
-                    text[34] = fPlayer.CustomRolePlus.Name;
+                    text[34] += fPlayer.CustomRolePlus.Name;
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
 
@@ -108,10 +109,12 @@ namespace YongAnFrame.Players
             Timing.KillCoroutines(coroutine);
         }
 
-        public class Text(string text, float duration, int size = 0)
+        public class Text(string text, float duration)
         {
             public string Content { get; private set; } = text;
             public float Duration { get; internal set; } = duration;
+
+            public static string Empty => "<color=#00000000>占</color>";
 
             public override string ToString()
             {

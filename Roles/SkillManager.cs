@@ -12,11 +12,10 @@ namespace YongAnFrame.Roles
     /// </summary>
     /// <param name="fPlayer"></param>
     /// <param name="skill"></param>
-    /// <param name="Id"></param>
-    public sealed class SkillManager(FramePlayer fPlayer, ISkill skill, byte Id)
+    /// <param name="id"></param>
+    public sealed class SkillManager(FramePlayer fPlayer, ISkill skill, byte id)
     {
-
-        public byte Id { get; } = Id;
+        public byte Id { get; } = id;
         private ISkillActiveStart SkillActiveStart
         {
             get

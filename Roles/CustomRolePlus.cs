@@ -160,7 +160,11 @@ namespace YongAnFrame.Roles
         /// <param name="player">EX玩家</param>
         public override void RemoveRole(Player player)
         {
-            RemoveRole(player.ToFPlayer());
+            FramePlayer fPlayer = player.ToFPlayer();
+            if (fPlayer != null)
+            {
+                RemoveRole(player.ToFPlayer());
+            }
         }
         /// <summary>
         /// 给玩家移除这个角色
@@ -168,7 +172,7 @@ namespace YongAnFrame.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(fPlayer) || fPlayer == null) return;
+            if (!Check(fPlayer)) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
             if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
             {

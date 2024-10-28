@@ -118,10 +118,11 @@ namespace YongAnFrame.Players
         internal FramePlayer(Player player)
         {
             ExPlayer = player;
-            HintManager = new HintManager(this);
             dictionary.Add(ExPlayer.Id, this);
+            HintManager = new HintManager(this);
             CustomAlgorithm = this;
             Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
+            UpdateShowInfoList();
         }
 
         /// <summary>
@@ -234,7 +235,7 @@ namespace YongAnFrame.Players
             {
                 if (CustomRolePlus != null)
                 {
-                    ExPlayer.RankName = CustomRolePlus.Name;
+                    ExPlayer.RankName = $"<color=\"{CustomRolePlus.NameColor}\">" + CustomRolePlus.Name + "</color>";
                     ExPlayer.RankColor = CustomRolePlus.NameColor;
                 }
                 else
@@ -320,6 +321,7 @@ namespace YongAnFrame.Players
         public void Invalid()
         {
             Events.Handlers.FramePlayer.OnFramePlayerInvalidating(new FramePlayerInvalidatingEventArgs(this));
+            CustomRolePlus?.RemoveRole(this);
             dictionary.Remove(ExPlayer.Id);
             HintManager?.Clean();
             ExPlayer = null;
