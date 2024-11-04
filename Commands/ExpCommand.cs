@@ -5,7 +5,7 @@ using System;
 using YongAnFrame;
 using YongAnFrame.Commands;
 
-namespace BAPlugin.Command
+namespace YongAnFrame.Command
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExpCommand : ICommand

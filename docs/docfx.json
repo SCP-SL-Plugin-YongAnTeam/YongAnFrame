@@ -32,7 +32,8 @@
         "files": [
           "api/**.yml",
           "api/index.md",
-          "toc.yml"
+          "toc.yml",
+          "*.md"
         ]
       }
     ],
