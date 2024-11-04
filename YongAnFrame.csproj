@@ -133,8 +133,10 @@
   <ItemGroup>
     <None Include=".github\workflows\dev.yml" />
     <None Include=".github\workflows\master.yml" />
-    <None Include=".github\workflows\static.yml" />
+    <None Include=".github\workflows\docs.yml" />
     <None Include="app.config" />
+    <None Include="docs\docfx.json" />
+    <None Include="docs\toc.yml" />
     <None Include="packages.config" />
     <None Include="SECURITY.md" />
     <None Include="README.md" />
