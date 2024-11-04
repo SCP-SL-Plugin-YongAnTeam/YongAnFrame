@@ -136,11 +136,15 @@
     <None Include=".github\workflows\docs.yml" />
     <None Include="app.config" />
     <None Include="docs\docfx.json" />
+    <None Include="docs\index.md" />
     <None Include="docs\toc.yml" />
     <None Include="packages.config" />
     <None Include="SECURITY.md" />
     <None Include="README.md" />
     <None Include="YongAnFrame.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="docs\articles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

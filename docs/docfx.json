@@ -13,7 +13,9 @@
           "src": "../"
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "namespaceLayout": "nested",
+      "enumSortOrder": "declaringOrder"
     }
   ],
   "build": {
