@@ -1,10 +1,10 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Docfx Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["master"]
+    branches: ["dev"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,13 +34,13 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     - run: dotnet tool update -g docfx
-    - run: docfx <docfx-project-path>/docfx.json
+    - run: docfx docs/docfx.json
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: '<docfx-project-path>/_site'
+        path: 'docs/_site'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
