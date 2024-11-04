@@ -28,10 +28,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: windows-latest
     steps:
-    - name: Checkout
+    - name: Dotnet Checkout
       uses: actions/checkout@v4
+
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v4
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore YongAnFrame.sln
 
     - run: dotnet tool update -g docfx
     - run: docfx docs/docfx.json
