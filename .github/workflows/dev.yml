@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v6
+      uses: NuGet/setup-nuget@v4
 
     - name: Restore NuGet packages
       run: nuget restore YongAnFrame.sln
