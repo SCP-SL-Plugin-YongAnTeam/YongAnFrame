@@ -15,6 +15,9 @@ namespace YongAnFrame.Roles
     /// <param name="id"></param>
     public sealed class SkillManager(FramePlayer fPlayer, ISkill skill, byte id)
     {
+        /// <summary>
+        /// 获取或设置技能的ID
+        /// </summary>
         public byte Id { get; } = id;
         private ISkillActiveStart SkillActiveStart
         {
@@ -51,24 +54,32 @@ namespace YongAnFrame.Roles
         }
         public SkillProperties SkillProperties { get => skill.SkillProperties[Id]; }
 
-        public int SkillsEffectSwitchId { get; set; }
         /// <summary>
-        /// 是否运行
+        /// 获取或设置技能是否行动
         /// </summary>
         public bool IsActive { get => ActiveRemainingTime > 0; }
         /// <summary>
-        /// 是否冷却
+        /// 获取或设置技能是否冷却
         /// </summary>
         public bool IsBurial { get => BurialRemainingTime > 0; }
+        /// <summary>
+        /// 获取或设置技能的行动时间
+        /// </summary>
         public float ActiveRemainingTime { get; private set; }
+        /// <summary>
+        /// 获取或设置技能的冷却时间
+        /// </summary>
         public float BurialRemainingTime { get; private set; }
 
         private CoroutineHandle coroutineHandle;
 
 
         /// <summary>
-        /// 有计时任务会直接覆盖
+        /// 使用技能
         /// </summary>
+        /// <remarks>
+        /// 有计时任务会直接覆盖
+        /// </remarks>
         public void Run()
         {
             if (coroutineHandle != null)

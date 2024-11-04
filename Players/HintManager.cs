@@ -1,6 +1,7 @@
 ﻿using MEC;
 using System.Collections.Generic;
 using YongAnFrame.Components;
+using YongAnFrame.Roles;
 
 namespace YongAnFrame.Players
 {
@@ -9,11 +10,7 @@ namespace YongAnFrame.Players
     /// </summary>
     public sealed class HintManager
     {
-        /// <summary>
-        /// 拥有该实例的框架玩家
-        /// </summary>
         private readonly FramePlayer fPlayer;
-
         private readonly CoroutineHandle coroutine;
 
         public Text[] CustomText = new Text[20];
@@ -25,7 +22,7 @@ namespace YongAnFrame.Players
             coroutine = Timing.RunCoroutine(Update());
         }
 
-        public IEnumerator<float> Update()
+        private IEnumerator<float> Update()
         {
             while (true)
             {
@@ -95,7 +92,8 @@ namespace YongAnFrame.Players
 
                 if (fPlayer.CustomRolePlus != null)
                 {
-                    text[34] += fPlayer.CustomRolePlus.Name;
+                    
+                    text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
 
@@ -104,6 +102,9 @@ namespace YongAnFrame.Players
             }
         }
 
+        /// <summary>
+        /// 立刻停用这个提示系统管理器
+        /// </summary>
         public void Clean()
         {
             Timing.KillCoroutines(coroutine);

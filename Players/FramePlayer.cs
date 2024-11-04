@@ -18,19 +18,19 @@ namespace YongAnFrame.Players
         private static readonly Dictionary<int, FramePlayer> dictionary = [];
 
         /// <summary>
-        /// 拥有该实例的Exiled玩家
+        /// 获取拥有该实例的 <seealso cref="Player"/>
         /// </summary>
         public Player ExPlayer { get; private set; }
         /// <summary>
-        /// 有效的框架玩家列表
+        /// 获取有效的框架玩家列表
         /// </summary>
         public static IReadOnlyCollection<FramePlayer> List => [.. dictionary.Values];
         /// <summary>
-        /// 是否有效
+        /// 获取的玩家是否有效
         /// </summary>
         public bool IsInvalid { get => ExPlayer == null; }
         /// <summary>
-        /// 实例拥有的自定义角色
+        /// 获取玩家拥有的自定义角色
         /// </summary>
         public CustomRolePlus CustomRolePlus
         {
@@ -44,40 +44,94 @@ namespace YongAnFrame.Players
             }
         }
         /// <summary>
-        /// 提示系统管理器
+        /// 获取或设置玩家的提示系统管理器
         /// </summary>
         public HintManager HintManager { get; private set; }
 
         /// <summary>
-        /// 正在使用的主要自定义算法
+        /// 获取或设置玩家正在使用的主要自定义算法
         /// </summary>
         public ICustomAlgorithm CustomAlgorithm { get; set; }
 
         /// <summary>
-        /// 玩家等级
+        /// 获取或设置玩家的等级
         /// </summary>
         public ulong Level { get; set; }
         /// <summary>
-        /// 玩家经验
+        /// 获取或设置玩家的经验
         /// </summary>
         public ulong Exp { get; set; }
         /// <summary>
-        /// 玩家经验倍率
+        /// 获取或设置玩家的经验倍率
         /// </summary>
         public float ExpMultiplier { get; set; }
         /// <summary>
-        /// 玩家批准绕过DNT
+        /// 获取或设置玩家的批准绕过DNT
         /// </summary>
         public bool IsBDNT { get; set; }
         /// <summary>
-        /// 正在使用的名称称号
+        /// 获取或设置玩家正在使用的名称称号
         /// </summary>
         public PlayerTitle UsingTitles { get => usingTitles; set { if (value != null && !value.IsRank) { usingTitles = value; } } }
 
         /// <summary>
-        /// 正在使用的排名称号
+        /// 获取或设置玩家正在使用的地位称号
         /// </summary>
-        public PlayerTitle UsingRankTitles { get => usingRankTitles; set { if (value != null && value.IsRank) { usingRankTitles = value; } } }
+        public PlayerTitle UsingRankTitles 
+        { 
+            get => usingRankTitles; 
+            set 
+            { 
+                if (value != null && value.IsRank) 
+                { 
+                    usingRankTitles = value; 
+                } 
+            } 
+        }
+
+        #region EX增强
+        /// <summary>
+        /// 获取或设置玩家的地位名称。
+        /// </summary>
+        public string RankName 
+        { 
+            get => ExPlayer.RankName; 
+            set 
+            {
+                if (RankName == value)
+                {
+                    ExPlayer.RankName = value;
+                }
+            } 
+        }
+        /// <summary>
+        /// 获取或设置玩家的地位颜色。
+        /// </summary>
+        public string RankColor 
+        { 
+            get => ExPlayer.RankColor; set 
+            {
+                if (RankColor == value)
+                {
+                    ExPlayer.RankColor = value;
+                }
+            } 
+        }
+        /// <summary>
+        /// 获取或设置玩家的昵称，如果为 null，则设置原始昵称。
+        /// </summary>
+        public string CustomName
+        {
+            get => ExPlayer.CustomName;
+            set
+            {
+                if (CustomName == value)
+                {
+                    ExPlayer.CustomName = value;
+                }
+            }
+        }
+        #endregion
 
         #region Static
         public static void SubscribeStaticEvents()
@@ -122,7 +176,7 @@ namespace YongAnFrame.Players
             HintManager = new HintManager(this);
             CustomAlgorithm = this;
             Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
-            UpdateShowInfoList();
+            UpdateShowInfo();
         }
 
         /// <summary>
@@ -150,7 +204,7 @@ namespace YongAnFrame.Players
             }
             if (oldLevel < Level)
             {
-                UpdateShowInfoList();
+                UpdateShowInfo();
                 HintManager.MessageTexts.Add(new Text($"恭喜你从{oldLevel}级到达{Level}级,距离下一级需要{Exp}/{needExp}经验", 8));
             }
         }
@@ -160,59 +214,26 @@ namespace YongAnFrame.Players
 
         private readonly CoroutineHandle[] coroutines = new CoroutineHandle[2];
 
-        public void UpdateShowInfoList()
+        /// <summary>
+        /// 更新显示的服务器列表信息
+        /// </summary>
+        public void UpdateShowInfo()
         {
             if (ExPlayer.IsNPC) return;
 
             if (ExPlayer.GlobalBadge != null)
             {
-                ExPlayer.CustomName = $"[LV:{Level}][全球徽章]{ExPlayer.Nickname}";
+                CustomName = $"[LV:{Level}][全球徽章]{ExPlayer.Nickname}";
                 if (!string.IsNullOrEmpty(CustomRolePlus.Name))
                 {
-                    ExPlayer.RankName = $"*{ExPlayer.GlobalBadge.Value.Text}* {CustomRolePlus.Name}";
+                    RankName = $"*{ExPlayer.GlobalBadge.Value.Text}* {CustomRolePlus.Name}";
                 }
                 else
                 {
-                    ExPlayer.RankName = $"{ExPlayer.GlobalBadge.Value.Text}";
+                    RankName = $"{ExPlayer.GlobalBadge.Value.Text}";
                 }
-                ExPlayer.RankColor = $"{ExPlayer.GlobalBadge.Value.Color}";
+                RankColor = $"{ExPlayer.GlobalBadge.Value.Color}";
                 return;
-            }
-
-            if (usingRankTitles != null)
-            {
-                if (usingRankTitles.DynamicCommand != null)
-                {
-                    Timing.KillCoroutines(coroutines[0]);
-                    coroutines[0] = Timing.RunCoroutine(DynamicRankTitlesShow());
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(usingRankTitles.Color))
-                    {
-                        ExPlayer.RankColor = usingRankTitles.Color;
-                    }
-                    else
-                    {
-                        if (CustomRolePlus != null)
-                        {
-                            ExPlayer.RankColor = CustomRolePlus.NameColor;
-                        }
-                        else
-                        {
-                            ExPlayer.RankColor = null;
-                        }
-                    }
-
-                    if (CustomRolePlus != null)
-                    {
-                        ExPlayer.RankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
-                    }
-                    else
-                    {
-                        ExPlayer.RankName = usingRankTitles.Name;
-                    }
-                }
             }
 
             if (usingTitles != null)
@@ -224,10 +245,47 @@ namespace YongAnFrame.Players
                 }
                 else
                 {
-                    ExPlayer.CustomName = $"[LV:{Level}][{usingTitles.Name}]{ExPlayer.Nickname}";
+                    CustomName = $"[LV:{Level}][{usingTitles.Name}]{ExPlayer.Nickname}";
                     if (!string.IsNullOrEmpty(usingTitles.Color))
                     {
-                        ExPlayer.RankColor = usingTitles.Color;
+                        RankColor = usingTitles.Color;
+                    }
+                    else
+                    {
+                        RankColor = null;
+                    }
+                }
+            }
+            else
+            {
+                ExPlayer.CustomName = $"[LV:{Level}]{ExPlayer.Nickname}";
+            }
+
+            if (usingRankTitles != null)
+            {
+                if (usingRankTitles.DynamicCommand != null)
+                {
+                    Timing.KillCoroutines(coroutines[0]);
+                    coroutines[0] = Timing.RunCoroutine(DynamicRankTitlesShow());
+                }
+                else
+                {
+                    if (CustomRolePlus != null)
+                    {
+                        RankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
+                    }
+                    else
+                    {
+                        RankName = usingRankTitles.Name;
+                    }
+
+                    if (!string.IsNullOrEmpty(usingRankTitles.Color))
+                    {
+                        RankColor = usingRankTitles.Color;
+                    }
+                    else
+                    {
+                        RankColor = null;
                     }
                 }
             }
@@ -235,17 +293,15 @@ namespace YongAnFrame.Players
             {
                 if (CustomRolePlus != null)
                 {
-                    ExPlayer.RankName = $"<color=\"{CustomRolePlus.NameColor}\">" + CustomRolePlus.Name + "</color>";
-                    ExPlayer.RankColor = CustomRolePlus.NameColor;
+                    RankName = CustomRolePlus.Name;
+                    RankColor = CustomRolePlus.NameColor;
                 }
                 else
                 {
-                    ExPlayer.RankName = string.Empty;
-                    ExPlayer.RankColor = string.Empty;
+                    RankName = null;
+                    RankColor = null;
                 }
             }
-
-            if (usingTitles == null) ExPlayer.CustomName = $"[LV:{Level}]{ExPlayer.Nickname}";
         }
 
         private IEnumerator<float> DynamicRankTitlesShow()
@@ -256,14 +312,16 @@ namespace YongAnFrame.Players
                 {
                     if (CustomRolePlus != null)
                     {
-                        ExPlayer.RankName = $"{CustomRolePlus.Name} *{command[0]}*";
+                        RankName = $"{CustomRolePlus.Name} *{command[0]}*";
                     }
                     else
                     {
-                        ExPlayer.RankName = $"{command[0]}";
+                        RankName = $"{command[0]}";
                     }
-
-                    ExPlayer.RankColor = command[1] != "null" ? command[1] : ExPlayer.RankColor;
+                    if (usingRankTitles == null)
+                    {
+                        RankColor = command[1] != "null" ? command[1] : RankColor;
+                    }
                     yield return Timing.WaitForSeconds(float.Parse(command[2]));
                 }
             }
@@ -274,10 +332,10 @@ namespace YongAnFrame.Players
             {
                 foreach (var command in usingTitles.DynamicCommand)
                 {
-                    ExPlayer.CustomName = $"[LV:{Level}][{command[0]}]{ExPlayer.Nickname}";
+                    CustomName = $"[LV:{Level}][{command[0]}]{ExPlayer.Nickname}";
                     if (usingRankTitles == null)
                     {
-                        ExPlayer.RankColor = command[1] != "null" ? command[1] : ExPlayer.RankColor;
+                        RankColor = command[1] != "null" ? command[1] : RankColor;
                     }
                     yield return Timing.WaitForSeconds(float.Parse(command[2]));
                 }
@@ -285,6 +343,7 @@ namespace YongAnFrame.Players
         }
         #endregion
 
+        ///<inheritdoc/>
         public ulong GetNeedUpLevel(ulong level)
         {
             return (ulong)(100 + Math.Floor(level / 10f) * 100);

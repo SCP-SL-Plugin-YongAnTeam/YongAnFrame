@@ -25,28 +25,28 @@ namespace YongAnFrame.Roles
         /// </summary>
         public override bool IgnoreSpawnSystem { get; set; } = false;
         /// <summary>
-        /// 生成属性
+        /// 获取或设置自定义角色的生成属性
         /// </summary>
         public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
         /// <summary>
-        /// 是否开启生成
+        /// 获取或设置自定义角色是否开启生成
         /// </summary>
         public bool IsStaetSpawn { get; set; } = true;
         internal Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
         /// <summary>
-        /// 更多属性
+        /// 获取或设置自定义角色的更多属性
         /// </summary>
         public virtual MoreProperties MoreProperties { get; set; } = new MoreProperties();
         /// <summary>
-        /// 名字颜色
+        /// 获取或设置自定义角色的名字颜色
         /// </summary>
         public abstract string NameColor { get; set; }
         /// <summary>
-        /// 角色联动死亡文本表
+        /// 获取自定义角色的联动死亡文本表
         /// </summary>
         public Dictionary<uint, string> RoleDeathText { get; } = [];
         /// <summary>
-        /// 生成前的目标角色
+        /// 获取或设置自定义角色的生成前的目标角色
         /// </summary>
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
@@ -138,7 +138,7 @@ namespace YongAnFrame.Roles
             {
                 MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}");
             }
-            fPlayer.UpdateShowInfoList();
+            fPlayer.UpdateShowInfo();
         }
 
         protected virtual void AddRoleData(FramePlayer fPlayer)
@@ -181,7 +181,7 @@ namespace YongAnFrame.Roles
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.UpdateShowInfoList();
+            fPlayer.UpdateShowInfo();
         }
 
         #region TrySpawn

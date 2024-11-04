@@ -11,6 +11,7 @@ namespace YongAnFrame
         private static YongAnFramePlugin instance;
         public static YongAnFramePlugin Instance => instance;
         public override PluginPriority Priority => PluginPriority.First;
+        public override bool IgnoreRequiredVersionCheck => true;
 
         public override void OnEnabled()
         {

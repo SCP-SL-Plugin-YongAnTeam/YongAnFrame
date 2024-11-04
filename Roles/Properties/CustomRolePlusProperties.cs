@@ -8,11 +8,11 @@ namespace YongAnFrame.Role.Properties
     public class CustomRolePlusProperties
     {
         /// <summary>
-        /// 技能管理器
+        /// 获取或设置自定义角色的技能管理器
         /// </summary>
         public SkillManager[] SkillManagers { get; set; }
         /// <summary>
-        /// 是否正常死亡
+        /// 获取或设置自定义角色是否正常死亡
         /// </summary>
         public bool IsDeathHandling { get; set; }
     }

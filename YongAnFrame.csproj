@@ -116,7 +116,7 @@
     <Compile Include="Roles\Interfaces\ISkillActiveStart.cs" />
     <Compile Include="Roles\Interfaces\ISkillBurialEnd.cs" />
     <Compile Include="YongAnFrameConfig.cs" />
-    <Compile Include="YongAnFrameCore.cs" />
+    <Compile Include="YongAnFramePlugin.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\SkillCommand.cs" />
     <Compile Include="Players\HintManager.cs" />
@@ -131,6 +131,9 @@
     <Compile Include="YongAnTool.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".github\workflows\dev.yml" />
+    <None Include=".github\workflows\master.yml" />
+    <None Include=".github\workflows\static.yml" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="SECURITY.md" />

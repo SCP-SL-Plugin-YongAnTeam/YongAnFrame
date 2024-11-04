@@ -8,25 +8,25 @@ namespace YongAnFrame.Players
     public sealed class PlayerTitle
     {
         /// <summary>
-        /// 称号ID
+        /// 获取或设置称号的ID
         /// </summary>
         public uint Id { get; set; }
         /// <summary>
-        /// 称号名称
+        /// 获取或设置称号的名称
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// 称号颜色
+        /// 获取或设置称号的颜色
         /// </summary>
         public string Color { get; set; }
         /// <summary>
-        /// 是否为Rank
+        /// 获取或设置称号是否为Rank
         /// </summary>
         public bool IsRank { get; set; }
         /// <summary>
-        /// 动态指令集
+        /// 获取称号的动态指令集
         /// </summary>
-        public List<string[]> DynamicCommand { get; set; }
+        public List<string[]> DynamicCommand { get; private set; }
 
         public PlayerTitle(uint id, string name, string color, bool isRank, string dynamicCommandString)
         {
@@ -37,6 +37,10 @@ namespace YongAnFrame.Players
             SetDynamicCommand(dynamicCommandString);
         }
 
+        /// <summary>
+        /// 设置称号的动态指令集
+        /// </summary>
+        /// <param name="dynamicCommandString"></param>
         public void SetDynamicCommand(string dynamicCommandString)
         {
             List<string[]> dynamicCommands = null;
