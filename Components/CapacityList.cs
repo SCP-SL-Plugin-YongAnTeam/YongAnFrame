@@ -22,7 +22,7 @@ namespace YongAnFrame.Components
             }
             set
             {
-
+                list[index] = value;
             }
         }
 

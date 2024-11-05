@@ -21,7 +21,7 @@ namespace YongAnFrame.Roles
         private int num = 1;
         public static MusicManager Instance => instance;
         /// <summary>
-        /// 放音频的玩家(NPC)
+        /// 获取或设置放音频的玩家(NPC)
         /// </summary>
         public Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
         private MusicManager() { }
@@ -72,7 +72,7 @@ namespace YongAnFrame.Roles
             return Play(musicFile, npcName, new TrackEvent(), null, 0, [], false, 80, false);
         }
         /// <summary>
-        /// 
+        /// 播放音频
         /// </summary>
         /// <param name="musicFile">音频文件</param>
         /// <param name="npcName">NPC名称</param>
@@ -84,7 +84,7 @@ namespace YongAnFrame.Roles
             return Play(musicFile, npcName, new TrackEvent(), source, distance, [], false, 80, false);
         }
         /// <summary>
-        /// 
+        /// 播放音频
         /// </summary>
         /// <param name="musicFile">音频文件</param>
         /// <param name="npcName">NPC名称</param>

@@ -9,11 +9,7 @@ namespace YongAnFrame.Players
     /// </summary>
     public sealed class HintManager
     {
-        /// <summary>
-        /// 拥有该实例的框架玩家
-        /// </summary>
         private readonly FramePlayer fPlayer;
-
         private readonly CoroutineHandle coroutine;
 
         public Text[] CustomText = new Text[20];
@@ -25,15 +21,16 @@ namespace YongAnFrame.Players
             coroutine = Timing.RunCoroutine(Update());
         }
 
-        public IEnumerator<float> Update()
+        private IEnumerator<float> Update()
         {
             while (true)
             {
+                CustomText = new Text[20];
                 Events.Handlers.FramePlayer.OnFramerHintUpdate();
                 string[] text = new string[36];
 
                 int used = 0;
-                text[used] = $"YongAnFrame 1.0.0-Beta2";
+                text[used] = $"YongAnFrame 1.0.0-Beta3";
 
                 if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
                 {
@@ -59,14 +56,14 @@ namespace YongAnFrame.Players
                     }
                     else
                     {
-                        text[used] = string.Empty;
+                        text[used] += Text.Empty;
                     }
                     used++;
                 }
 
                 foreach (Text data in CustomText)
                 {
-                    text[used] = data ?? string.Empty;
+                    text[used] += data ?? Text.Empty;
                     used++;
                 }
 
@@ -86,15 +83,16 @@ namespace YongAnFrame.Players
                     }
                     else
                     {
-                        text[used] = string.Empty;
+                        text[used] += Text.Empty;
                     }
                     used++;
                 }
-                text[used] += "</align>";
+                text[34] = "</align>";
 
                 if (fPlayer.CustomRolePlus != null)
                 {
-                    text[34] = fPlayer.CustomRolePlus.Name;
+
+                    text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
 
@@ -103,15 +101,20 @@ namespace YongAnFrame.Players
             }
         }
 
+        /// <summary>
+        /// 立刻停用这个提示系统管理器
+        /// </summary>
         public void Clean()
         {
             Timing.KillCoroutines(coroutine);
         }
 
-        public class Text(string text, float duration, int size = 0)
+        public class Text(string text, float duration)
         {
             public string Content { get; private set; } = text;
             public float Duration { get; internal set; } = duration;
+
+            public static string Empty => "<color=#00000000>占</color>";
 
             public override string ToString()
             {

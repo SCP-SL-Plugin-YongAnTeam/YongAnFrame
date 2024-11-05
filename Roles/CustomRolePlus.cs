@@ -11,7 +11,6 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using YongAnFrame.Players;
-using YongAnFrame.Role.Properties;
 using YongAnFrame.Roles.Enums;
 using YongAnFrame.Roles.Interfaces;
 using YongAnFrame.Roles.Properties;
@@ -25,28 +24,28 @@ namespace YongAnFrame.Roles
         /// </summary>
         public override bool IgnoreSpawnSystem { get; set; } = false;
         /// <summary>
-        /// 生成属性
+        /// 获取或设置自定义角色的生成属性
         /// </summary>
-        public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
+        public new virtual Properties.SpawnProperties SpawnProperties { get; set; } = new Properties.SpawnProperties();
         /// <summary>
-        /// 是否开启生成
+        /// 获取或设置自定义角色是否开启生成
         /// </summary>
         public bool IsStaetSpawn { get; set; } = true;
         internal Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
         /// <summary>
-        /// 更多属性
+        /// 获取或设置自定义角色的更多属性
         /// </summary>
         public virtual MoreProperties MoreProperties { get; set; } = new MoreProperties();
         /// <summary>
-        /// 名字颜色
+        /// 获取或设置自定义角色的名字颜色
         /// </summary>
         public abstract string NameColor { get; set; }
         /// <summary>
-        /// 角色联动死亡文本表
+        /// 获取自定义角色的联动死亡文本表
         /// </summary>
         public Dictionary<uint, string> RoleDeathText { get; } = [];
         /// <summary>
-        /// 生成前的目标角色
+        /// 获取或设置自定义角色的生成前的目标角色
         /// </summary>
         public virtual RoleTypeId OldRole { get; set; } = RoleTypeId.None;
 
@@ -138,7 +137,7 @@ namespace YongAnFrame.Roles
             {
                 MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}");
             }
-            fPlayer.UpdateShowInfoList();
+            fPlayer.UpdateShowInfo();
         }
 
         protected virtual void AddRoleData(FramePlayer fPlayer)
@@ -160,7 +159,11 @@ namespace YongAnFrame.Roles
         /// <param name="player">EX玩家</param>
         public override void RemoveRole(Player player)
         {
-            RemoveRole(player.ToFPlayer());
+            FramePlayer fPlayer = player.ToFPlayer();
+            if (fPlayer != null)
+            {
+                RemoveRole(player.ToFPlayer());
+            }
         }
         /// <summary>
         /// 给玩家移除这个角色
@@ -168,7 +171,7 @@ namespace YongAnFrame.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(fPlayer) || fPlayer == null) return;
+            if (!Check(fPlayer)) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
             if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
             {
@@ -177,7 +180,7 @@ namespace YongAnFrame.Roles
             base.RemoveRole(fPlayer.ExPlayer);
             BaseData.Remove(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.UpdateShowInfoList();
+            fPlayer.UpdateShowInfo();
         }
 
         #region TrySpawn
