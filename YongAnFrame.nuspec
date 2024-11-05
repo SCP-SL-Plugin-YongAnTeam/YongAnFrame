@@ -2,11 +2,11 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.0-beta2</version>
+    <version>1.0.0-beta3</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <license type="expression">LGPL-2.1-only</license>
+    <license type="expression">LGPL-3-only</license>
     <!-- <icon>icon.png</icon> -->
 	<readme>docs\README.md</readme>
     <projectUrl>https://github.com/YongAn404/YongAnFrame</projectUrl>

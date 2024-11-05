@@ -2,10 +2,8 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
-using YongAnFrame;
-using YongAnFrame.Commands;
 
-namespace BAPlugin.Command
+namespace YongAnFrame.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExpCommand : ICommand
