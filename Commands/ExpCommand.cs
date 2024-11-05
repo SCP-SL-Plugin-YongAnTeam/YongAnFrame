@@ -5,7 +5,7 @@ using System;
 using YongAnFrame;
 using YongAnFrame.Commands;
 
-namespace YongAnFrame.Command
+namespace YongAnFrame.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExpCommand : ICommand

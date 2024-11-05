@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <license type="expression">LGPL-2.1-only</license>
+    <license type="expression">LGPL-3-only</license>
     <!-- <icon>icon.png</icon> -->
 	<readme>docs\README.md</readme>
     <projectUrl>https://github.com/YongAn404/YongAnFrame</projectUrl>

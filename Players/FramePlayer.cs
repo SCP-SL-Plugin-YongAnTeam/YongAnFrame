@@ -224,7 +224,7 @@ namespace YongAnFrame.Players
             if (ExPlayer.GlobalBadge != null)
             {
                 CustomName = $"[LV:{Level}][全球徽章]{ExPlayer.Nickname}";
-                if (!string.IsNullOrEmpty(CustomRolePlus.Name))
+                if (CustomRolePlus != null)
                 {
                     RankName = $"*{ExPlayer.GlobalBadge.Value.Text}* {CustomRolePlus.Name}";
                 }
@@ -234,6 +234,15 @@ namespace YongAnFrame.Players
                 }
                 RankColor = $"{ExPlayer.GlobalBadge.Value.Color}";
                 return;
+            }
+
+            string rankColor = null;
+            string rankName = null;
+
+            if (CustomRolePlus != null)
+            {
+                rankName = CustomRolePlus.Name;
+                rankColor = CustomRolePlus.NameColor;
             }
 
             if (usingTitles != null)
@@ -248,11 +257,7 @@ namespace YongAnFrame.Players
                     CustomName = $"[LV:{Level}][{usingTitles.Name}]{ExPlayer.Nickname}";
                     if (!string.IsNullOrEmpty(usingTitles.Color))
                     {
-                        RankColor = usingTitles.Color;
-                    }
-                    else
-                    {
-                        RankColor = null;
+                        rankColor = usingTitles.Color;
                     }
                 }
             }
@@ -272,36 +277,22 @@ namespace YongAnFrame.Players
                 {
                     if (CustomRolePlus != null)
                     {
-                        RankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
+                        rankName = $"{CustomRolePlus.Name} *{usingRankTitles.Name}*";
                     }
                     else
                     {
-                        RankName = usingRankTitles.Name;
+                        rankName = usingRankTitles.Name;
                     }
 
                     if (!string.IsNullOrEmpty(usingRankTitles.Color))
                     {
-                        RankColor = usingRankTitles.Color;
-                    }
-                    else
-                    {
-                        RankColor = null;
+                        rankColor = usingRankTitles.Color;
                     }
                 }
             }
-            else
-            {
-                if (CustomRolePlus != null)
-                {
-                    RankName = CustomRolePlus.Name;
-                    RankColor = CustomRolePlus.NameColor;
-                }
-                else
-                {
-                    RankName = null;
-                    RankColor = null;
-                }
-            }
+
+            RankColor = rankColor;
+            RankName = rankName;
         }
 
         private IEnumerator<float> DynamicRankTitlesShow()
