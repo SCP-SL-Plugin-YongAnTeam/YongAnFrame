@@ -11,7 +11,6 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using YongAnFrame.Players;
-using YongAnFrame.Role.Properties;
 using YongAnFrame.Roles.Enums;
 using YongAnFrame.Roles.Interfaces;
 using YongAnFrame.Roles.Properties;
@@ -27,7 +26,7 @@ namespace YongAnFrame.Roles
         /// <summary>
         /// 获取或设置自定义角色的生成属性
         /// </summary>
-        public new virtual Role.Properties.SpawnProperties SpawnProperties { get; set; } = new Role.Properties.SpawnProperties();
+        public new virtual Properties.SpawnProperties SpawnProperties { get; set; } = new Properties.SpawnProperties();
         /// <summary>
         /// 获取或设置自定义角色是否开启生成
         /// </summary>

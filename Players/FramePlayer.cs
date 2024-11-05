@@ -77,45 +77,45 @@ namespace YongAnFrame.Players
         /// <summary>
         /// 获取或设置玩家正在使用的地位称号
         /// </summary>
-        public PlayerTitle UsingRankTitles 
-        { 
-            get => usingRankTitles; 
-            set 
-            { 
-                if (value != null && value.IsRank) 
-                { 
-                    usingRankTitles = value; 
-                } 
-            } 
+        public PlayerTitle UsingRankTitles
+        {
+            get => usingRankTitles;
+            set
+            {
+                if (value != null && value.IsRank)
+                {
+                    usingRankTitles = value;
+                }
+            }
         }
 
         #region EX增强
         /// <summary>
         /// 获取或设置玩家的地位名称。
         /// </summary>
-        public string RankName 
-        { 
-            get => ExPlayer.RankName; 
-            set 
+        public string RankName
+        {
+            get => ExPlayer.RankName;
+            set
             {
                 if (RankName == value)
                 {
                     ExPlayer.RankName = value;
                 }
-            } 
+            }
         }
         /// <summary>
         /// 获取或设置玩家的地位颜色。
         /// </summary>
-        public string RankColor 
-        { 
-            get => ExPlayer.RankColor; set 
+        public string RankColor
+        {
+            get => ExPlayer.RankColor; set
             {
                 if (RankColor == value)
                 {
                     ExPlayer.RankColor = value;
                 }
-            } 
+            }
         }
         /// <summary>
         /// 获取或设置玩家的昵称，如果为 null，则设置原始昵称。

@@ -1,5 +1,4 @@
 ﻿using YongAnFrame.Roles;
-using static PlayerRoles.Spectating.SpectatableModuleBase;
 
 namespace YongAnFrame.Players
 {
@@ -16,7 +15,7 @@ namespace YongAnFrame.Players
         ///<inheritdoc cref="FramePlayer.HintManager"/>
         public HintManager HintManager => FramePlayer.HintManager;
         ///<inheritdoc cref="FramePlayer.CustomAlgorithm"/>
-        public ICustomAlgorithm CustomAlgorithm { get => FramePlayer.CustomAlgorithm; set=> FramePlayer.CustomAlgorithm = value; }
+        public ICustomAlgorithm CustomAlgorithm { get => FramePlayer.CustomAlgorithm; set => FramePlayer.CustomAlgorithm = value; }
         ///<inheritdoc cref="FramePlayer.Level"/>
         public ulong Level { get => FramePlayer.Level; set => FramePlayer.Level = value; }
         ///<inheritdoc cref="FramePlayer.Exp"/>

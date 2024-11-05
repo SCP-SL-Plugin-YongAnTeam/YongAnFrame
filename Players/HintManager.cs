@@ -1,7 +1,6 @@
 ﻿using MEC;
 using System.Collections.Generic;
 using YongAnFrame.Components;
-using YongAnFrame.Roles;
 
 namespace YongAnFrame.Players
 {
@@ -92,7 +91,7 @@ namespace YongAnFrame.Players
 
                 if (fPlayer.CustomRolePlus != null)
                 {
-                    
+
                     text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }

@@ -1,6 +1,4 @@
-﻿using YongAnFrame.Roles;
-
-namespace YongAnFrame.Roles.Properties
+﻿namespace YongAnFrame.Roles.Properties
 {
     /// <summary>
     /// 自定义角色玩家数据
