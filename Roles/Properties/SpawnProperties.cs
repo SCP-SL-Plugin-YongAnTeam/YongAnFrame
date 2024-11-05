@@ -1,6 +1,6 @@
 ﻿using YongAnFrame.Roles.Enums;
 
-namespace YongAnFrame.Role.Properties
+namespace YongAnFrame.Roles.Properties
 {
     public struct SpawnProperties
     {
