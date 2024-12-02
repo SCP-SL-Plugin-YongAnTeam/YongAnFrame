@@ -98,7 +98,7 @@ namespace YongAnFrame.Players
             get => ExPlayer.RankName;
             set
             {
-                if (RankName == value)
+                if (RankName != value)
                 {
                     ExPlayer.RankName = value;
                 }
@@ -109,9 +109,10 @@ namespace YongAnFrame.Players
         /// </summary>
         public string RankColor
         {
-            get => ExPlayer.RankColor; set
+            get => ExPlayer.RankColor; 
+            set
             {
-                if (RankColor == value)
+                if (RankColor != value)
                 {
                     ExPlayer.RankColor = value;
                 }
@@ -125,7 +126,7 @@ namespace YongAnFrame.Players
             get => ExPlayer.CustomName;
             set
             {
-                if (CustomName == value)
+                if (CustomName != value)
                 {
                     ExPlayer.CustomName = value;
                 }
