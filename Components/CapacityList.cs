@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace YongAnFrame.Components
 {
-    public class CapacityList<T>(int capacity)
+    public class CapacityList<T>(int capacity) : ICollection<T>, IEnumerable<T>, IEnumerable
     {
         private readonly List<T> list = new(capacity);
 
         public int Capacity { get; set; } = capacity;
 
         public int Count => list.Count;
+
+        public bool IsReadOnly => throw new System.NotImplementedException();
 
         public T this[int index]
         {
@@ -42,6 +46,41 @@ namespace YongAnFrame.Components
         public bool Remove(T item)
         {
             return list.Remove(item);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        public void Clear()
+        {
+            list.Clear();
+        }
+
+        public bool Contains(T item)
+        {
+            return list.Contains(item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            list.CopyTo(array, arrayIndex);
+        }
+
+        public int IndexOf(T item)
+        {
+            return list.IndexOf(item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            list.RemoveAt(index);
         }
     }
 }

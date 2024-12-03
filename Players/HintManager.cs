@@ -30,7 +30,7 @@ namespace YongAnFrame.Players
                 string[] text = new string[36];
 
                 int used = 0;
-                text[used] = $"YongAnFrame 1.0.0-Beta3";
+                text[used] = $"YongAnFrame 1.0.0-Beta4";
 
                 if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
                 {
