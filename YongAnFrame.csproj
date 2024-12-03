@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{913613E0-C6E7-4511-A079-BACC7BC9089C}</ProjectGuid>
+    <ProjectGuid>{B036C1E0-4D95-487C-BCA3-32AF84D820EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>YongAnFrame</RootNamespace>
@@ -39,42 +39,42 @@
       <HintPath>lib\net48\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\CommandSystem.Core.dll</HintPath>
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CreditTags, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.CreditTags.dll</HintPath>
+    <Reference Include="Exiled.CreditTags, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomItems, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.CustomItems.dll</HintPath>
+    <Reference Include="Exiled.CustomItems, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.CustomItems.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.CustomRoles.dll</HintPath>
+    <Reference Include="Exiled.CustomRoles, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.CustomRoles.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.Loader, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions, Version=8.13.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Permissions, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>lib\net48\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="NorthwoodLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\NorthwoodLib.dll</HintPath>
+    <Reference Include="NorthwoodLib, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\NorthwoodLib.dll</HintPath>
     </Reference>
-    <Reference Include="PluginAPI, Version=13.1.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\PluginAPI.dll</HintPath>
+    <Reference Include="PluginAPI, Version=13.1.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,11 +95,10 @@
       <HintPath>lib\net48\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.8.13.1\lib\net48\YamlDotNet.dll</HintPath>
+      <HintPath>packages\ExMod.Exiled.9.0.0-alpha.4\lib\net48\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandPlus.cs" />
     <Compile Include="Commands\ExpCommand.cs" />
     <Compile Include="Commands\PlayerCommand.cs" />
     <Compile Include="Components\CapacityList.cs" />
@@ -115,7 +114,8 @@
     <Compile Include="Roles\Interfaces\ISkillActiveEnd.cs" />
     <Compile Include="Roles\Interfaces\ISkillActiveStart.cs" />
     <Compile Include="Roles\Interfaces\ISkillBurialEnd.cs" />
-    <Compile Include="YongAnFrameConfig.cs" />
+    <Compile Include="Translation.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="YongAnFramePlugin.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\SkillCommand.cs" />
@@ -131,21 +131,10 @@
     <Compile Include="YongAnTool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".github\workflows\dev.yml" />
-    <None Include=".github\workflows\master.yml" />
-    <None Include=".github\workflows\docs.yml" />
     <None Include="app.config" />
-    <None Include="docs\docfx.json" />
-    <None Include="docs\index.md" />
-    <None Include="docs\toc.yml" />
     <None Include="packages.config" />
-    <None Include="SECURITY.md" />
-    <None Include="README.md" />
-    <None Include="YongAnFrame.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="docs\articles\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

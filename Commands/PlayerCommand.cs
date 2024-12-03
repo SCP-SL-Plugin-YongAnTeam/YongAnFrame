@@ -8,11 +8,11 @@ namespace YongAnFrame.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class PlayerCommand : ICommand
     {
-        public string Command => "player";
+        public string Command => "hPlayer";
 
-        public string[] Aliases => ["play", "pl", "pr"];
+        public string[] Aliases => ["hPlay", "hp", "h"];
 
-        public string Description => "用于管理自己的用户";
+        public string Description => "用于管理自己的YongAnFrame用户";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -26,7 +26,7 @@ namespace YongAnFrame.Commands
                         {
                             FramePlayer fPlayer = FramePlayer.Get(player);
                             fPlayer.HintManager.Clean();
-                            fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Config.BypassDoNotTrackText.Split('\n')}</size>", 10000f);
+                            fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Translation.BypassDoNotTrack.Split('\n')}</size>", 10000f);
                         }
                         return true;
                 }

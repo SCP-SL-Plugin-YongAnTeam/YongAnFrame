@@ -1,5 +1,8 @@
 ﻿namespace YongAnFrame.Players
 {
+    /// <summary>
+    /// 自定义算法接口
+    /// </summary>
     public interface ICustomAlgorithm
     {
         /// <summary>
