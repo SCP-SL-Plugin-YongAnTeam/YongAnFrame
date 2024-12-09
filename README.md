@@ -1,4 +1,6 @@
 # YongAnFrame
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame?ref=badge_shield)
+
 基于[EXILED](https://github.com/ExMod-Team/EXILED)写的框架，为国内服务器常见的插件需求简化开发
 
 ## YongAnFrame是什么类型的插件/框架？
@@ -17,7 +19,6 @@
 ## 为服务端安装框架
  如图，下载 **Release下的最新压缩包** 全部解压并合并到**EXILED目录**,如C:\Users\Administrator\Appdata\Roaming\ ，安装后请启动一次服务端，并在EXILED\Config内根据提示调整配置文件.
  ![image](https://github.com/user-attachments/assets/c6a9934b-5cd1-4905-bb94-ae294a12749c)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame?ref=badge_shield)
 
 
 ## 使用YongAnFrame进行开发
@@ -31,5 +32,5 @@ Mail:3489728203@qq.com<br>
 Bug反馈或有疑问欢迎提交issue(请附带错误日志/截图，以及问题的详细描述)
 
 
-## License
+## 许可证
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame?ref=badge_large)
