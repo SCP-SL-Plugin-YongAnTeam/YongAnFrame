@@ -15,7 +15,7 @@ namespace YongAnFrame
     {
         private static YongAnFramePlugin instance;
         /// <summary>
-        /// 获取单例
+        /// 获取<seealso cref="YongAnFramePlugin"/>单例
         /// </summary>
         public static YongAnFramePlugin Instance => instance;
         ///<inheritdoc/>

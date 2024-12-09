@@ -19,6 +19,9 @@ namespace YongAnFrame.Roles
         private static readonly MusicManager instance = new();
 
         private int num = 1;
+        /// <summary>
+        /// 获取<seealso cref="MusicManager"/>单例
+        /// </summary>
         public static MusicManager Instance => instance;
         /// <summary>
         /// 获取或设置放音频的玩家(NPC)
@@ -88,20 +91,24 @@ namespace YongAnFrame.Roles
         /// </summary>
         /// <param name="musicFile">音频文件</param>
         /// <param name="npcName">NPC名称</param>
-        /// <param name="trackEvent">播放事件</param>
-        /// <param name="source">传播距离检测源头玩家</param>
-        /// <param name="distance">传播距离</param>
-        /// <param name="extraPlay">额外可接收音频的玩家</param>
+        /// <param name="trackEvent">播放事件，可以是 null</param>
+        /// <param name="source">传播距离检测源头玩家，如果是 null 所有人都将听到</param>
+        /// <param name="distance">传播距离(源头玩家为 null 将无效)</param>
+        /// <param name="extraPlay">额外可接收音频的玩家，可以是 null</param>
         /// <param name="isSole">是否覆盖播放</param>
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try
             {
-                OnTrackLoaded += trackEvent.TrackLoaded;
+                if (trackEvent.HasValue)
+                {
+                    OnTrackLoaded += trackEvent.Value.TrackLoaded;
+                }
+
                 if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
                 {
                     npc = CreateMusicNpc(npcName);
@@ -118,17 +125,21 @@ namespace YongAnFrame.Roles
                     }
                 }
 
-                if (extraPlay != null)
+
+                if (source != null)
                 {
-                    audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
+                    audioPlayerBase.AudioToPlay = FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.UserId).ToList();
+                }
+                else 
+                {
+                    audioPlayerBase.AudioToPlay = FramePlayer.List.Select((s) => s.ExPlayer.UserId).ToList();
                 }
 
-                if (distance != 0)
+                if (extraPlay != null)
                 {
-                    audioPlayerBase.AudioToPlay ??= [];
-                    foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
+                    foreach (var player in extraPlay)
                     {
-                        audioPlayerBase.AudioToPlay.Add(player.UserId);
+                        audioPlayerBase.AudioToPlay.Add(player.ExPlayer.UserId);
                     }
                 }
 

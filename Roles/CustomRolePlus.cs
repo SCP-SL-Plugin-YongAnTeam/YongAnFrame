@@ -10,6 +10,8 @@ using Exiled.Loader;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using YongAnFrame.Players;
 using YongAnFrame.Roles.Enums;
 using YongAnFrame.Roles.Interfaces;
@@ -17,6 +19,7 @@ using YongAnFrame.Roles.Properties;
 
 namespace YongAnFrame.Roles
 {
+    [Guid("913613e0-c6e7-4511-a079-bacc7bc9089c")]
     public abstract class CustomRolePlus : CustomRole
     {
         /// <summary>
@@ -30,7 +33,7 @@ namespace YongAnFrame.Roles
         /// <summary>
         /// 获取或设置自定义角色是否开启生成
         /// </summary>
-        public bool IsStaetSpawn { get; set; } = true;
+        public bool IsStartSpawn { get; set; } = true;
         internal Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
         /// <summary>
         /// 获取或设置自定义角色的更多属性
@@ -242,7 +245,7 @@ namespace YongAnFrame.Roles
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (IsStaetSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
+            if (IsStartSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
                 switch (SpawnProperties.RefreshTeam)
                 {
@@ -281,6 +284,7 @@ namespace YongAnFrame.Roles
                             else
                             {
                                 skillsManager.Run();
+                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能[{skillsManager.SkillProperties.Name}]已经发动，持续时间：{skillsManager.SkillProperties.ActiveMaxTime}", skillsManager.SkillProperties.ActiveMaxTime));
                             }
                             args.IsAllowed = false;
                         }
@@ -402,6 +406,7 @@ namespace YongAnFrame.Roles
         }
 
     }
+    [Guid("913613e0-c6e7-4511-a079-bacc7bc9000c")]
     public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusProperties, new()
     {
         /// <summary>

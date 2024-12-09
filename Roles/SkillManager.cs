@@ -52,6 +52,9 @@ namespace YongAnFrame.Roles
                 return null;
             }
         }
+        /// <summary>
+        /// 获取技能的属性
+        /// </summary>
         public SkillProperties SkillProperties { get => skill.SkillProperties[Id]; }
 
         /// <summary>
