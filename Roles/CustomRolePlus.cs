@@ -19,7 +19,7 @@ using YongAnFrame.Roles.Properties;
 
 namespace YongAnFrame.Roles
 {
-    [Guid("913613e0-c6e7-4511-a079-bacc7bc9089c")]
+    [Guid("913613e0-c6e7-4511-a079-bacc7bc0089c")]
     public abstract class CustomRolePlus : CustomRole
     {
         /// <summary>

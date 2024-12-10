@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    if: github.event_name != 'push' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     steps:
     - name: Setup Checkout
       uses: actions/checkout@v4

@@ -8,15 +8,15 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">LGPL-3.0-only</license>
     <!-- <icon>icon.png</icon> -->
-	<readme>docs\README.md</readme>
+	  <readme>docs\README.md</readme>
     <projectUrl>https://github.com/SCP-SL-Plugin-YongAnTeam/YongAnFrame</projectUrl>
     <description>$description$</description>
     <releaseNotes>$version$</releaseNotes>
     <copyright>$copyright$</copyright>
-    <tags>EXILED SCPSL</tags>
+    <tags>EXILED SCPSL SCP:SL</tags>
   </metadata>
   <files>
-	<file src="README.md" target="docs\" />
+	  <file src="README.md" target="docs\" />
     <file src="lib\net48\SCPSLAudioApi.dll" target="lib/net48/SCPSLAudioApi.dll" />
   </files>
 </package>
