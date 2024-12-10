@@ -24,7 +24,7 @@ namespace YongAnFrame.Commands
             List<FramePlayer> choicePlayer = [];
             if (arguments.Count < 3)
             {
-                response = "不允许的格式，格式应该是int string int";
+                response = "不允许的格式，格式应该是 int string int";
                 return false;
             }
             switch (arguments.Array[1])
@@ -32,7 +32,7 @@ namespace YongAnFrame.Commands
                 case "all":
                     if (!sender.CheckPermission("yongan404.message.choice.all"))
                     {
-                        response = "请保证你有yongan404.message.choice.all权限";
+                        response = "请保证你有 yongan404.message.choice.all 权限";
                         return false;
                     }
                     foreach (Player player in Player.List)
@@ -46,7 +46,7 @@ namespace YongAnFrame.Commands
                     {
                         if (idStringArray.Length > 1 && !sender.CheckPermission("yongan404.message.choice.multiple"))
                         {
-                            response = "请保证你有yongan404.message.choice.multiple权限";
+                            response = "请保证你有 yongan404.message.choice.multiple 权限";
                             return false;
                         }
 
@@ -73,7 +73,7 @@ namespace YongAnFrame.Commands
             {
                 if (duration > 10 && !sender.CheckPermission("yongan404.message.send.large_duration"))
                 {
-                    response = "请保证你有yongan404.message.send.large_duration权限";
+                    response = "请保证你有 yongan404.message.send.large_duration 权限";
                     return false;
                 }
 
