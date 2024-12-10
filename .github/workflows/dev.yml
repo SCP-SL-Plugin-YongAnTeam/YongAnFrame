@@ -32,7 +32,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Generate NuGet packages
-      run: pack YongAnFrame.nuspec
+      run: nuget pack YongAnFrame.nuspec
 
     - name: Upload NuGet package
       uses: actions/upload-artifact@v4
