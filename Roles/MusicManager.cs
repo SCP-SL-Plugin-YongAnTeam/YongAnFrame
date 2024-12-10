@@ -93,7 +93,7 @@ namespace YongAnFrame.Roles
         /// <param name="npcName">NPC名称</param>
         /// <param name="source">指定玩家</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, Player source)
+        public AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source)
         {
             return Play(musicFile, npcName, new TrackEvent(), source, [], false, 80, false);
         }
@@ -204,7 +204,7 @@ namespace YongAnFrame.Roles
                     audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
                 }
 
-                audioPlayerBase.AudioToPlay.Add(source.UserId);
+                audioPlayerBase.AudioToPlay.Add(source.ExPlayer.UserId);
 
                 audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);
                 audioPlayerBase.Volume = volume;
