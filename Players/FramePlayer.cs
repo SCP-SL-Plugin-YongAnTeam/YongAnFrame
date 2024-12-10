@@ -312,7 +312,7 @@ namespace YongAnFrame.Players
                     }
                     if (usingRankTitles == null)
                     {
-                        RankColor = command[1] != "null" ? command[1] : RankColor;
+                        RankColor = command[1];
                     }
                     yield return Timing.WaitForSeconds(float.Parse(command[2]));
                 }
@@ -327,7 +327,7 @@ namespace YongAnFrame.Players
                     CustomName = $"[LV:{Level}][{command[0]}]{ExPlayer.Nickname}";
                     if (usingRankTitles == null)
                     {
-                        RankColor = command[1] != "null" ? command[1] : RankColor;
+                        RankColor = command[1];
                     }
                     yield return Timing.WaitForSeconds(float.Parse(command[2]));
                 }

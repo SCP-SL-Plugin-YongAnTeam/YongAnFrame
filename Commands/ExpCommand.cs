@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Linq;
 
 namespace YongAnFrame.Commands
 {
@@ -19,7 +20,7 @@ namespace YongAnFrame.Commands
             response = "NO";
             if (sender.CheckPermission("yongan404.level.add"))
             {
-                if (arguments.Array.Length > 2)
+                if (arguments.Count >= 1)
                 {
                     Player.Get(arguments.Array[1]).ToFPlayer().Level += ulong.Parse(arguments.Array[2]);
                     response = "OK";
