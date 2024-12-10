@@ -87,6 +87,17 @@ namespace YongAnFrame.Roles
             return Play(musicFile, npcName, new TrackEvent(), source, distance, [], false, 80, false);
         }
         /// <summary>
+        /// 单独给一个人播放音频
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="source">指定玩家</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, Player source)
+        {
+            return Play(musicFile, npcName, new TrackEvent(), source, [], false, 80, false);
+        }
+        /// <summary>
         /// 播放音频
         /// </summary>
         /// <param name="musicFile">音频文件</param>
@@ -154,7 +165,59 @@ namespace YongAnFrame.Roles
             }
             return audioPlayerBase;
         }
+        /// <summary>
+        /// 播放音频
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="trackEvent">播放事件</param>
+        /// <param name="source">传播距离检测源头玩家</param>
+        /// <param name="extraPlay">额外可接收音频的玩家</param>
+        /// <param name="isSole">是否覆盖播放</param>
+        /// <param name="volume">音量大小</param>
+        /// <param name="isLoop">是否循环</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        {
+            AudioPlayerBase audioPlayerBase = null;
+            try
+            {
+                OnTrackLoaded += trackEvent.TrackLoaded;
+                if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
+                {
+                    npc = CreateMusicNpc(npcName);
+                    audioPlayerBase = Get(npc);
+                }
+                else
+                {
+                    if (!isSole)
+                    {
+                        npc = CreateMusicNpc(npcName);
+                        audioPlayerBase = Get(npc);
+                        MusicNpc.Add(num + npcName, npc);
+                        num++;
+                    }
+                }
 
+                if (extraPlay != null)
+                {
+                    audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
+                }
+
+                audioPlayerBase.AudioToPlay.Add(source.UserId);
+
+                audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);
+                audioPlayerBase.Volume = volume;
+                audioPlayerBase.Loop = isLoop;
+                audioPlayerBase.Play(0);
+            }
+            catch (Exception)
+            {
+                Stop(audioPlayerBase);
+            }
+            return audioPlayerBase;
+        }
+        
         public readonly struct TrackEvent(TrackLoaded trackLoaded)
         {
             public TrackLoaded TrackLoaded { get; } = trackLoaded;
