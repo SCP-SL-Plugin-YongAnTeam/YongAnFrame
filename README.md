@@ -28,7 +28,7 @@
 
 ## 联系我们 ##
 QQ:3489728203<br>
-Mail:3489728203@qq.com<br>
+E-Mail:yongandevelopers@163.com
 Bug反馈或有疑问欢迎提交issue(请附带错误日志/截图，以及问题的详细描述)
 
 

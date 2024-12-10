@@ -17,20 +17,19 @@ namespace YongAnFrame.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "NULL";
-            if (arguments.Count < 2)
+            if (arguments.Count >= 1 && Player.TryGet(sender, out Player player))
             {
+                FramePlayer fPlayer = FramePlayer.Get(player);
                 switch (arguments.Array[1])
                 {
                     case "BDNT":
-                        if (Player.TryGet(sender, out Player player))
-                        {
-                            FramePlayer fPlayer = FramePlayer.Get(player);
-                            fPlayer.HintManager.Clean();
-                            fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Translation.BypassDoNotTrack.Split('\n')}</size>", 10000f);
-                        }
+                        fPlayer.HintManager.Clean();
+                        fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Translation.BypassDoNotTrack.Split('\n')}</size>", 10000f);
+                        return true;
+                    case "INFO":
+                        
                         return true;
                 }
-
             }
             return false;
         }
