@@ -4,7 +4,10 @@ using Mirror;
 using SCPSLAudioApi.AudioCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using UnityEngine;
 using YongAnFrame.Players;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
@@ -144,9 +147,31 @@ namespace YongAnFrame.Roles
             return audioPlayerBase;
         }
 
-        public readonly struct TrackEvent(TrackLoaded trackLoaded)
+        //接收文件直链传递给Play播放
+        public async Task<AudioPlayerBase> NetPlayAsync(string url, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
-            public TrackLoaded TrackLoaded { get; } = trackLoaded;
+            if (!url.Contains(".ogg")) //如果url不是ogg文件
+            {
+                Log.Error("链接有误!");
+                return null;
+            }
+            string musicFile = $"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{DateTimeOffset.Now.ToUnixTimeSeconds()}.ogg";
+            await DownloadFile(url,musicFile);
+            return Play(musicFile, npcName, trackEvent, source, distance, extraPlay, isSole, volume, isLoop);
         }
+        private async Task DownloadFile(string url, string Path)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();//ex既然会接住抛出那我就直接ensure确保了(
+                byte[] bytes = await response.Content.ReadAsByteArrayAsync();
+                File.WriteAllBytes(Path, bytes);
+            }
+        }
+    }
+    public readonly struct TrackEvent(TrackLoaded trackLoaded)
+    {
+            public TrackLoaded TrackLoaded { get; } = trackLoaded;
     }
 }
