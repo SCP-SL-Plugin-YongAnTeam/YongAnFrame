@@ -12,7 +12,7 @@ namespace YongAnFrame.Components
 
         public int Count => list.Count;
 
-        public bool IsReadOnly => throw new System.NotImplementedException();
+        public bool IsReadOnly => false;
 
         public T this[int index]
         {
