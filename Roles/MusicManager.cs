@@ -4,7 +4,10 @@ using Mirror;
 using SCPSLAudioApi.AudioCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using UnityEngine;
 using YongAnFrame.Players;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
@@ -217,10 +220,62 @@ namespace YongAnFrame.Roles
             }
             return audioPlayerBase;
         }
-        
-        public readonly struct TrackEvent(TrackLoaded trackLoaded)
+
+        //接收文件直链传递给Play处理播放(我以为要折腾，结果直接allowUrl然后复用本地文件的代码就行了，我是傻逼)
+
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false, bool isUrl = true)
         {
-            public TrackLoaded TrackLoaded { get; } = trackLoaded;
+            AudioPlayerBase audioPlayerBase = null;
+            if (isUrl)
+            {
+                try
+                {
+                    OnTrackLoaded += trackEvent.TrackLoaded;
+                    if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
+                    {
+                        npc = CreateMusicNpc(npcName);
+                        audioPlayerBase = Get(npc);
+                    }
+                    else
+                    {
+                        if (!isSole)
+                        {
+                            npc = CreateMusicNpc(npcName);
+                            audioPlayerBase = Get(npc);
+                            MusicNpc.Add(num + npcName, npc);
+                            num++;
+                        }
+                    }
+
+                    if (extraPlay != null)
+                    {
+                        audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
+                    }
+
+                    if (distance != 0)
+                    {
+                        audioPlayerBase.AudioToPlay ??= [];
+                        foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
+                        {
+                            audioPlayerBase.AudioToPlay.Add(player.UserId);
+                        }
+                    }
+                    audioPlayerBase.AllowUrl = true;
+                    audioPlayerBase.Enqueue(musicFile, 0);
+                    audioPlayerBase.Volume = volume;
+                    audioPlayerBase.Loop = isLoop;
+                    audioPlayerBase.Play(0);
+                }
+                catch (Exception)
+                {
+                    Stop(audioPlayerBase);
+                }
+            }
+            return audioPlayerBase;
         }
+    }
+    public readonly struct TrackEvent(TrackLoaded trackLoaded)
+    {
+        public TrackLoaded TrackLoaded { get; } = trackLoaded;
     }
 }
