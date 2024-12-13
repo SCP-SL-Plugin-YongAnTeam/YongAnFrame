@@ -38,7 +38,7 @@ namespace YongAnFrame.Players
                 }
 
                 used = 1;
-                text[used] = "<align=left>";
+                text[used] = "<align=left><noparse>";
 
                 for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
@@ -60,6 +60,7 @@ namespace YongAnFrame.Players
                     }
                     used++;
                 }
+                text[used] = "</noparse>";
 
                 foreach (Text data in CustomText)
                 {
@@ -94,7 +95,6 @@ namespace YongAnFrame.Players
                     text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }
-
                 fPlayer.ExPlayer.ShowHint($"<size=20>{string.Join("\n", text)}\n\n\n\n\n\n\n\n\n\n\n\n\n\n</size>", 2f);
                 yield return Timing.WaitForSeconds(1f);
             }
