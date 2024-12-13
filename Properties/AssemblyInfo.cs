@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("YongAnFrame")]
 [assembly: AssemblyCopyright("Copyright © YongAn404")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyCulture("zh-cn")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
 //对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.12")]
-[assembly: AssemblyFileVersion("1.0.0.12")]
+[assembly: AssemblyVersion("1.0.0.13")]
+[assembly: AssemblyFileVersion("1.0.0.13")]

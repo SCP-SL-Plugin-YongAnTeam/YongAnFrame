@@ -30,7 +30,7 @@ namespace YongAnFrame.Players
                 string[] text = new string[36];
 
                 int used = 0;
-                text[used] = $"YongAnFrame 1.0.0-Beta4";
+                text[used] = $"YongAnFrame 1.0.0-Beta5";
 
                 if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
                 {
@@ -91,7 +91,6 @@ namespace YongAnFrame.Players
 
                 if (fPlayer.CustomRolePlus != null)
                 {
-
                     text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;
                 }

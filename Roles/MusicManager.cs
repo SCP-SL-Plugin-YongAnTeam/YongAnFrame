@@ -22,6 +22,9 @@ namespace YongAnFrame.Roles
         private static readonly MusicManager instance = new();
 
         private int num = 1;
+        /// <summary>
+        /// 获取<seealso cref="MusicManager"/>单例
+        /// </summary>
         public static MusicManager Instance => instance;
         /// <summary>
         /// 获取或设置放音频的玩家(NPC)
@@ -87,19 +90,97 @@ namespace YongAnFrame.Roles
             return Play(musicFile, npcName, new TrackEvent(), source, distance, [], false, 80, false);
         }
         /// <summary>
+        /// 单独给一个人播放音频
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="source">指定玩家</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source)
+        {
+            return Play(musicFile, npcName, new TrackEvent(), source, [], false, 80, false);
+        }
+        /// <summary>
+        /// 播放音频
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="trackEvent">播放事件，可以是 null</param>
+        /// <param name="source">传播距离检测源头玩家，如果是 null 所有人都将听到</param>
+        /// <param name="distance">传播距离(源头玩家为 null 将无效)</param>
+        /// <param name="extraPlay">额外可接收音频的玩家，可以是 null</param>
+        /// <param name="isSole">是否覆盖播放</param>
+        /// <param name="volume">音量大小</param>
+        /// <param name="isLoop">是否循环</param>
+        /// <returns></returns>
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        {
+            AudioPlayerBase audioPlayerBase = null;
+            try
+            {
+                if (trackEvent.HasValue)
+                {
+                    OnTrackLoaded += trackEvent.Value.TrackLoaded;
+                }
+
+                if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
+                {
+                    npc = CreateMusicNpc(npcName);
+                    audioPlayerBase = Get(npc);
+                }
+                else
+                {
+                    if (!isSole)
+                    {
+                        npc = CreateMusicNpc(npcName);
+                        audioPlayerBase = Get(npc);
+                        MusicNpc.Add(num + npcName, npc);
+                        num++;
+                    }
+                }
+
+
+                if (source != null)
+                {
+                    audioPlayerBase.AudioToPlay = FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.UserId).ToList();
+                }
+                else 
+                {
+                    audioPlayerBase.AudioToPlay = FramePlayer.List.Select((s) => s.ExPlayer.UserId).ToList();
+                }
+
+                if (extraPlay != null)
+                {
+                    foreach (var player in extraPlay)
+                    {
+                        audioPlayerBase.AudioToPlay.Add(player.ExPlayer.UserId);
+                    }
+                }
+
+                audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);
+                audioPlayerBase.Volume = volume;
+                audioPlayerBase.Loop = isLoop;
+                audioPlayerBase.Play(0);
+            }
+            catch (Exception)
+            {
+                Stop(audioPlayerBase);
+            }
+            return audioPlayerBase;
+        }
+        /// <summary>
         /// 播放音频
         /// </summary>
         /// <param name="musicFile">音频文件</param>
         /// <param name="npcName">NPC名称</param>
         /// <param name="trackEvent">播放事件</param>
         /// <param name="source">传播距离检测源头玩家</param>
-        /// <param name="distance">传播距离</param>
         /// <param name="extraPlay">额外可接收音频的玩家</param>
         /// <param name="isSole">是否覆盖播放</param>
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try
@@ -126,14 +207,7 @@ namespace YongAnFrame.Roles
                     audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
                 }
 
-                if (distance != 0)
-                {
-                    audioPlayerBase.AudioToPlay ??= [];
-                    foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
-                    {
-                        audioPlayerBase.AudioToPlay.Add(player.UserId);
-                    }
-                }
+                audioPlayerBase.AudioToPlay.Add(source.ExPlayer.UserId);
 
                 audioPlayerBase.Enqueue($"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg", 0);
                 audioPlayerBase.Volume = volume;
@@ -146,7 +220,6 @@ namespace YongAnFrame.Roles
             }
             return audioPlayerBase;
         }
-
         //接收文件直链传递给Play播放
         public async Task<AudioPlayerBase> NetPlayAsync(string url, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {

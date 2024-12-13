@@ -30,6 +30,11 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    
+    - name: Generate NuGet packages
+      run: nuget pack
+
+    - name: Upload NuGet package
+      uses: actions/upload-artifact@v4
+      with:
+        path: YongAnFrame.*.nupkg

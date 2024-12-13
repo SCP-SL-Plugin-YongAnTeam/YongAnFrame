@@ -25,7 +25,7 @@
       "_lang": "zh-CN",
       "_gitContribute": {
         "repo": "https://github.com/SCP-SL-Plugin-YongAnTeam/YongAnFrame",
-        "branch": "dev"
+        "branch": "master"
       }
     },
     "template": [ "default", "modern" ],
