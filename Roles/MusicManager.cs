@@ -221,8 +221,18 @@ namespace YongAnFrame.Roles
             return audioPlayerBase;
         }
 
-        //接收文件直链传递给Play处理播放(我以为要折腾，结果直接allowUrl然后复用本地文件的代码就行了，我是傻逼)
-
+        /// <summary>
+        /// 播放音频Url
+        /// </summary>
+        /// <param name="musicFile">音频文件</param>
+        /// <param name="npcName">NPC名称</param>
+        /// <param name="trackEvent">播放事件</param>
+        /// <param name="source">传播距离检测源头玩家</param>
+        /// <param name="extraPlay">额外可接收音频的玩家</param>
+        /// <param name="isSole">是否覆盖播放</param>
+        /// <param name="volume">音量大小</param>
+        /// <param name="isUrl">是否Url</param>
+        /// <returns></returns>
         public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false, bool isUrl = true)
         {
             AudioPlayerBase audioPlayerBase = null;
@@ -254,7 +264,6 @@ namespace YongAnFrame.Roles
 
                     if (distance != 0)
                     {
-                        audioPlayerBase.AudioToPlay ??= [];
                         foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
                         {
                             audioPlayerBase.AudioToPlay.Add(player.UserId);
