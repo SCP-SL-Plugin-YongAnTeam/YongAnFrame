@@ -177,63 +177,66 @@ namespace YongAnFrame.Roles
         }
 
         /// <summary>
-        /// 播放音频Url
+        /// 播放音频(Url)
         /// </summary>
-        /// <param name="musicFile">音频文件</param>
+        /// <param name="musicUrl">音频文件</param>
         /// <param name="npcName">NPC名称</param>
-        /// <param name="trackEvent">播放事件</param>
-        /// <param name="source">传播距离检测源头玩家</param>
-        /// <param name="extraPlay">额外可接收音频的玩家</param>
-        /// <param name="isSole">是否覆盖播放</param>
+        /// <param name="trackEvent">播放事件(可null)</param>
+        /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
+        /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
+        /// <param name="extraPlay">额外可接收音频的玩家(可null)</param>
+        /// <param name="isSole">[弃用]是否覆盖播放</param>
         /// <param name="volume">音量大小</param>
-        /// <param name="isUrl">是否Url</param>
+        /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false, bool isUrl = true)
+        public AudioPlayerBase PlayUrl(string musicUrl, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
-            if (isUrl)
+            try
             {
-                try
+                if (trackEvent.HasValue)
                 {
-                    OnTrackLoaded += trackEvent.TrackLoaded;
-                    if (!MusicNpc.TryGetValue(npcName, out ReferenceHub npc))
+                    OnTrackLoaded += trackEvent.Value.TrackLoaded;
+                }
+
+                ReferenceHub npc = CreateMusicNpc(npcName);
+                audioPlayerBase = Get(npc);
+
+                if (distance != -1)
+                {
+                    if (source != null)
                     {
-                        npc = CreateMusicNpc(npcName);
-                        audioPlayerBase = Get(npc);
-                    }
-                    else
-                    {
-                        if (!isSole)
+                        if (distance == 0)
                         {
-                            npc = CreateMusicNpc(npcName);
-                            audioPlayerBase = Get(npc);
-                            MusicNpc.Add(num + npcName, npc);
-                            num++;
+                            audioPlayerBase.BroadcastTo.Add(npc.PlayerId);
+                        }
+                        else
+                        {
+                            audioPlayerBase.BroadcastTo = FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id).ToList();
                         }
                     }
 
                     if (extraPlay != null)
                     {
-                        audioPlayerBase.AudioToPlay = extraPlay.Select((s) => { return s.ExPlayer.UserId; }).ToList();
-                    }
-
-                    if (distance != 0)
-                    {
-                        foreach (var player in Player.List.Where(p => Vector3.Distance(p.Position, source.ExPlayer.Position) <= distance))
+                        foreach (var player in extraPlay)
                         {
-                            audioPlayerBase.AudioToPlay.Add(player.UserId);
+                            if (!audioPlayerBase.BroadcastTo.Contains(player.ExPlayer.Id))
+                            {
+                                audioPlayerBase.BroadcastTo.Add(player.ExPlayer.Id);
+                            }
                         }
                     }
-                    audioPlayerBase.AllowUrl = true;
-                    audioPlayerBase.Enqueue(musicFile, 0);
-                    audioPlayerBase.Volume = volume;
-                    audioPlayerBase.Loop = isLoop;
-                    audioPlayerBase.Play(0);
                 }
-                catch (Exception)
-                {
-                    Stop(audioPlayerBase);
-                }
+
+                audioPlayerBase.CurrentPlay = musicUrl;
+                audioPlayerBase.Volume = volume;
+                audioPlayerBase.Loop = isLoop;
+                audioPlayerBase.AllowUrl = true;
+                audioPlayerBase.Play(-1);
+            }
+            catch (Exception)
+            {
+                Stop(audioPlayerBase);
             }
             return audioPlayerBase;
         }
