@@ -34,20 +34,5 @@ namespace YongAnFrame
         {
             return FramePlayer.Get(p);
         }
-
-        /// <summary>
-        /// <seealso cref="SpawnableTeamType"/>转换为<seealso cref="RefreshTeamType"/>
-        /// </summary>
-        /// <param name="stp"></param>
-        /// <returns></returns>
-        public static RefreshTeamType ToRefreshTeamType(this SpawnableTeamType stp)
-        {
-            return stp switch
-            {
-                SpawnableTeamType.ChaosInsurgency => RefreshTeamType.CI,
-                SpawnableTeamType.NineTailedFox => RefreshTeamType.MTF,
-                _ => RefreshTeamType.Start,
-            };
-        }
     }
 }

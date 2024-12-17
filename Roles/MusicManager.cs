@@ -49,6 +49,7 @@ namespace YongAnFrame.Roles
             ReferenceHub hubNpc = newNpc.GetComponent<ReferenceHub>();
             NetworkServer.AddPlayerForConnection(new FakeConnection(0), newNpc);
             hubNpc.nicknameSync.Network_myNickSync = name;
+            hubNpc.authManager.NetworkSyncedUserId = null;
             MusicNpc.Add($"{num++}:{name}", hubNpc);
             return hubNpc;
         }
