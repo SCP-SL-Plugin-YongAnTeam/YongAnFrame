@@ -1,6 +1,6 @@
-﻿using YongAnFrame.Players;
+﻿using YongAnFrame.Features.Players;
 
-namespace YongAnFrame.Roles.Interfaces
+namespace YongAnFrame.Features.Roles.Interfaces
 {
     public interface ISkillActiveStart : ISkill
     {

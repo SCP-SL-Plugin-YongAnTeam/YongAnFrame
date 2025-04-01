@@ -1,12 +1,14 @@
 ﻿using MEC;
+using System;
 using System.Collections.Generic;
 using YongAnFrame.Components;
 
-namespace YongAnFrame.Players
+namespace YongAnFrame.Features.Players
 {
     /// <summary>
     /// 提示系统管理器
     /// </summary>
+    [Obsolete("提示管理器已作废，现在所有提示的业务交给HSM", true)]
     public sealed class HintManager
     {
         private readonly FramePlayer fPlayer;
@@ -30,7 +32,7 @@ namespace YongAnFrame.Players
                 string[] text = new string[36];
 
                 int used = 0;
-                text[used] = $"YongAnFrame 1.0.0-Beta5";
+                text[used] = $"YongAnFrame 1.0.0-Beta6";
 
                 if (fPlayer.ExPlayer.DoNotTrack && !fPlayer.IsBDNT)
                 {
@@ -38,14 +40,14 @@ namespace YongAnFrame.Players
                 }
 
                 used = 1;
-                text[used] = "<align=left><noparse>";
+                text[used] = "<align=left>";
 
                 for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
                     Text chatText = ChatTexts[i];
                     if (chatText != null)
                     {
-                        text[used] += chatText;
+                        text[used] += $"<noparse>{chatText}</noparse>";
                         chatText.Duration--;
 
                         if (chatText.Duration <= 0)
@@ -60,13 +62,15 @@ namespace YongAnFrame.Players
                     }
                     used++;
                 }
-                text[used] = "</noparse>";
+                text[used] = "</align>";
 
                 foreach (Text data in CustomText)
                 {
                     text[used] += data ?? Text.Empty;
                     used++;
                 }
+
+                text[used] = "<align=left>";
 
                 for (int i = 0; i < MessageTexts.Capacity; i++)
                 {

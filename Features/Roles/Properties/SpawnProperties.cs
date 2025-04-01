@@ -1,6 +1,6 @@
-﻿using YongAnFrame.Roles.Enums;
+﻿using YongAnFrame.Features.Roles.Enums;
 
-namespace YongAnFrame.Roles.Properties
+namespace YongAnFrame.Features.Roles.Properties
 {
     public struct SpawnProperties
     {

@@ -10,16 +10,17 @@ using Exiled.Loader;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using YongAnFrame.Players;
-using YongAnFrame.Roles.Enums;
-using YongAnFrame.Roles.Interfaces;
-using YongAnFrame.Roles.Properties;
+using YongAnFrame.Extensions;
+using YongAnFrame.Features.Players;
+using YongAnFrame.Features.Roles.Enums;
+using YongAnFrame.Features.Roles.Interfaces;
+using YongAnFrame.Features.Roles.Properties;
+using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UIs.Texts;
 
-namespace YongAnFrame.Roles
+namespace YongAnFrame.Features.Roles
 {
-    [Guid("913613e0-c6e7-4511-a079-bacc7bc0089c")]
     public abstract class CustomRolePlus : CustomRole
     {
         /// <summary>
@@ -66,24 +67,16 @@ namespace YongAnFrame.Roles
             Exiled.Events.Handlers.Server.RespawningTeam -= new CustomEventHandler<RespawningTeamEventArgs>(OnStaticRespawningTeam);
         }
 
-        private static void OnStaticRoundStarted()
-        {
-            RespawnWave = 0;
-        }
-        private static void OnStaticRespawningTeam(RespawningTeamEventArgs args)
-        {
-            RespawnWave++;
-        }
+        private static void OnStaticRoundStarted() => RespawnWave = 0;
+        private static void OnStaticRespawningTeam(RespawningTeamEventArgs args) => RespawnWave++;
+
         #endregion
 
         /// <summary>
         /// 获取这个角色所有自定义角色的属性
         /// </summary>
         /// <returns>获取的值</returns>
-        public virtual CustomRolePlusProperties[] GetAllProperties()
-        {
-            return [.. BaseData.Values];
-        }
+        public virtual CustomRolePlusProperties[] GetAllProperties() => [.. BaseData.Values];
 
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -91,26 +84,17 @@ namespace YongAnFrame.Roles
         /// <param name="player">框架玩家</param>
         /// <param name="data">返回的数据</param>
         /// <returns></returns>
-        public virtual bool Check(FramePlayer player, out CustomRolePlusProperties data)
-        {
-            return BaseData.TryGetValue(player, out data);
-        }
+        public virtual bool Check(FramePlayer player, out CustomRolePlusProperties data) => BaseData.TryGetValue(player, out data);
         /// <summary>
         /// 检查玩家是否拥有该角色
         /// </summary>
         /// <param name="player">框架玩家</param>
-        public virtual bool Check(FramePlayer player)
-        {
-            return player.CustomRolePlus == this;
-        }
+        public virtual bool Check(FramePlayer player) => player.CustomRolePlus == this;
         /// <summary>
         /// 给玩家添加这个角色
         /// </summary>
         /// <param name="player">EX玩家</param>
-        public override void AddRole(Player player)
-        {
-            AddRole(player.ToFPlayer());
-        }
+        public override void AddRole(Player player) => AddRole(player.ToFPlayer());
         /// <summary>
         /// 给玩家添加这个角色
         /// </summary>
@@ -122,6 +106,7 @@ namespace YongAnFrame.Roles
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
 
             base.AddRole(fPlayer.ExPlayer);
+            fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
 
             if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
@@ -138,7 +123,7 @@ namespace YongAnFrame.Roles
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnProperties.MusicFileName))
             {
-                MusicManager.Instance.Play(SpawnProperties.MusicFileName, $"{Name}");
+                MusicManager.Play(SpawnProperties.MusicFileName, $"{Name}");
             }
             fPlayer.UpdateShowInfo();
         }
@@ -149,10 +134,10 @@ namespace YongAnFrame.Roles
             BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
-                properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
+                properties.Skills = new Skill[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)i);
+                    properties.Skills[i] = new(fPlayer, skill, (byte)i);
                 }
             }
         }
@@ -236,10 +221,7 @@ namespace YongAnFrame.Roles
         //}
         public int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
 
-        private void OnStaticRestartingRound()
-        {
-            SpawnChanceNum = Loader.Random.StrictNext(1, 101);
-        }
+        private void OnStaticRestartingRound() => SpawnChanceNum = Loader.Random.StrictNext(1, 101);
 
 
         private void OnSpawning(SpawningEventArgs args)
@@ -267,24 +249,23 @@ namespace YongAnFrame.Roles
             FramePlayer fPlayer = args.Player.ToFPlayer();
             if (Check(fPlayer, out CustomRolePlusProperties data))
             {
-                if (data.SkillManagers != null)
+                if (data.Skills != null)
                 {
-                    foreach (var skillsManager in data.SkillManagers)
+                    foreach (var skill in data.Skills)
                     {
-                        if (args.Item.Type == skillsManager.SkillProperties.UseItem)
+                        if (args.Item.Type == skill.SkillProperties.UseItem)
                         {
-                            if (skillsManager.IsActive)
+                            if (skill.IsActive)
                             {
-                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text("技能正在持续", 5));
+                                fPlayer.UI.MessageList.Add(new MessageText("技能正在持续", 5, MessageType.System));
                             }
-                            else if (skillsManager.IsBurial)
+                            else if (skill.IsBurial)
                             {
-                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能正在冷却(CD:{skillsManager.BurialRemainingTime})", 5));
+                                fPlayer.UI.MessageList.Add(new MessageText($"技能正在冷却(CD:{skill.BurialRemainingTime})", 5, MessageType.System));
                             }
                             else
                             {
-                                skillsManager.Run();
-                                fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能[{skillsManager.SkillProperties.Name}]已经发动，持续时间：{skillsManager.SkillProperties.ActiveMaxTime}", skillsManager.SkillProperties.ActiveMaxTime));
+                                skill.Run();
                             }
                             args.IsAllowed = false;
                         }
@@ -432,10 +413,10 @@ namespace YongAnFrame.Roles
             BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
-                properties.SkillManagers = new SkillManager[skill.SkillProperties.Length];
+                properties.Skills = new Skill[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.SkillManagers[i] = new(fPlayer, skill, (byte)i);
+                    properties.Skills[i] = new(fPlayer, skill, (byte)i);
                 }
             }
         }

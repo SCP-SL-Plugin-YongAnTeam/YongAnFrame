@@ -9,41 +9,29 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
-using YongAnFrame.Players;
+using YongAnFrame.Features.Players;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 
-namespace YongAnFrame.Roles
+namespace YongAnFrame.Features
 {
     /// <summary>
-    /// 一个通用的音频控制器
+    /// 一个通用的音乐管理器
     /// </summary>
-    public sealed class MusicManager
+    public static class MusicManager
     {
-        private static readonly MusicManager instance = new();
-
-        private uint num = 0;
-        /// <summary>
-        /// 获取<seealso cref="MusicManager"/>单例
-        /// </summary>
-        public static MusicManager Instance => instance;
+        private static uint num = 0;
         /// <summary>
         /// 获取或设置放音频的玩家(NPC)
         /// </summary>
-        public Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
-        private MusicManager() { }
-
-        internal void Init()
+        public static Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
+        static MusicManager()
         {
             OnFinishedTrack += TrackFinished;
-            Log.Info("MusicManager----------OK");
         }
 
-        private void TrackFinished(AudioPlayerBase playerBase, string track, bool directPlay, ref int nextQueuePos)
-        {
-            Stop(playerBase);
-        }
+        private static void TrackFinished(AudioPlayerBase playerBase, string track, bool directPlay, ref int nextQueuePos) => Stop(playerBase);
 
-        private ReferenceHub CreateMusicNpc(string name)
+        private static ReferenceHub CreateMusicNpc(string name)
         {
             var newNpc = UnityEngine.Object.Instantiate(NetworkManager.singleton.playerPrefab);
             ReferenceHub hubNpc = newNpc.GetComponent<ReferenceHub>();
@@ -58,7 +46,7 @@ namespace YongAnFrame.Roles
         /// 立刻停止播放音频
         /// </summary>
         /// <param name="playerBase">AudioPlayerBase</param>
-        public void Stop(AudioPlayerBase playerBase)
+        public static void Stop(AudioPlayerBase playerBase)
         {
             if (playerBase == null) return;
             ReferenceHub npc = playerBase.Owner;
@@ -74,10 +62,7 @@ namespace YongAnFrame.Roles
         /// <param name="musicFile">音频文件</param>
         /// <param name="npcName">NPC名称</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName)
-        {
-            return Play(musicFile, npcName, -1);
-        }
+        public static AudioPlayerBase Play(string musicFile, string npcName) => Play(musicFile, npcName, -1);
         /// <summary>
         /// 向一名玩家播放音频
         /// </summary>
@@ -85,10 +70,7 @@ namespace YongAnFrame.Roles
         /// <param name="npcName">NPC名称</param>
         /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source)
-        {
-            return Play(musicFile, npcName, source, 0);
-        }
+        public static AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source) => Play(musicFile, npcName, source, 0);
         /// <summary>
         /// NPC向玩家播放音频
         /// </summary>
@@ -96,10 +78,7 @@ namespace YongAnFrame.Roles
         /// <param name="npcName">NPC名称</param>
         /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName,float distance)
-        {
-            return Play(musicFile, npcName, null, distance);
-        }
+        public static AudioPlayerBase Play(string musicFile, string npcName, float distance) => Play(musicFile, npcName, null, distance);
         /// <summary>
         /// 在多少米内向玩家播放音频
         /// </summary>
@@ -108,10 +87,7 @@ namespace YongAnFrame.Roles
         /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
         /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source, float distance)
-        {
-            return Play(musicFile, npcName, null, source, distance, null, false, 80, false);
-        }
+        public static AudioPlayerBase Play(string musicFile, string npcName, FramePlayer source, float distance) => Play(musicFile, npcName, null, source, distance, null, false, 80, false);
         /// <summary>
         /// 播放音频
         /// </summary>
@@ -125,7 +101,7 @@ namespace YongAnFrame.Roles
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase Play(string musicFile, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        public static AudioPlayerBase Play(string musicFile, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try
@@ -148,7 +124,7 @@ namespace YongAnFrame.Roles
                         }
                         else
                         {
-                            audioPlayerBase.BroadcastTo = FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id).ToList();
+                            audioPlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id)];
                         }
                     }
 
@@ -164,7 +140,7 @@ namespace YongAnFrame.Roles
                     }
                 }
 
-                audioPlayerBase.CurrentPlay = $"{Paths.Plugins}/{Server.Port}/YongAnPluginData/{musicFile}.ogg";
+                audioPlayerBase.CurrentPlay = $"{PathManager.Music}/{musicFile}.ogg";
                 audioPlayerBase.Volume = volume;
                 audioPlayerBase.Loop = isLoop;
                 audioPlayerBase.Play(-1);
@@ -189,7 +165,7 @@ namespace YongAnFrame.Roles
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public AudioPlayerBase PlayUrl(string musicUrl, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
+        public static AudioPlayerBase PlayUrl(string musicUrl, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, bool isSole = false, float volume = 80, bool isLoop = false)
         {
             AudioPlayerBase audioPlayerBase = null;
             try

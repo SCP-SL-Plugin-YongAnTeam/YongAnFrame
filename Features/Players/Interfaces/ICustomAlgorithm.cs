@@ -1,4 +1,4 @@
-﻿namespace YongAnFrame.Players
+﻿namespace YongAnFrame.Features.Players.Interfaces
 {
     /// <summary>
     /// 自定义算法接口

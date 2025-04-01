@@ -10,11 +10,11 @@
 ## 功能
 - 称号系统：提供动态指令运行集
 - DNT检测和BDNT(Bypass DNT)请求：使信息获取和保存符合VSR规则
-- 提示系统：提供可方便调用显示提示，拒绝冲突
+- UI系统：使用[HSM](https://github.com/MeowServer/HintServiceMeow)预制一些比较常用的UI，并且支持插件增加预制UI样式
 - 自定义角色：提供对[EXILED](https://github.com/ExMod-Team/EXILED)的自定义角色升级，部分兼容[EXILED](https://github.com/ExMod-Team/EXILED)自定义角色
 - 等级系统：提供整合统一的等级API，支持自定义算法
 - 自定义算法：提供一个可替换主要算法的属性（该功能不支持多元化，只能采用一个主要算法）
-- 音频API：提供方便更好调用SCPSLAudioApi
+- 音频API：提供更方便调用SCPSLAudioApi
 
 ## 为服务端安装框架
  如图，下载 **Release下的最新压缩包** 全部解压并合并到**EXILED目录**,如C:\Users\Administrator\Appdata\Roaming\ ，安装后请启动一次服务端，并在EXILED\Config内根据提示调整配置文件.
