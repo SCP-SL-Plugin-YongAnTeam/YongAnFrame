@@ -1,6 +1,8 @@
-﻿using YongAnFrame.Roles;
+﻿using YongAnFrame.Features.Players.Interfaces;
+using YongAnFrame.Features.Roles;
+using YongAnFrame.Features.UIs;
 
-namespace YongAnFrame.Players
+namespace YongAnFrame.Features.Players
 {
     public abstract class CustomPlayer(FramePlayer player)
     {
@@ -13,7 +15,7 @@ namespace YongAnFrame.Players
         ///<inheritdoc cref="FramePlayer.CustomRolePlus"/>
         public CustomRolePlus CustomRolePlus => FramePlayer.CustomRolePlus;
         ///<inheritdoc cref="FramePlayer.HintManager"/>
-        public HintManager HintManager => FramePlayer.HintManager;
+        public PlayerUI UI => FramePlayer.UI;
         ///<inheritdoc cref="FramePlayer.CustomAlgorithm"/>
         public ICustomAlgorithm CustomAlgorithm { get => FramePlayer.CustomAlgorithm; set => FramePlayer.CustomAlgorithm = value; }
         ///<inheritdoc cref="FramePlayer.Level"/>
@@ -32,12 +34,9 @@ namespace YongAnFrame.Players
         ///<inheritdoc cref="FramePlayer.AddExp(ulong, string)"/>
         public void AddExp(ulong exp, string name = "未知原因") => FramePlayer.AddExp(exp, name);
 
-        public void UpdateShowInfoList() => FramePlayer.UpdateShowInfo();
+        public void UpdateShowInfo() => FramePlayer.UpdateShowInfo();
 
         ///<inheritdoc cref="FramePlayer.Invalid()"/>
-        public virtual void Invalid()
-        {
-            FramePlayer = null;
-        }
+        public virtual void Invalid() => FramePlayer = null;
     }
 }

@@ -6,10 +6,14 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using YongAnFrame.Events.EventArgs.FramePlayer;
-using YongAnFrame.Roles;
-using static YongAnFrame.Players.HintManager;
+using YongAnFrame.Extensions;
+using YongAnFrame.Features.Players.Interfaces;
+using YongAnFrame.Features.Roles;
+using YongAnFrame.Features.UIs;
+using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UIs.Texts;
 
-namespace YongAnFrame.Players
+namespace YongAnFrame.Features.Players
 {
     public sealed class FramePlayer : ICustomAlgorithm
     {
@@ -44,10 +48,9 @@ namespace YongAnFrame.Players
             }
         }
         /// <summary>
-        /// 获取或设置玩家的提示系统管理器
+        /// 获取或设置玩家的UI
         /// </summary>
-        public HintManager HintManager { get; private set; }
-
+        public PlayerUI UI { get; private set; }
         /// <summary>
         /// 获取或设置玩家正在使用的主要自定义算法
         /// </summary>
@@ -109,7 +112,7 @@ namespace YongAnFrame.Players
         /// </summary>
         public string RankColor
         {
-            get => ExPlayer.RankColor; 
+            get => ExPlayer.RankColor;
             set
             {
                 if (RankColor != value)
@@ -174,7 +177,7 @@ namespace YongAnFrame.Players
         {
             ExPlayer = player;
             dictionary.Add(ExPlayer.Id, this);
-            HintManager = new HintManager(this);
+            UI = new(this);
             CustomAlgorithm = this;
             Events.Handlers.FramePlayer.OnFramePlayerCreated(new FramePlayerCreatedEventArgs(this));
             UpdateShowInfo();
@@ -192,7 +195,7 @@ namespace YongAnFrame.Players
             ulong addExp = (ulong)(exp * expMultiplier);
 
             Exp += addExp;
-            HintManager.MessageTexts.Add(new Text($"{name}，获得{exp}+{addExp - exp}经验({expMultiplier}倍经验)", 5));
+            UI.MessageList.Add(new MessageText($"{name}，获得{exp}+{addExp - exp}经验({expMultiplier}倍经验)", 5, MessageType.System));
 
             ulong needExp = CustomAlgorithm.GetNeedUpLevel(Level);
             ulong oldLevel = Level;
@@ -206,7 +209,7 @@ namespace YongAnFrame.Players
             if (oldLevel < Level)
             {
                 UpdateShowInfo();
-                HintManager.MessageTexts.Add(new Text($"恭喜你从{oldLevel}级到达{Level}级,距离下一级需要{Exp}/{needExp}经验", 8));
+                UI.MessageList.Add(new MessageText($"恭喜你从{oldLevel}级到达{Level}级,距离下一级需要{Exp}/{needExp}经验", 8, MessageType.System));
             }
         }
 
@@ -336,10 +339,7 @@ namespace YongAnFrame.Players
         #endregion
 
         ///<inheritdoc/>
-        public ulong GetNeedUpLevel(ulong level)
-        {
-            return (ulong)(100 + Math.Floor(level / 10f) * 100);
-        }
+        public ulong GetNeedUpLevel(ulong level) => (ulong)(100 + Math.Floor(level / 10f) * 100);
 
         /// <summary>
         /// 获取框架玩家
@@ -354,15 +354,13 @@ namespace YongAnFrame.Players
             }
             return null;
         }
+
         /// <summary>
         /// 获取框架玩家
         /// </summary>
         /// <param name="numId">玩家数字ID</param>
         /// <returns>框架玩家</returns>
-        public static FramePlayer Get(int numId)
-        {
-            return Get(Player.Get(numId));
-        }
+        public static FramePlayer Get(int numId) => Get(Player.Get(numId));
 
         /// <summary>
         /// 调用后该实例会立刻无效<br/>
@@ -374,13 +372,10 @@ namespace YongAnFrame.Players
             Events.Handlers.FramePlayer.OnFramePlayerInvalidating(new FramePlayerInvalidatingEventArgs(this));
             CustomRolePlus?.RemoveRole(this);
             dictionary.Remove(ExPlayer.Id);
-            HintManager?.Clean();
+            UI.Clean();
             ExPlayer = null;
         }
 
-        public static implicit operator Player(FramePlayer yPlayer)
-        {
-            return yPlayer.ExPlayer;
-        }
+        public static implicit operator Player(FramePlayer yPlayer) => yPlayer.ExPlayer;
     }
 }

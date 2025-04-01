@@ -1,19 +1,20 @@
 ﻿using MEC;
 using System.Collections.Generic;
-using YongAnFrame.Players;
-using YongAnFrame.Roles.Interfaces;
-using YongAnFrame.Roles.Properties;
-using static YongAnFrame.Roles.MusicManager;
+using YongAnFrame.Features.Players;
+using YongAnFrame.Features.Roles.Interfaces;
+using YongAnFrame.Features.Roles.Properties;
+using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UIs.Texts;
 
-namespace YongAnFrame.Roles
+namespace YongAnFrame.Features.Roles
 {
     /// <summary>
-    /// 技能控制器
+    /// 技能
     /// </summary>
     /// <param name="fPlayer"></param>
     /// <param name="skill"></param>
     /// <param name="id"></param>
-    public sealed class SkillManager(FramePlayer fPlayer, ISkill skill, byte id)
+    public sealed class Skill(FramePlayer fPlayer, ISkill skill, byte id)
     {
         /// <summary>
         /// 获取或设置技能的ID
@@ -94,26 +95,27 @@ namespace YongAnFrame.Roles
             BurialRemainingTime = SkillProperties.BurialMaxTime;
 
             coroutineHandle = Timing.RunCoroutine(Timer());
+            fPlayer.UI.MessageList.Add(new MessageText($"技能[{SkillProperties.Name}]已经发动，持续时间：{SkillProperties.ActiveMaxTime}", SkillProperties.ActiveMaxTime, MessageType.System));
         }
 
         private IEnumerator<float> Timer()
         {
             string musicFileName = SkillActiveStart?.ActiveStart(fPlayer, Id);
-            if (musicFileName != null) Instance.Play(musicFileName, $"技能发动语音", fPlayer, 10);
+            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能发动语音", fPlayer, 10);
             while (IsActive)
             {
                 ActiveRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
             musicFileName = SkillActiveEnd?.ActiveEnd(fPlayer, Id);
-            if (musicFileName != null) Instance.Play(musicFileName, $"技能结束语音", fPlayer, 10);
+            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能结束语音", fPlayer, 10);
             while (IsBurial)
             {
                 BurialRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
             musicFileName = SkillBurialEnd?.BurialEnd(fPlayer, Id);
-            if (musicFileName != null) Instance.Play(musicFileName, $"技能准备好语音", fPlayer, 10);
+            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能准备好语音", fPlayer, 10);
         }
     }
 }

@@ -3,7 +3,10 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
-using YongAnFrame.Players;
+using YongAnFrame.Extensions;
+using YongAnFrame.Features.Players;
+using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UIs.Texts;
 
 namespace YongAnFrame.Commands
 {
@@ -79,7 +82,7 @@ namespace YongAnFrame.Commands
 
                 foreach (FramePlayer yPlayer in choicePlayer)
                 {
-                    yPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"[管理员发送]{arguments.Array[2]}", duration));
+                    yPlayer.UI.MessageList.Add(new MessageText($"{arguments.Array[2]}", duration, MessageType.Admin));
                 }
                 response = "已成功运行";
                 return true;

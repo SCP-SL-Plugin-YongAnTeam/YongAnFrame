@@ -1,4 +1,4 @@
-﻿namespace YongAnFrame.Roles.Properties
+﻿namespace YongAnFrame.Features.Roles.Properties
 {
     public readonly struct SkillProperties(string name, string statement, string description, float activeMaxTime, float burialMaxTime, ItemType useItem = ItemType.Coin)
     {

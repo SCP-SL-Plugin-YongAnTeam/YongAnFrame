@@ -1,9 +1,11 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
-using YongAnFrame.Players;
-using YongAnFrame.Roles;
-using YongAnFrame.Roles.Properties;
+using YongAnFrame.Features.Players;
+using YongAnFrame.Features.Roles;
+using YongAnFrame.Features.Roles.Properties;
+using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UIs.Texts;
 
 namespace YongAnFrame.Commands
 {
@@ -26,12 +28,23 @@ namespace YongAnFrame.Commands
             if (arguments.Count >= 1 && int.TryParse(arguments.Array[1], out int num) && Player.TryGet(sender, out Player player))
             {
                 FramePlayer fPlayer = FramePlayer.Get(player);
-                
-                if (fPlayer.CustomRolePlus != null && fPlayer.CustomRolePlus.Check(fPlayer, out CustomRolePlusProperties data)) 
+
+                if (fPlayer.CustomRolePlus != null && fPlayer.CustomRolePlus.Check(fPlayer, out CustomRolePlusProperties data))
                 {
-                    SkillManager skillManager = data.SkillManagers[num];
-                    skillManager.Run();
-                    fPlayer.HintManager.MessageTexts.Add(new HintManager.Text($"技能[{skillManager.SkillProperties.Name}:{fPlayer.CustomRolePlus.GetType().GUID.ToString() + 10000}]已经发动，持续时间：{skillManager.SkillProperties.ActiveMaxTime}", skillManager.SkillProperties.ActiveMaxTime));
+                    Skill skill = data.Skills[num];
+                    if (skill.IsActive)
+                    {
+                        fPlayer.UI.MessageList.Add(new MessageText("技能正在持续", 5, MessageType.System));
+                    }
+                    else if (skill.IsBurial)
+                    {
+                        fPlayer.UI.MessageList.Add(new MessageText($"技能正在冷却(CD:{skill.BurialRemainingTime})", 5, MessageType.System));
+                    }
+                    else
+                    {
+                        skill.Run();
+                    }
+
                     response = "OK";
                     return true;
                 }

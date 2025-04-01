@@ -39,43 +39,11 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>lib\net48\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.CreditTags.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.CustomItems.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.CustomRoles.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\Exiled.Permissions.dll</HintPath>
+    <Reference Include="HintServiceMeow-Exiled">
+      <HintPath>lib\net48\HintServiceMeow-Exiled.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>lib\net48\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="NorthwoodLib, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginAPI, Version=13.1.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,9 +63,6 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>lib\net48\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\ExMod.Exiled.9.0.0-beta.1\lib\net48\YamlDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ExpCommand.cs" />
@@ -105,38 +70,63 @@
     <Compile Include="Components\CapacityList.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerCreatedEventArgs.cs" />
     <Compile Include="Events\EventArgs\FramePlayer\FramePlayerInvalidingEventArgs.cs" />
-    <Compile Include="Players\ICustomAlgorithm.cs" />
-    <Compile Include="Players\PlayerTitle.cs" />
-    <Compile Include="Players\CustomPlayer.cs" />
+    <Compile Include="Features\LogManager.cs" />
+    <Compile Include="Patch\AddLogPatch.cs" />
+    <Compile Include="Features\PathManager.cs" />
+    <Compile Include="Features\Players\Interfaces\ICustomAlgorithm.cs" />
+    <Compile Include="Features\Players\PlayerTitle.cs" />
+    <Compile Include="Features\Players\CustomPlayer.cs" />
     <Compile Include="Events\Handlers\FramePlayer.cs" />
-    <Compile Include="Roles\CustomRolePlus.cs" />
-    <Compile Include="Roles\Properties\CustomRolePlusProperties.cs" />
-    <Compile Include="Roles\Interfaces\ISkill.cs" />
-    <Compile Include="Roles\Interfaces\ISkillActiveEnd.cs" />
-    <Compile Include="Roles\Interfaces\ISkillActiveStart.cs" />
-    <Compile Include="Roles\Interfaces\ISkillBurialEnd.cs" />
+    <Compile Include="Features\UIs\Enums\MessageType.cs" />
+    <Compile Include="Features\UIs\Enums\ChatType.cs" />
+    <Compile Include="Features\UIs\PlayerUI.cs" />
+    <Compile Include="Features\Roles\CustomRolePlus.cs" />
+    <Compile Include="Features\Roles\Properties\CustomRolePlusProperties.cs" />
+    <Compile Include="Features\Roles\Interfaces\ISkill.cs" />
+    <Compile Include="Features\Roles\Interfaces\ISkillActiveEnd.cs" />
+    <Compile Include="Features\Roles\Interfaces\ISkillActiveStart.cs" />
+    <Compile Include="Features\Roles\Interfaces\ISkillBurialEnd.cs" />
+    <Compile Include="Features\UIs\Texts\Text .cs" />
+    <Compile Include="Features\UIs\Texts\ChatText.cs" />
+    <Compile Include="Features\UIs\Texts\MessageText.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="YongAnFramePlugin.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\SkillCommand.cs" />
-    <Compile Include="Players\HintManager.cs" />
-    <Compile Include="Roles\MusicManager.cs" />
-    <Compile Include="Players\FramePlayer.cs" />
+    <Compile Include="Features\Players\HintManager.cs" />
+    <Compile Include="Features\MusicManager.cs" />
+    <Compile Include="Features\Players\FramePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Roles\Enums\RefreshTeamType.cs" />
-    <Compile Include="Roles\Properties\MoreProperties.cs" />
-    <Compile Include="Roles\Properties\SkillProperties.cs" />
-    <Compile Include="Roles\SkillManager.cs" />
-    <Compile Include="Roles\Properties\SpawnProperties.cs" />
-    <Compile Include="YongAnTool.cs" />
+    <Compile Include="Features\Roles\Enums\RefreshTeamType.cs" />
+    <Compile Include="Features\Roles\Properties\MoreProperties.cs" />
+    <Compile Include="Features\Roles\Properties\SkillProperties.cs" />
+    <Compile Include="Features\Roles\Skill.cs" />
+    <Compile Include="Features\Roles\Properties\SpawnProperties.cs" />
+    <Compile Include="Extensions\YongAnExtension.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".github\workflows\dev.yml" />
+    <None Include=".github\workflows\docs.yml" />
+    <None Include=".github\workflows\master.yml" />
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="docs\articles\index.md" />
+    <None Include="docs\docfx.json" />
+    <None Include="docs\index.md" />
+    <None Include="docs\toc.yml" />
     <None Include="README.md" />
+    <None Include="SECURITY.md" />
     <None Include="YongAnFrame.nuspec" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ExMod.Exiled">
+      <Version>9.6.0-beta4</Version>
+    </PackageReference>
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.3.5</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

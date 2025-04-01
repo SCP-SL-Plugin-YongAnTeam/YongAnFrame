@@ -18,17 +18,8 @@ namespace YongAnFrame.Events.Handlers
         /// </summary>
         public static Event FramePlayerHintUpdate { get; set; } = new Event();
 
-        public static void OnFramePlayerCreated(FramePlayerCreatedEventArgs args)
-        {
-            FramePlayerCreated.InvokeSafely(args);
-        }
-        public static void OnFramerHintUpdate()
-        {
-            FramePlayerHintUpdate.InvokeSafely();
-        }
-        public static void OnFramePlayerInvalidating(FramePlayerInvalidatingEventArgs args)
-        {
-            FramePlayerInvalidating.InvokeSafely(args);
-        }
+        public static void OnFramePlayerCreated(FramePlayerCreatedEventArgs args) => FramePlayerCreated.InvokeSafely(args);
+        public static void OnFramerHintUpdate() => FramePlayerHintUpdate.InvokeSafely();
+        public static void OnFramePlayerInvalidating(FramePlayerInvalidatingEventArgs args) => FramePlayerInvalidating.InvokeSafely(args);
     }
 }

@@ -2,7 +2,7 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
-using System.Linq;
+using YongAnFrame.Extensions;
 
 namespace YongAnFrame.Commands
 {

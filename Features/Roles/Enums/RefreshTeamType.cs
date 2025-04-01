@@ -1,4 +1,4 @@
-﻿namespace YongAnFrame.Roles.Enums
+﻿namespace YongAnFrame.Features.Roles.Enums
 {
     public enum RefreshTeamType
     {
