@@ -17,6 +17,6 @@ namespace YongAnFrame
         /// </summary>
         [Description("全局的经验加成")]
         public float GlobalExpMultiplier { get; set; } = 1;
-        
+
     }
 }

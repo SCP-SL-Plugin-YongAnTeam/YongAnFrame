@@ -1,6 +1,6 @@
-﻿using YongAnFrame.Roles.Properties;
+﻿using YongAnFrame.Features.Roles.Properties;
 
-namespace YongAnFrame.Roles.Interfaces
+namespace YongAnFrame.Features.Roles.Interfaces
 {
     public interface ISkill
     {

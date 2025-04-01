@@ -1,4 +1,4 @@
-﻿namespace YongAnFrame.Roles.Properties
+﻿namespace YongAnFrame.Features.Roles.Properties
 {
     /// <summary>
     /// 自定义角色玩家数据
@@ -8,7 +8,7 @@
         /// <summary>
         /// 获取或设置自定义角色的技能管理器
         /// </summary>
-        public SkillManager[] SkillManagers { get; set; }
+        public Skill[] Skills { get; set; }
         /// <summary>
         /// 获取或设置自定义角色是否正常死亡
         /// </summary>

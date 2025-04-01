@@ -1,7 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
-using YongAnFrame.Players;
+using YongAnFrame.Features.Players;
 
 namespace YongAnFrame.Commands
 {
@@ -23,11 +23,12 @@ namespace YongAnFrame.Commands
                 switch (arguments.Array[1])
                 {
                     case "BDNT":
-                        fPlayer.HintManager.Clean();
-                        fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Translation.BypassDoNotTrack.Split('\n')}</size>", 10000f);
+                        // 等待重置
+                        //fPlayer.HintManager.Clean();
+                        //fPlayer.ExPlayer.ShowHint($"<size=20>{YongAnFramePlugin.Instance.Translation.BypassDoNotTrack.Split('\n')}</size>", 10000f);
                         return true;
                     case "INFO":
-                        
+
                         return true;
                 }
             }

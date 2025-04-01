@@ -1,3 +1,5 @@
+- name: Home
+  href: index.html
 - name: Articles
   href: https://github.com/SCP-SL-Plugin-YongAnTeam/YongAnFrame/wiki/%5BCN%5D%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B
 - name: API Documentation
