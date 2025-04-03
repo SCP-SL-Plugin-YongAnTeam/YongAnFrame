@@ -188,7 +188,7 @@ namespace YongAnFrame.Features
                         }
                         else
                         {
-                            audioPlayerBase.BroadcastTo = FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id).ToList();
+                            audioPlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id)];
                         }
                     }
 
