@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace YongAnFrame.Components
 {
-    public class CapacityList<T>(int capacity, Action modify = null) : ICollection<T>, IEnumerable<T>, IEnumerable
+    public class CapacityList<T>(int capacity, Action modify = null) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
     {
         private readonly List<T> list = new(capacity);
         private readonly Action modify = modify;
@@ -55,9 +55,10 @@ namespace YongAnFrame.Components
         }
 
         /// <inheritdoc/>
-        public IEnumerator GetEnumerator() => list.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => list.GetEnumerator();
+        /// <inheritdoc/>
+        public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
 
         /// <inheritdoc/>
         public void Clear()
@@ -79,6 +80,13 @@ namespace YongAnFrame.Components
         public void RemoveAt(int index)
         {
             list.RemoveAt(index);
+            modify?.Invoke();
+        }
+
+        /// <inheritdoc/>
+        public void Insert(int index, T item)
+        {
+            list.Insert(index, item);
             modify?.Invoke();
         }
     }
