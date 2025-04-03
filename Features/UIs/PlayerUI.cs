@@ -1,6 +1,9 @@
 ﻿using HintServiceMeow.Core.Enum;
 using HintServiceMeow.Core.Models.Hints;
 using HintServiceMeow.Core.Utilities;
+using MEC;
+using System.Collections.Generic;
+using UnityEngine;
 using YongAnFrame.Components;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.UIs.Texts;
@@ -9,6 +12,7 @@ namespace YongAnFrame.Features.UIs
 {
     public class PlayerUI
     {
+
         public FramePlayer FPlayer { get; }
         /// <summary>
         /// 获取或设置<seealso cref="PlayerUI"/>的HintServiceMeow核心
@@ -18,6 +22,7 @@ namespace YongAnFrame.Features.UIs
         public CapacityList<MessageText> MessageList { get; }
         public CapacityList<ChatText> ChatList { get; }
 
+        private readonly CoroutineHandle coroutine;
         #region Hint
         private readonly Hint versionHint = new()
         {
@@ -46,9 +51,48 @@ namespace YongAnFrame.Features.UIs
         };
         #endregion
 
+        private IEnumerator<float> Timer()
+        {
+            bool isUpdate = false;
+
+            for (int i = 0; i < MessageList.Count; i++)
+            {
+                MessageText message = MessageList[i];
+                if (message.Duration <= 0)
+                {
+                    MessageList.Remove(message);
+                    i--;
+                    isUpdate = true;
+                }
+            }
+
+            if (isUpdate) UpdateMessageUI();
+            
+            isUpdate = false;
+            for (int i = 0; i < ChatList.Count; i++)
+            {
+                ChatText chat = ChatList[i];
+                if (chat.Duration <= 0)
+                {
+                    ChatList.Remove(chat);
+                    i--;
+                    isUpdate = true;
+                }
+            }
+            if (isUpdate) UpdateChatUI();
+
+            yield return Timing.WaitForSeconds(1f);
+        }
+
+        public void UpdateUI()
+        {
+            UpdateCustomRoleUI();
+            UpdateMessageUI();
+            UpdateChatUI();
+        }
+
         public void UpdateCustomRoleUI()
         {
-
             if (FPlayer.CustomRolePlus == null)
             {
                 customRoleHint.Text = null;
@@ -67,6 +111,7 @@ namespace YongAnFrame.Features.UIs
         }
         public void Clean()
         {
+            Timing.KillCoroutines(coroutine);
             PlayerDisplay.ClearHint();
         }
         public PlayerUI(FramePlayer fPlayer)
@@ -74,6 +119,7 @@ namespace YongAnFrame.Features.UIs
             FPlayer = fPlayer;
             MessageList = new(7, UpdateMessageUI);
             ChatList = new(7, UpdateChatUI);
+            coroutine = Timing.RunCoroutine(Timer());
             PlayerDisplay = PlayerDisplay.Get(fPlayer);
             PlayerDisplay.AddHint(customRoleHint);
             PlayerDisplay.AddHint(chatHint);
