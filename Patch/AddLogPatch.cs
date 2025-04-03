@@ -11,7 +11,7 @@ namespace YongAnFrame.Patch
         private static void Prefix(string q, ConsoleColor color = ConsoleColor.Gray, bool hideFromOutputs = false)
 #pragma warning restore IDE0060 // 删除未使用的参数
         {
-            LogManager.Info(q);
+            LogManager.SaveLog(q);
         }
     }
 }

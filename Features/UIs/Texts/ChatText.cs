@@ -3,7 +3,7 @@ using YongAnFrame.Features.UIs.Enums;
 
 namespace YongAnFrame.Features.UIs.Texts
 {
-    public class ChatText(string text, float duration, FramePlayer player = null, ChatType type = ChatType.Unknown) : Text(text, duration)
+    public class ChatText(string text, float duration, ChatType type = ChatType.Unknown, FramePlayer player = null) : Text(text, duration)
     {
         public ChatType Type { get; } = type;
         /// <inheritdoc/>

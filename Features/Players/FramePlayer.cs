@@ -22,7 +22,7 @@ namespace YongAnFrame.Features.Players
         private static readonly Dictionary<int, FramePlayer> dictionary = [];
 
         /// <summary>
-        /// 获取拥有该实例的 <seealso cref="Player"/>
+        /// 获取拥有该实例的<seealso cref="Player"/>
         /// </summary>
         public Player ExPlayer { get; private set; }
         /// <summary>
