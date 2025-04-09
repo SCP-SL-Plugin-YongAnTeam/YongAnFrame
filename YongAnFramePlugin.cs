@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using HarmonyLib;
 using SCPSLAudioApi;
+using YongAnFrame.Features;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
 
@@ -23,7 +24,7 @@ namespace YongAnFrame
         public Harmony Harmony { get; private set; } = new Harmony("YongAnFrame.Harmony");
 
         ///<inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.First;
+        public override PluginPriority Priority => PluginPriority.First - 1;
 
         ///<inheritdoc/>
         public override void OnEnabled()
@@ -34,6 +35,7 @@ namespace YongAnFrame
             FramePlayer.SubscribeStaticEvents();
             CustomRolePlus.SubscribeStaticEvents();
             Startup.SetupDependencies();
+            LogManager.StartTask();
             Harmony.PatchAll();
             base.OnEnabled();
         }
