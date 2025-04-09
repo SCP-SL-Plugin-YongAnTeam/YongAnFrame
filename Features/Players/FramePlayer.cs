@@ -40,9 +40,9 @@ namespace YongAnFrame.Features.Players
         {
             get
             {
-                if (ExPlayer.GetCustomRoles().Count != 0)
+                if (ExPlayer.GetCustomRoles().Count != 0 && ExPlayer.GetCustomRoles()[0] is CustomRolePlus custom)
                 {
-                    return (CustomRolePlus)ExPlayer.GetCustomRoles()[0];
+                    return custom;
                 }
                 return null;
             }
