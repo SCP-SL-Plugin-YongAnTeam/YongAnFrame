@@ -3,23 +3,31 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace YongAnFrame.Features
 {
     public static class LogManager
     {
-        private static readonly Queue<string> logQueue = new();
-        private static readonly Task logTask = new(() =>
+        private static FileStream fs;
+        private static readonly Queue<InfoData> logQueue = new();
+        private static readonly Task logTask = new(async() =>
         {
             while (true)
             {
                 while (logQueue.Count != 0)
                 {
-                    SaveLog(logQueue.Dequeue());
+                    InfoData infoData = logQueue.Dequeue();
+                    string path = $"{PathManager.Log}/{(infoData.Class is null? "Server": infoData.Class.Name)}";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using StreamWriter writer = new($"{path}/{DateTime.Now:yyyy-MM-dd}.log", true, Encoding.UTF8);
+                    writer.WriteLine(infoData);
                 }
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
         });
 
@@ -34,19 +42,21 @@ namespace YongAnFrame.Features
         public static void Info(string log)
         {
             Log.Info(log);
-            logQueue.Enqueue(log);
+            SaveLog(log, MethodBase.GetCurrentMethod().ReflectedType);
         }
 
-        public static void SaveLog(string log)
+        public static void SaveLog(string log,Type type = null)
         {
-            string path = $"{PathManager.Log}/{MethodBase.GetCurrentMethod().ReflectedType.Name}";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            using FileStream fs = new($"{path}/{DateTime.Now:yyyy-MM-dd}.log", FileMode.OpenOrCreate, FileAccess.Write);
-            using StreamWriter writer = new(fs);
-            writer.WriteLine(log);
+            logQueue.Enqueue(new InfoData(log, type));
+        }
+
+        public struct InfoData(string content, Type type)
+        {
+            public string Content { get; } = content;
+            public Type Class { get; } = type;
+            /// <inheritdoc/>
+            public override readonly string ToString() => Content;
+            public static implicit operator string(InfoData data) => data.ToString();
         }
     }
 }

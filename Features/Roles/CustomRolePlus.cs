@@ -104,7 +104,7 @@ namespace YongAnFrame.Features.Roles
             if (Check(fPlayer)) return;
 
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-
+ 
             base.AddRole(fPlayer.ExPlayer);
             fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
@@ -227,6 +227,10 @@ namespace YongAnFrame.Features.Roles
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
+            if (fPlayer.ExPlayer.GetCustomRoles().Count > 0)
+            {
+                return;
+            }
             if (IsStartSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
             {
                 switch (SpawnProperties.RefreshTeam)
