@@ -6,20 +6,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using YongAnFrame.Components;
 using YongAnFrame.Features.Players;
-using YongAnFrame.Features.UIs.Texts;
+using YongAnFrame.Features.UI.Texts;
 
-namespace YongAnFrame.Features.UIs
+namespace YongAnFrame.Features.UI
 {
+    /// <summary>
+    /// 玩家UI
+    /// </summary>
     public class PlayerUI
     {
-
+        /// <summary>
+        /// 获取拥有该实例的<seealso cref="FramePlayer"/>
+        /// </summary>
         public FramePlayer FPlayer { get; }
         /// <summary>
-        /// 获取或设置<seealso cref="PlayerUI"/>的HintServiceMeow核心
+        /// 获取<seealso cref="PlayerUI"/>的HintServiceMeow核心
         /// </summary>
         public PlayerDisplay PlayerDisplay { get; private set; }
-
+        /// <summary>
+        /// 获取消息数据列表
+        /// </summary>
         public CapacityList<MessageText> MessageList { get; }
+        /// <summary>
+        /// 获取聊天数据列表
+        /// </summary>
         public CapacityList<ChatText> ChatList { get; }
 
         private readonly CoroutineHandle coroutine;
@@ -29,13 +39,15 @@ namespace YongAnFrame.Features.UIs
             Text = "YongAnFrame 1.0.0-Beta6",
             FontSize = 20,
             Alignment = HintAlignment.Center,
-            YCoordinateAlign = HintVerticalAlign.Top
+            YCoordinateAlign = HintVerticalAlign.Top,
+            YCoordinate = 0
         };
         private readonly Hint customRoleHint = new()
         {
             FontSize = 20,
-            Alignment = HintAlignment.Left,
-            YCoordinateAlign = HintVerticalAlign.Bottom
+            Alignment = HintAlignment.Center,
+            YCoordinateAlign = HintVerticalAlign.Bottom,
+            YCoordinate = 0
         };
         private readonly Hint chatHint = new()
         {
@@ -84,6 +96,9 @@ namespace YongAnFrame.Features.UIs
             yield return Timing.WaitForSeconds(1f);
         }
 
+        /// <summary>
+        /// 更新全部UI
+        /// </summary>
         public void UpdateUI()
         {
             UpdateCustomRoleUI();
@@ -91,9 +106,12 @@ namespace YongAnFrame.Features.UIs
             UpdateChatUI();
         }
 
+        /// <summary>
+        /// 更新自定义角色UI
+        /// </summary>
         public void UpdateCustomRoleUI()
         {
-            if (FPlayer.CustomRolePlus == null)
+            if (FPlayer.CustomRolePlus is null)
             {
                 customRoleHint.Text = null;
                 return;
@@ -101,19 +119,32 @@ namespace YongAnFrame.Features.UIs
             customRoleHint.Text = $"<size=26><color=\"{FPlayer.CustomRolePlus.NameColor}\">{FPlayer.CustomRolePlus.Name}</color></size>\n\r{FPlayer.CustomRolePlus.Description}";
         }
 
+        /// <summary>
+        /// 更新消息UI
+        /// </summary>
         public void UpdateMessageUI()
         {
             messageHint.Text = string.Join("\n\r", MessageList);
         }
+        /// <summary>
+        /// 更新聊天UI
+        /// </summary>
         public void UpdateChatUI()
         {
             chatHint.Text = string.Join("\n\r", ChatList);
         }
+        /// <summary>
+        /// 构造方法，解构方法，更新聊天，，更新全部
+        /// </summary>
         public void Clean()
         {
             Timing.KillCoroutines(coroutine);
             PlayerDisplay.ClearHint();
         }
+        /// <summary>
+        /// 构造方法
+        /// </summary>
+        /// <param name="fPlayer"></param>
         public PlayerUI(FramePlayer fPlayer)
         {
             FPlayer = fPlayer;
@@ -126,6 +157,9 @@ namespace YongAnFrame.Features.UIs
             PlayerDisplay.AddHint(messageHint);
             PlayerDisplay.AddHint(versionHint);
         }
+        /// <summary>
+        /// 解构方法
+        /// </summary>
         ~PlayerUI()
         {
             Clean();

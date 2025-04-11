@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YongAnFrame.Features.Players.Interfaces;
 using YongAnFrame.Features.Roles;
-using YongAnFrame.Features.UIs;
+using YongAnFrame.Features.UI;
 
 namespace YongAnFrame.Features.Players
 {
@@ -16,7 +16,7 @@ namespace YongAnFrame.Features.Players
         ///<inheritdoc cref="FramePlayer.ExPlayer"/>
         public Player ExPlayer => FramePlayer.ExPlayer;
         ///<inheritdoc cref="FramePlayer.IsInvalid"/>
-        public bool IsInvalid => FramePlayer == null;
+        public bool IsInvalid => FramePlayer is null;
         ///<inheritdoc cref="FramePlayer.CustomRolePlus"/>
         public CustomRolePlus CustomRolePlus => FramePlayer.CustomRolePlus;
         ///<inheritdoc cref="FramePlayer.UI"/>

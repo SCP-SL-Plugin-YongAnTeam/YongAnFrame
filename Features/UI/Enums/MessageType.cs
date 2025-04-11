@@ -1,5 +1,8 @@
-﻿namespace YongAnFrame.Features.UIs.Enums
+﻿namespace YongAnFrame.Features.UI.Enums
 {
+    /// <summary>
+    /// 信息类型
+    /// </summary>
     public enum MessageType : byte
     {
         /// <summary>

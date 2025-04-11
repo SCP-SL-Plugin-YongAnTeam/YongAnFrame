@@ -1,10 +1,20 @@
 ﻿using YongAnFrame.Features.Players;
-using YongAnFrame.Features.UIs.Enums;
+using YongAnFrame.Features.UI.Enums;
 
-namespace YongAnFrame.Features.UIs.Texts
+namespace YongAnFrame.Features.UI.Texts
 {
+    /// <summary>
+    /// 给<seealso cref="PlayerUI.MessageList"/>准备的消息文本
+    /// </summary>
+    /// <param name="text">内容</param>
+    /// <param name="duration">时效</param>
+    /// <param name="type">聊天类型</param>
+    /// <param name="player">发送者(可null，null时是匿名)</param>
     public class ChatText(string text, float duration, ChatType type = ChatType.Unknown, FramePlayer player = null) : Text(text, duration)
     {
+        /// <summary>
+        /// 获取聊天类型
+        /// </summary>
         public ChatType Type { get; } = type;
         /// <inheritdoc/>
         public override string ToString()
@@ -30,8 +40,15 @@ namespace YongAnFrame.Features.UIs.Texts
             return text;
         }
 
-
+        /// <summary>
+        /// 隐性转换
+        /// </summary>
+        /// <param name="text">准备转换的对象</param>
         public static implicit operator string(ChatText text) => text.ToString();
+        /// <summary>
+        /// 隐性转换
+        /// </summary>
+        /// <param name="text">准备转换的对象</param>
         public static implicit operator ChatText(string text) => new(text, 60);
     }
 }

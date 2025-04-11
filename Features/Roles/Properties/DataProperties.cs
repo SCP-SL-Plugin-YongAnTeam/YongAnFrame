@@ -1,9 +1,9 @@
 ﻿namespace YongAnFrame.Features.Roles.Properties
 {
     /// <summary>
-    /// 自定义角色玩家数据
+    /// 自定义角色数据
     /// </summary>
-    public class CustomRolePlusProperties
+    public class DataProperties
     {
         /// <summary>
         /// 获取或设置自定义角色的技能管理器

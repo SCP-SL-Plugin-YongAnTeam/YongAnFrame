@@ -45,7 +45,7 @@ namespace YongAnFrame.Features.Players
                 for (int i = 0; i < ChatTexts.Capacity; i++)
                 {
                     Text chatText = ChatTexts[i];
-                    if (chatText != null)
+                    if (chatText is not null)
                     {
                         text[used] += $"<noparse>{chatText}</noparse>";
                         chatText.Duration--;
@@ -75,7 +75,7 @@ namespace YongAnFrame.Features.Players
                 for (int i = 0; i < MessageTexts.Capacity; i++)
                 {
                     Text messageText = MessageTexts[i];
-                    if (messageText != null)
+                    if (messageText is not null)
                     {
                         text[used] = $"[{messageText.Duration}]{messageText}";
 
@@ -94,7 +94,7 @@ namespace YongAnFrame.Features.Players
                 }
                 text[34] = "</align>";
 
-                if (fPlayer.CustomRolePlus != null)
+                if (fPlayer.CustomRolePlus is not null)
                 {
                     text[34] += $"<color=\"{fPlayer.CustomRolePlus.NameColor}\">{fPlayer.CustomRolePlus.Name}</color>";
                     text[35] = fPlayer.CustomRolePlus.Description;

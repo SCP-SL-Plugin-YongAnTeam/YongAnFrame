@@ -5,6 +5,7 @@ using SCPSLAudioApi;
 using YongAnFrame.Features;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
+using YongAnFrame.Patch;
 
 namespace YongAnFrame
 {
@@ -19,9 +20,9 @@ namespace YongAnFrame
         /// </summary>
         public static YongAnFramePlugin Instance => instance;
         /// <summary>
-        /// 
+        /// 获取<seealso cref="HarmonyLib.Harmony"/>实例
         /// </summary>
-        public Harmony Harmony { get; private set; } = new Harmony("YongAnFrame.Harmony");
+        public Harmony Harmony { get; } = new Harmony("YongAnFrame.Harmony");
 
         ///<inheritdoc/>
         public override PluginPriority Priority => PluginPriority.First - 1;
@@ -35,7 +36,7 @@ namespace YongAnFrame
             FramePlayer.SubscribeStaticEvents();
             CustomRolePlus.SubscribeStaticEvents();
             Startup.SetupDependencies();
-            LogManager.StartTask();
+            AddLogPatch.StartTask();
             Harmony.PatchAll();
             base.OnEnabled();
         }
