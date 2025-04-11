@@ -16,8 +16,8 @@ using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles.Enums;
 using YongAnFrame.Features.Roles.Interfaces;
 using YongAnFrame.Features.Roles.Properties;
-using YongAnFrame.Features.UIs.Enums;
-using YongAnFrame.Features.UIs.Texts;
+using YongAnFrame.Features.UI.Enums;
+using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Features.Roles
 {
@@ -35,11 +35,11 @@ namespace YongAnFrame.Features.Roles
         /// 获取或设置自定义角色是否开启生成
         /// </summary>
         public bool IsStartSpawn { get; set; } = true;
-        internal Dictionary<FramePlayer, CustomRolePlusProperties> BaseData { get; } = [];
+        internal Dictionary<FramePlayer, DataProperties> BaseData { get; } = [];
         /// <summary>
-        /// 获取或设置自定义角色的更多属性
+        /// 获取或设置自定义角色的基础属性
         /// </summary>
-        public virtual MoreProperties MoreProperties { get; set; } = new MoreProperties();
+        public virtual BaseProperties BaseProperties { get; set; } = new BaseProperties();
         /// <summary>
         /// 获取或设置自定义角色的名字颜色
         /// </summary>
@@ -76,7 +76,7 @@ namespace YongAnFrame.Features.Roles
         /// 获取这个角色所有自定义角色的属性
         /// </summary>
         /// <returns>获取的值</returns>
-        public virtual CustomRolePlusProperties[] GetAllProperties() => [.. BaseData.Values];
+        public virtual DataProperties[] GetAllProperties() => [.. BaseData.Values];
 
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -84,7 +84,7 @@ namespace YongAnFrame.Features.Roles
         /// <param name="player">框架玩家</param>
         /// <param name="data">返回的数据</param>
         /// <returns></returns>
-        public virtual bool Check(FramePlayer player, out CustomRolePlusProperties data) => BaseData.TryGetValue(player, out data);
+        public virtual bool Check(FramePlayer player, out DataProperties data) => BaseData.TryGetValue(player, out data);
         /// <summary>
         /// 检查玩家是否拥有该角色
         /// </summary>
@@ -109,28 +109,28 @@ namespace YongAnFrame.Features.Roles
             fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
 
-            if (MoreProperties.BaseMovementSpeedMultiplier < 1f)
+            if (BaseProperties.BaseMovementSpeedMultiplier < 1f)
             {
                 fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
                 fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Disabled, 1);
             }
 
-            if (MoreProperties.BaseMovementSpeedMultiplier > 1f)
+            if (BaseProperties.BaseMovementSpeedMultiplier > 1f)
             {
                 fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.MovementBoost);
-                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((MoreProperties.BaseMovementSpeedMultiplier - 1f) * 100));
+                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((BaseProperties.BaseMovementSpeedMultiplier - 1f) * 100));
             }
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
-            if (!string.IsNullOrEmpty(SpawnProperties.MusicFileName))
+            if (!string.IsNullOrEmpty(SpawnProperties.musicNameName))
             {
-                MusicManager.Play(SpawnProperties.MusicFileName, $"{Name}");
+                MusicManager.Play(SpawnProperties.musicNameName, $"{Name}");
             }
             fPlayer.UpdateShowInfo();
         }
 
         protected virtual void AddRoleData(FramePlayer fPlayer)
         {
-            CustomRolePlusProperties properties = new();
+            DataProperties properties = new();
             BaseData.Add(fPlayer, properties);
             if (this is ISkill skill)
             {
@@ -148,7 +148,7 @@ namespace YongAnFrame.Features.Roles
         public override void RemoveRole(Player player)
         {
             FramePlayer fPlayer = player.ToFPlayer();
-            if (fPlayer != null)
+            if (fPlayer is not null)
             {
                 RemoveRole(player.ToFPlayer());
             }
@@ -161,7 +161,7 @@ namespace YongAnFrame.Features.Roles
         {
             if (!Check(fPlayer)) return;
             Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-            if (Check(fPlayer, out CustomRolePlusProperties data) && !data.IsDeathHandling)
+            if (Check(fPlayer, out DataProperties data) && !data.IsDeathHandling)
             {
                 Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
             }
@@ -187,7 +187,7 @@ namespace YongAnFrame.Features.Roles
             {
                 limitCount = 0;
             }
-            if (fPlayer.CustomRolePlus == null && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
+            if (fPlayer.CustomRolePlus is null && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
             {
                 limitCount++;
                 spawnCount++;
@@ -200,7 +200,7 @@ namespace YongAnFrame.Features.Roles
         [Obsolete("旧算法遗留方法，不再进行兼容性维护")]
         public virtual bool TrySpawn(List<FramePlayer> noCustomRole, bool chanceRef = false)
         {
-            if (noCustomRole == null || noCustomRole.Count == 0) { return false; }
+            if (noCustomRole is null || noCustomRole.Count == 0) { return false; }
             return TrySpawn(noCustomRole[Loader.Random.StrictNext(0, noCustomRole.Count)]);
         }
         #endregion
@@ -251,9 +251,9 @@ namespace YongAnFrame.Features.Roles
         private void OnDroppingItem(DroppingItemEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out CustomRolePlusProperties data))
+            if (Check(fPlayer, out DataProperties data))
             {
-                if (data.Skills != null)
+                if (data.Skills is not null)
                 {
                     foreach (var skill in data.Skills)
                     {
@@ -279,24 +279,24 @@ namespace YongAnFrame.Features.Roles
         }
         private void OnHurting(HurtingEventArgs args)
         {
-            if (args.Attacker != null && args.Player != null)
+            if (args.Attacker is not null && args.Player is not null)
             {
                 if (Check(args.Player))
                 {
-                    args.Amount *= MoreProperties.DamageResistanceMultiplier;
+                    args.Amount *= BaseProperties.DamageResistanceMultiplier;
                 }
                 else if (Check(args.Attacker))
                 {
                     DamageHandler damageHandler = args.DamageHandler;
-                    float damage = damageHandler.Damage * MoreProperties.AttackDamageMultiplier;
-                    if (MoreProperties.IsAttackIgnoresArmor)
+                    float damage = damageHandler.Damage * BaseProperties.AttackDamageMultiplier;
+                    if (BaseProperties.IsAttackIgnoresArmor)
                     {
                         if (damageHandler is FirearmDamageHandler firearmDamageHandler)
                         {
                             damage += ((Exiled.API.Features.Roles.HumanRole)damageHandler.Target.Role).GetArmorEfficacy(firearmDamageHandler.Hitbox);
                         }
                     }
-                    if (MoreProperties.IsAttackIgnoresAhp)
+                    if (BaseProperties.IsAttackIgnoresAhp)
                     {
                         damage += damageHandler.AbsorbedAhpDamage;
                     }
@@ -320,9 +320,9 @@ namespace YongAnFrame.Features.Roles
         private void OnDying(DyingEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out CustomRolePlusProperties data))
+            if (Check(fPlayer, out DataProperties data))
             {
-                if (args.Attacker == null)
+                if (args.Attacker is null)
                 {
                     Cassie.MessageTranslated($"Died", $"{Name}被充满恶意的游戏环境草飞了");
                     data.IsDeathHandling = true;
@@ -392,7 +392,7 @@ namespace YongAnFrame.Features.Roles
 
     }
     [Guid("913613e0-c6e7-4511-a079-bacc7bc9000c")]
-    public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusProperties, new()
+    public abstract class CustomRolePlus<T> : CustomRolePlus where T : DataProperties, new()
     {
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -402,9 +402,9 @@ namespace YongAnFrame.Features.Roles
         /// <returns></returns>
         public virtual bool Check(FramePlayer player, out T data)
         {
-            if (BaseData.TryGetValue(player, out CustomRolePlusProperties baseData))
+            if (BaseData.TryGetValue(player, out DataProperties baseData))
             {
-                data = (T)baseData;
+                data = baseData as T;
                 return true;
             }
             data = null;

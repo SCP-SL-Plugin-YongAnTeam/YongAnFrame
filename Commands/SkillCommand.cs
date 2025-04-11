@@ -4,14 +4,11 @@ using System;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
 using YongAnFrame.Features.Roles.Properties;
-using YongAnFrame.Features.UIs.Enums;
-using YongAnFrame.Features.UIs.Texts;
+using YongAnFrame.Features.UI.Enums;
+using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Commands
 {
-    /// <summary>
-    /// 未完成请勿乱用
-    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public sealed class SkillsCommand : ICommand
     {
@@ -29,7 +26,7 @@ namespace YongAnFrame.Commands
             {
                 FramePlayer fPlayer = FramePlayer.Get(player);
 
-                if (fPlayer.CustomRolePlus != null && fPlayer.CustomRolePlus.Check(fPlayer, out CustomRolePlusProperties data))
+                if (fPlayer.CustomRolePlus is not null && fPlayer.CustomRolePlus.Check(fPlayer, out DataProperties data))
                 {
                     Skill skill = data.Skills[num];
                     if (skill.IsActive)

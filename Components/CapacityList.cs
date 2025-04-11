@@ -4,17 +4,27 @@ using System.Collections.Generic;
 
 namespace YongAnFrame.Components
 {
+    /// <summary>
+    /// 容量列表
+    /// </summary>
+    /// <typeparam name="T">存储</typeparam>
+    /// <param name="capacity">容量</param>
+    /// <param name="modify">修改委托</param>
     public class CapacityList<T>(int capacity, Action modify = null) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
     {
         private readonly List<T> list = new(capacity);
         private readonly Action modify = modify;
 
-        public int Capacity { get; set; } = capacity;
+        /// <summary>
+        /// 获取容量
+        /// </summary>
+        public int Capacity { get; } = capacity;
         /// <inheritdoc/>
         public int Count => list.Count;
         /// <inheritdoc/>
         public bool IsReadOnly => false;
 
+        /// <inheritdoc/>
         public T this[int index]
         {
             get
