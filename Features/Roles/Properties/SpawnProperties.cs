@@ -6,6 +6,7 @@ namespace YongAnFrame.Features.Roles.Properties
     {
         public SpawnProperties()
         {
+
         }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace YongAnFrame.Features.Roles.Properties
         /// <summary>
         /// 获取或设置生成时播放音频文件
         /// </summary>
-        public string MusicFileName { get; set; } = null;
+        public string musicNameName { get; set; } = null;
         /// <summary>
         /// 获取或设置生成时跟随的队伍
         /// </summary>

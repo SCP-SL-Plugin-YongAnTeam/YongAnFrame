@@ -13,7 +13,7 @@ namespace YongAnFrame
         ///<inheritdoc/>
         public bool Debug { get; set; }
         /// <summary>
-        /// 全局的经验加成
+        /// 获取或设置全局的经验加成
         /// </summary>
         [Description("全局的经验加成")]
         public float GlobalExpMultiplier { get; set; } = 1;

@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
-using YongAnFrame.Features.UIs.Enums;
-using YongAnFrame.Features.UIs.Texts;
+using YongAnFrame.Features.UI.Enums;
+using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Commands
 {
@@ -56,7 +56,7 @@ namespace YongAnFrame.Commands
                         if (int.TryParse(idString, out int id))
                         {
                             FramePlayer yPlayer = FramePlayer.Get(id);
-                            if (yPlayer != null)
+                            if (yPlayer is not null)
                             {
                                 choicePlayer.Add(yPlayer);
                             }

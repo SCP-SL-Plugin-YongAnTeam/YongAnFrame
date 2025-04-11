@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles.Interfaces;
 using YongAnFrame.Features.Roles.Properties;
-using YongAnFrame.Features.UIs.Enums;
-using YongAnFrame.Features.UIs.Texts;
+using YongAnFrame.Features.UI.Enums;
+using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Features.Roles
 {
     /// <summary>
-    /// 技能
+    /// 玩家的自定义角色技能
     /// </summary>
-    /// <param name="fPlayer"></param>
-    /// <param name="skill"></param>
-    /// <param name="id"></param>
-    public sealed class Skill(FramePlayer fPlayer, ISkill skill, byte id)
+    /// <param name="fPlayer">框架玩家</param>
+    /// <param name="skill">技能接口</param>
+    /// <param name="id">技能ID</param>
+    public class Skill(FramePlayer fPlayer, ISkill skill, byte id)
     {
         /// <summary>
-        /// 获取或设置技能的ID
+        /// 获取技能的ID
         /// </summary>
         public byte Id { get; } = id;
         private ISkillActiveStart SkillActiveStart
@@ -59,19 +59,19 @@ namespace YongAnFrame.Features.Roles
         public SkillProperties SkillProperties { get => skill.SkillProperties[Id]; }
 
         /// <summary>
-        /// 获取或设置技能是否行动
+        /// 获取技能是否行动
         /// </summary>
         public bool IsActive { get => ActiveRemainingTime > 0; }
         /// <summary>
-        /// 获取或设置技能是否冷却
+        /// 获取技能是否冷却
         /// </summary>
         public bool IsBurial { get => BurialRemainingTime > 0; }
         /// <summary>
-        /// 获取或设置技能的行动时间
+        /// 获取技能的行动时间
         /// </summary>
         public float ActiveRemainingTime { get; private set; }
         /// <summary>
-        /// 获取或设置技能的冷却时间
+        /// 获取技能的冷却时间
         /// </summary>
         public float BurialRemainingTime { get; private set; }
 
@@ -86,7 +86,7 @@ namespace YongAnFrame.Features.Roles
         /// </remarks>
         public void Run()
         {
-            if (coroutineHandle != null)
+            if (coroutineHandle.IsValid)
             {
                 Timing.KillCoroutines(coroutineHandle);
             }
@@ -100,22 +100,22 @@ namespace YongAnFrame.Features.Roles
 
         private IEnumerator<float> Timer()
         {
-            string musicFileName = SkillActiveStart?.ActiveStart(fPlayer, Id);
-            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能发动语音", fPlayer, 10);
+            string musicNameName = SkillActiveStart?.ActiveStart(fPlayer, Id);
+            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能发动语音", fPlayer, 10);
             while (IsActive)
             {
                 ActiveRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicFileName = SkillActiveEnd?.ActiveEnd(fPlayer, Id);
-            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能结束语音", fPlayer, 10);
+            musicNameName = SkillActiveEnd?.ActiveEnd(fPlayer, Id);
+            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能结束语音", fPlayer, 10);
             while (IsBurial)
             {
                 BurialRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicFileName = SkillBurialEnd?.BurialEnd(fPlayer, Id);
-            if (musicFileName != null) MusicManager.Play(musicFileName, $"技能准备好语音", fPlayer, 10);
+            musicNameName = SkillBurialEnd?.BurialEnd(fPlayer, Id);
+            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能准备好语音", fPlayer, 10);
         }
     }
 }
