@@ -2,13 +2,11 @@
 
 namespace YongAnFrame.Features.Roles.Properties
 {
-    public struct SpawnProperties
+    /// <summary>
+    /// 给<seealso cref="CustomRolePlus"/>准备的生成属性
+    /// </summary>
+    public struct SpawnProperties()
     {
-        public SpawnProperties()
-        {
-
-        }
-
         /// <summary>
         /// 获取或设置每次生成的最多数量
         /// </summary>
@@ -24,7 +22,7 @@ namespace YongAnFrame.Features.Roles.Properties
         /// <summary>
         /// 获取或设置生成时播放音频文件
         /// </summary>
-        public string musicNameName { get; set; } = null;
+        public string MusicNameName { get; set; } = null;
         /// <summary>
         /// 获取或设置生成时跟随的队伍
         /// </summary>

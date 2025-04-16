@@ -121,9 +121,9 @@ namespace YongAnFrame.Features.Roles
                 fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.MovementBoost, (byte)((BaseProperties.BaseMovementSpeedMultiplier - 1f) * 100));
             }
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
-            if (!string.IsNullOrEmpty(SpawnProperties.musicNameName))
+            if (!string.IsNullOrEmpty(SpawnProperties.MusicNameName))
             {
-                MusicManager.Play(SpawnProperties.musicNameName, $"{Name}");
+                MusicManager.Play(SpawnProperties.MusicNameName, $"{Name}");
             }
             fPlayer.UpdateShowInfo();
         }
@@ -137,7 +137,7 @@ namespace YongAnFrame.Features.Roles
                 properties.Skills = new Skill[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.Skills[i] = new(fPlayer, skill, (byte)i);
+                    properties.Skills[i] = new(fPlayer, skill.SkillProperties[i]);
                 }
             }
         }
@@ -196,13 +196,6 @@ namespace YongAnFrame.Features.Roles
             }
             return false;
         }
-
-        [Obsolete("旧算法遗留方法，不再进行兼容性维护")]
-        public virtual bool TrySpawn(List<FramePlayer> noCustomRole, bool chanceRef = false)
-        {
-            if (noCustomRole is null || noCustomRole.Count == 0) { return false; }
-            return TrySpawn(noCustomRole[Loader.Random.StrictNext(0, noCustomRole.Count)]);
-        }
         #endregion
 
         #region Events
@@ -257,7 +250,7 @@ namespace YongAnFrame.Features.Roles
                 {
                     foreach (var skill in data.Skills)
                     {
-                        if (args.Item.Type == skill.SkillProperties.UseItem)
+                        if (args.Item.Type == skill.UseItem)
                         {
                             if (skill.IsActive)
                             {
@@ -316,7 +309,6 @@ namespace YongAnFrame.Features.Roles
                 }
             }
         }
-
         private void OnDying(DyingEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
@@ -349,7 +341,6 @@ namespace YongAnFrame.Features.Roles
                 data.IsDeathHandling = true;
             }
         }
-
         protected override void SubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
@@ -391,7 +382,6 @@ namespace YongAnFrame.Features.Roles
         }
 
     }
-    [Guid("913613e0-c6e7-4511-a079-bacc7bc9000c")]
     public abstract class CustomRolePlus<T> : CustomRolePlus where T : DataProperties, new()
     {
         /// <summary>
@@ -411,6 +401,7 @@ namespace YongAnFrame.Features.Roles
             return false;
         }
 
+        /// <inheritdoc/>
         protected override void AddRoleData(FramePlayer fPlayer)
         {
             T properties = new();
@@ -420,7 +411,7 @@ namespace YongAnFrame.Features.Roles
                 properties.Skills = new Skill[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.Skills[i] = new(fPlayer, skill, (byte)i);
+                    properties.Skills[i] = new(fPlayer, skill.SkillProperties[i]);
                 }
             }
         }

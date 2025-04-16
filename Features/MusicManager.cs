@@ -198,14 +198,14 @@ namespace YongAnFrame.Features
     public readonly struct TrackEvent(PlayMusic playMusic, StopMusic stopMusic)
     {
         /// <summary>
-        /// 播放音频委托
+        /// 播放音频
         /// </summary>
         /// <param name="playerBase">音频处理的<seealso cref="AudioPlayerBase"/>类</param>
         /// <param name="directPlay">是否直接播放</param>
         /// <param name="queuePos">音频排队牵引</param>
         public delegate void PlayMusic(AudioPlayerBase playerBase, bool directPlay, int queuePos);
         /// <summary>
-        /// 停止音频委托
+        /// 停止音频
         /// </summary>
         /// <param name="playerBase">音频处理的<seealso cref="AudioPlayerBase"/>类</param>
         /// <param name="directPlay">是否直接播放</param>

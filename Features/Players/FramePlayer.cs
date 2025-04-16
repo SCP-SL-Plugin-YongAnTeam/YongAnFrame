@@ -48,7 +48,7 @@ namespace YongAnFrame.Features.Players
             }
         }
         /// <summary>
-        /// 获取或设置玩家的UI
+        /// 获取玩家的UI
         /// </summary>
         public PlayerUI UI { get; private set; }
         /// <summary>
