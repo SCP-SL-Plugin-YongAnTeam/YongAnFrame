@@ -8,9 +8,7 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Features;
 using Exiled.Loader;
 using PlayerRoles;
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles.Enums;
@@ -104,7 +102,7 @@ namespace YongAnFrame.Features.Roles
             if (Check(fPlayer)) return;
 
             Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
- 
+
             base.AddRole(fPlayer.ExPlayer);
             fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
@@ -123,7 +121,7 @@ namespace YongAnFrame.Features.Roles
             if (!string.IsNullOrEmpty(SpawnProperties.Info)) Cassie.MessageTranslated($""/*ADMINISTER TEAM DESIGNATED {CASSIEDeathName} HASENTERED*/, SpawnProperties.Info, true, true, true);
             if (!string.IsNullOrEmpty(SpawnProperties.MusicNameName))
             {
-                MusicManager.Play(SpawnProperties.MusicNameName, $"{Name}");
+                MusicManager.Play(SpawnProperties.MusicNameName!, $"{Name}");
             }
             fPlayer.UpdateShowInfo();
         }
@@ -220,7 +218,7 @@ namespace YongAnFrame.Features.Roles
         private void OnSpawning(SpawningEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (fPlayer.ExPlayer.GetCustomRoles().Count > 0)
+            if (fPlayer.ExPlayer?.GetCustomRoles().Count > 0)
             {
                 return;
             }
@@ -390,7 +388,7 @@ namespace YongAnFrame.Features.Roles
         /// <param name="player">框架玩家</param>
         /// <param name="data">返回的数据</param>
         /// <returns></returns>
-        public virtual bool Check(FramePlayer player, out T data)
+        public virtual bool Check(FramePlayer player, out T? data)
         {
             if (BaseData.TryGetValue(player, out DataProperties baseData))
             {

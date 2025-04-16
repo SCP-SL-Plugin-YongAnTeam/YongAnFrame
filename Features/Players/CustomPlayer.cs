@@ -1,9 +1,6 @@
 ﻿using Exiled.API.Features;
-using System.Collections.Generic;
-using System.Linq;
 using YongAnFrame.Features.Players.Interfaces;
 using YongAnFrame.Features.Roles;
-using YongAnFrame.Features.UI;
 
 namespace YongAnFrame.Features.Players
 {
@@ -18,7 +15,7 @@ namespace YongAnFrame.Features.Players
         ///<inheritdoc cref="FramePlayer.IsInvalid"/>
         public bool IsInvalid => FramePlayer is null;
         ///<inheritdoc cref="FramePlayer.CustomRolePlus"/>
-        public CustomRolePlus CustomRolePlus => FramePlayer.CustomRolePlus;
+        public CustomRolePlus? CustomRolePlus => FramePlayer.CustomRolePlus;
         ///<inheritdoc cref="FramePlayer.UI"/>
         public PlayerUI UI => FramePlayer.UI;
         ///<inheritdoc cref="FramePlayer.CustomAlgorithm"/>
@@ -32,14 +29,14 @@ namespace YongAnFrame.Features.Players
         ///<inheritdoc cref="FramePlayer.IsBDNT"/>
         public bool IsBDNT { get => FramePlayer.IsBDNT; set => FramePlayer.IsBDNT = value; }
         ///<inheritdoc cref="FramePlayer.UsingTitles"/>
-        public PlayerTitle UsingTitles { get => FramePlayer.UsingTitles; set => FramePlayer.UsingTitles = value; }
+        public PlayerTitle? UsingTitles { get => FramePlayer.UsingTitles; set => FramePlayer.UsingTitles = value; }
         ///<inheritdoc cref="FramePlayer.UsingRankTitles"/>
-        public PlayerTitle UsingRankTitles { get => FramePlayer.UsingRankTitles; set => FramePlayer.UsingRankTitles = value; }
+        public PlayerTitle? UsingRankTitles { get => FramePlayer.UsingRankTitles; set => FramePlayer.UsingRankTitles = value; }
         ///<inheritdoc cref="FramePlayer.AddExp(ulong, string)"/>
         public void AddExp(ulong exp, string name = "未知原因") => FramePlayer.AddExp(exp, name);
         public void UpdateShowInfo() => FramePlayer.UpdateShowInfo();
         ///<inheritdoc cref="FramePlayer.Invalid()"/>
-        public virtual void Invalid() => FramePlayer = null;
+        public abstract void Invalid();
 
         public static implicit operator FramePlayer(CustomPlayer yPlayer) => yPlayer.FramePlayer;
     }

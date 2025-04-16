@@ -1,5 +1,4 @@
-﻿using YongAnFrame.Features.Players;
-using static YongAnFrame.Features.Roles.Skill;
+﻿using static YongAnFrame.Features.Roles.Skill;
 
 namespace YongAnFrame.Features.Roles.Properties
 {

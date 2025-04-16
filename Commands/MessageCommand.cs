@@ -55,7 +55,7 @@ namespace YongAnFrame.Commands
 
                         if (int.TryParse(idString, out int id))
                         {
-                            FramePlayer yPlayer = FramePlayer.Get(id);
+                            FramePlayer? yPlayer = FramePlayer.Get(id);
                             if (yPlayer is not null)
                             {
                                 choicePlayer.Add(yPlayer);

@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
+using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
 using YongAnFrame.Features.Roles.Properties;
@@ -24,10 +25,16 @@ namespace YongAnFrame.Commands
 
             if (arguments.Count >= 1 && int.TryParse(arguments.Array[1], out int num) && Player.TryGet(sender, out Player player))
             {
-                FramePlayer fPlayer = FramePlayer.Get(player);
+                FramePlayer fPlayer = player.ToFPlayer();
 
                 if (fPlayer.CustomRolePlus is not null && fPlayer.CustomRolePlus.Check(fPlayer, out DataProperties data))
                 {
+                    if (data.Skills == null)
+                    {
+                        response = "角色没有技能";
+                        return false;
+                    }
+
                     Skill skill = data.Skills[num];
                     if (skill.IsActive)
                     {

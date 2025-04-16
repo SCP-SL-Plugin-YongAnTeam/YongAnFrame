@@ -22,7 +22,7 @@ namespace YongAnFrame.Features.Roles.Properties
         /// <summary>
         /// 获取或设置生成时播放音频文件
         /// </summary>
-        public string MusicNameName { get; set; } = null;
+        public string? MusicNameName { get; set; } = null;
         /// <summary>
         /// 获取或设置生成时跟随的队伍
         /// </summary>
@@ -30,7 +30,7 @@ namespace YongAnFrame.Features.Roles.Properties
         /// <summary>
         /// 暂时弃用
         /// </summary>
-        public string Info { get; set; } = null;
+        public string? Info { get; set; } = null;
         /// <summary>
         /// 获取或设置生成的数量限制
         /// </summary>

@@ -26,7 +26,7 @@ namespace YongAnFrame.Features.Players
         /// <summary>
         /// 获取称号的动态指令集
         /// </summary>
-        public List<string[]> DynamicCommand { get; private set; }
+        public List<string[]>? DynamicCommand { get; private set; }
 
         public PlayerTitle(uint id, string name, string color, bool isRank, string dynamicCommandString)
         {
@@ -43,7 +43,7 @@ namespace YongAnFrame.Features.Players
         /// <param name="dynamicCommandString"></param>
         public void SetDynamicCommand(string dynamicCommandString)
         {
-            List<string[]> dynamicCommands = null;
+            List<string[]>? dynamicCommands = null;
             if (!string.IsNullOrEmpty(dynamicCommandString))
             {
                 dynamicCommands = [];
