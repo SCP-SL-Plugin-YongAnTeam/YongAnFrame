@@ -22,22 +22,22 @@ namespace YongAnFrame.Features.UI.Texts
             switch (Type)
             {
                 case MessageType.Unknown:
-                    text = $"[未知] {text}";
+                    text = $"[{Duration}][未知] {text}";
                     break;
                 case MessageType.Admin:
-                    text = $"<color=red>[管理员]</color> {Content}";
+                    text = $"[{Duration}]<color=red>[管理员]</color> {Content}";
                     break;
                 case MessageType.Feedback:
-                    text = $"<color=purple>[玩家反馈]</color> {Content}";
+                    text = $"[{Duration}]<color=purple>[玩家反馈]</color> {Content}";
                     break;
                 case MessageType.System:
-                    text = $"[系统] {Content}";
+                    text = $"[{Duration}][系统] {Content}";
                     break;
                 case MessageType.Safety:
-                    text = $"<color=orange>[安全]</color> {Content}";
+                    text = $"[{Duration}]<color=orange>[安全]</color> {Content}";
                     break;
                 case MessageType.Abnormal:
-                    text = $"<color=red>[异常]</color> {Content}";
+                    text = $"[{Duration}]<color=red>[异常]</color> {Content}";
                     break;
                 default:
                     break;

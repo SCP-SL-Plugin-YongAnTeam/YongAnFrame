@@ -82,10 +82,7 @@
     <Compile Include="Features\Roles\CustomRolePlus.cs" />
     <Compile Include="Features\Roles\Properties\DataProperties.cs" />
     <Compile Include="Features\Roles\Interfaces\ISkill.cs" />
-    <Compile Include="Features\Roles\Interfaces\ISkillActiveEnd.cs" />
-    <Compile Include="Features\Roles\Interfaces\ISkillActiveStart.cs" />
-    <Compile Include="Features\Roles\Interfaces\ISkillBurialEnd.cs" />
-    <Compile Include="Features\UI\Texts\Text .cs" />
+    <Compile Include="Features\UI\Texts\Text.cs" />
     <Compile Include="Features\UI\Texts\ChatText.cs" />
     <Compile Include="Features\UI\Texts\MessageText.cs" />
     <Compile Include="Translation.cs" />
@@ -93,7 +90,6 @@
     <Compile Include="YongAnFramePlugin.cs" />
     <Compile Include="Commands\MessageCommand.cs" />
     <Compile Include="Commands\SkillCommand.cs" />
-    <Compile Include="Features\Players\HintManager.cs" />
     <Compile Include="Features\MusicManager.cs" />
     <Compile Include="Features\Players\FramePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
