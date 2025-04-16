@@ -9,8 +9,8 @@ namespace YongAnFrame.Features.UI.Texts
     /// <param name="text">内容</param>
     /// <param name="duration">时效</param>
     /// <param name="type">聊天类型</param>
-    /// <param name="player">发送者(可null，null时是匿名)</param>
-    public class ChatText(string text, float duration, ChatType type = ChatType.Unknown, FramePlayer player = null) : Text(text, duration)
+    /// <param name="player">发送者(null时是匿名)</param>
+    public class ChatText(string text, float duration, ChatType type = ChatType.Unknown, FramePlayer? player = null) : Text(text, duration)
     {
         /// <summary>
         /// 获取聊天类型
@@ -19,7 +19,7 @@ namespace YongAnFrame.Features.UI.Texts
         /// <inheritdoc/>
         public override string ToString()
         {
-            string text = null;
+            string text = "Error";
             switch (Type)
             {
                 case ChatType.Unknown:
@@ -33,8 +33,6 @@ namespace YongAnFrame.Features.UI.Texts
                     break;
                 case ChatType.Private:
                     text = $"[私聊]|[{(player is null ? $"<color=purple>匿名</color>" : $"{player.ExPlayer.Nickname}({player.ExPlayer.Role.Team})")}]:<noparse>{Content}</noparse>";
-                    break;
-                default:
                     break;
             }
             return text;

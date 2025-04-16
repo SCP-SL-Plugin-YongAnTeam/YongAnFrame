@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using YongAnFrame.Features;
@@ -21,7 +20,7 @@ namespace YongAnFrame.Patch
 #pragma warning restore IDE0060 // 删除未使用的参数
         {
             StackFrame stack = new StackTrace().GetFrame(2);
-            if (stack is null)
+            if (stack is not null)
             {
                 SaveLog(q, stack.GetMethod().ReflectedType.Name);
                 return;
@@ -60,15 +59,15 @@ namespace YongAnFrame.Patch
             }
         }
 
-        private static void SaveLog(string log, string className = null)
+        private static void SaveLog(string log, string? className = null)
         {
             logQueue.Enqueue(new InfoData(log, className));
         }
 
-        private readonly struct InfoData(string content, string className)
+        private readonly struct InfoData(string content, string? className)
         {
             public string Content { get; } = content;
-            public string ClassName { get; } = className;
+            public string? ClassName { get; } = className;
             public override readonly string ToString() => Content;
             public static implicit operator string(InfoData data) => data.ToString();
         }

@@ -8,7 +8,7 @@
         /// <summary>
         /// 获取或设置技能
         /// </summary>
-        public Skill[] Skills { get; internal set; }
+        public Skill[]? Skills { get; internal set; }
         /// <summary>
         /// 获取或设置是否正常死亡
         /// </summary>

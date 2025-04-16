@@ -18,7 +18,7 @@ namespace YongAnFrame.Features.UI.Texts
         /// <inheritdoc/>
         public override string ToString()
         {
-            string text = null;
+            string text = "Error";
             switch (Type)
             {
                 case MessageType.Unknown:
@@ -38,8 +38,6 @@ namespace YongAnFrame.Features.UI.Texts
                     break;
                 case MessageType.Abnormal:
                     text = $"[{Duration}]<color=red>[异常]</color> {Content}";
-                    break;
-                default:
                     break;
             }
             return text;

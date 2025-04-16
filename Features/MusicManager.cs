@@ -1,14 +1,10 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Components;
-using Exiled.API.Features.Pools;
 using Mirror;
 using SCPSLAudioApi.AudioCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using UnityEngine;
 using YongAnFrame.Features.Players;
 using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
@@ -26,7 +22,7 @@ namespace YongAnFrame.Features
         /// 获取放音频的玩家(NPC)
         /// </summary>
         public static Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
-        private static readonly Dictionary<AudioPlayerBase, Dictionary<string,TrackEvent>> trackEventDic  = [];
+        private static readonly Dictionary<AudioPlayerBase, Dictionary<string, TrackEvent>> trackEventDic = [];
         static MusicManager()
         {
             OnTrackLoaded += TrackLoaded;
@@ -35,9 +31,9 @@ namespace YongAnFrame.Features
 
         private static void TrackLoaded(AudioPlayerBase playerBase, bool directPlay, int queuePos, string track)
         {
-            if (trackEventDic.TryGetValue(playerBase,out Dictionary<string, TrackEvent> d))
+            if (trackEventDic.TryGetValue(playerBase, out Dictionary<string, TrackEvent> d))
             {
-                if (d.TryGetValue(track,out TrackEvent trackEvent))
+                if (d.TryGetValue(track, out TrackEvent trackEvent))
                 {
                     trackEvent.PlayMusicAction.Invoke(playerBase, directPlay, queuePos);
                 }
@@ -118,7 +114,7 @@ namespace YongAnFrame.Features
         /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
         /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, FramePlayer source, float distance) => Play(musicName, npcName, null, source, distance, null, 80, false);
+        public static AudioPlayerBase Play(string musicName, string npcName, FramePlayer? source, float distance) => Play(musicName, npcName, null, source, distance, null, 80, false);
         /// <summary>
         /// 播放音频
         /// </summary>
@@ -131,9 +127,12 @@ namespace YongAnFrame.Features
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, TrackEvent? trackEvent, FramePlayer source, float distance, FramePlayer[] extraPlay, float volume = 80, bool isLoop = false)
+        public static AudioPlayerBase Play(string musicName, string npcName, TrackEvent? trackEvent, FramePlayer? source, float distance, FramePlayer[]? extraPlay, float volume = 80, bool isLoop = false)
         {
-            AudioPlayerBase audioPlayerBase = null;
+            AudioPlayerBase? audioPlayerBase = null;
+            ReferenceHub npc = CreateMusicNpc(npcName);
+            audioPlayerBase = Get(npc);
+
             try
             {
                 if (trackEvent is not null)
@@ -148,9 +147,6 @@ namespace YongAnFrame.Features
                     }
                 }
 
-                ReferenceHub npc = CreateMusicNpc(npcName);
-                audioPlayerBase = Get(npc);
-
                 if (distance != -1)
                 {
                     if (source is not null)
@@ -161,7 +157,7 @@ namespace YongAnFrame.Features
                         }
                         else
                         {
-                            audioPlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer.Position, source.ExPlayer.Position) <= distance).Select((s) => s.ExPlayer.Id)];
+                            audioPlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer!.Position, source.ExPlayer!.Position) <= distance).Select((s) => s.ExPlayer!.Id)];
                         }
                     }
 

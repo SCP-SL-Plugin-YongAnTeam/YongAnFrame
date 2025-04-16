@@ -9,7 +9,6 @@ using YongAnFrame.Events.EventArgs.FramePlayer;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players.Interfaces;
 using YongAnFrame.Features.Roles;
-using YongAnFrame.Features.UI;
 using YongAnFrame.Features.UI.Enums;
 using YongAnFrame.Features.UI.Texts;
 
@@ -17,30 +16,41 @@ namespace YongAnFrame.Features.Players
 {
     public sealed class FramePlayer : ICustomAlgorithm
     {
-        private PlayerTitle usingTitles = null;
-        private PlayerTitle usingRankTitles = null;
+        private PlayerTitle? usingTitles = null;
+        private PlayerTitle? usingRankTitles = null;
         private static readonly Dictionary<int, FramePlayer> dictionary = [];
 
+        private Player? exPlayer;
         /// <summary>
         /// 获取拥有该实例的<seealso cref="Player"/>
         /// </summary>
-        public Player ExPlayer { get; private set; }
+        /// <remarks>
+        /// 在运行<seealso cref="Events.Handlers.FramePlayer.FramePlayerInvalidating"/>后实例无效，再调用可能会引发<seealso cref="InvalidCastException"/>异常<br/>
+        /// 玩家退出后<seealso cref="Player"/>必须无引用，否则会造成数字ID重复的问题
+        /// </remarks>
+        public Player ExPlayer 
+        {
+            get 
+            {
+                if (exPlayer is null)
+                {
+                    throw new InvalidCastException("该实例已无效");
+                }
+                return exPlayer;
+            }
+        }
         /// <summary>
         /// 获取有效的框架玩家列表
         /// </summary>
         public static IReadOnlyCollection<FramePlayer> List => [.. dictionary.Values];
         /// <summary>
-        /// 获取的玩家是否有效
-        /// </summary>
-        public bool IsInvalid { get => ExPlayer is null; }
-        /// <summary>
         /// 获取玩家拥有的自定义角色
         /// </summary>
-        public CustomRolePlus CustomRolePlus
+        public CustomRolePlus? CustomRolePlus
         {
             get
             {
-                if (ExPlayer.GetCustomRoles().Count != 0 && ExPlayer.GetCustomRoles()[0] is CustomRolePlus custom)
+                if (ExPlayer.GetCustomRoles().Count is not 0 && ExPlayer.GetCustomRoles()[0] is CustomRolePlus custom)
                 {
                     return custom;
                 }
@@ -75,12 +85,22 @@ namespace YongAnFrame.Features.Players
         /// <summary>
         /// 获取或设置玩家正在使用的名称称号
         /// </summary>
-        public PlayerTitle UsingTitles { get => usingTitles; set { if (value is not null && !value.IsRank) { usingTitles = value; } } }
+        public PlayerTitle? UsingTitles
+        {
+            get => usingTitles;
+            set
+            {
+                if (value is not null && !value.IsRank)
+                {
+                    usingTitles = value;
+                }
+            }
+        }
 
         /// <summary>
         /// 获取或设置玩家正在使用的地位称号
         /// </summary>
-        public PlayerTitle UsingRankTitles
+        public PlayerTitle? UsingRankTitles
         {
             get => usingRankTitles;
             set
@@ -96,7 +116,7 @@ namespace YongAnFrame.Features.Players
         /// <summary>
         /// 获取或设置玩家的地位名称。
         /// </summary>
-        public string RankName
+        public string? RankName
         {
             get => ExPlayer.RankName;
             set
@@ -110,7 +130,7 @@ namespace YongAnFrame.Features.Players
         /// <summary>
         /// 获取或设置玩家的地位颜色。
         /// </summary>
-        public string RankColor
+        public string? RankColor
         {
             get => ExPlayer.RankColor;
             set
@@ -175,7 +195,7 @@ namespace YongAnFrame.Features.Players
         /// <param name="player">Exiled玩家</param>
         internal FramePlayer(Player player)
         {
-            ExPlayer = player;
+            exPlayer = player;
             dictionary.Add(ExPlayer.Id, this);
             UI = new(this);
             CustomAlgorithm = this;
@@ -240,8 +260,8 @@ namespace YongAnFrame.Features.Players
                 return;
             }
 
-            string rankColor = null;
-            string rankName = null;
+            string? rankColor = null;
+            string? rankName = null;
 
             if (CustomRolePlus is not null)
             {
@@ -303,6 +323,10 @@ namespace YongAnFrame.Features.Players
         {
             while (true)
             {
+                if (usingRankTitles is null || usingRankTitles.DynamicCommand is null)
+                {
+                    yield break;
+                }
                 foreach (var command in usingRankTitles.DynamicCommand)
                 {
                     if (CustomRolePlus is not null)
@@ -325,6 +349,10 @@ namespace YongAnFrame.Features.Players
         {
             while (true)
             {
+                if (usingTitles is null || usingTitles.DynamicCommand is null)
+                {
+                    yield break;
+                }
                 foreach (var command in usingTitles.DynamicCommand)
                 {
                     CustomName = $"[LV:{Level}][{command[0]}]{ExPlayer.Nickname}";
@@ -346,7 +374,7 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         /// <param name="player">Exiled玩家</param>
         /// <returns>框架玩家</returns>
-        public static FramePlayer Get(Player player)
+        public static FramePlayer? Get(Player player)
         {
             if (dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
             {
@@ -360,7 +388,7 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         /// <param name="numId">玩家数字ID</param>
         /// <returns>框架玩家</returns>
-        public static FramePlayer Get(int numId) => Get(Player.Get(numId));
+        public static FramePlayer? Get(int numId) => Get(Player.Get(numId));
 
         /// <summary>
         /// 调用后该实例会立刻无效<br/>
@@ -373,7 +401,7 @@ namespace YongAnFrame.Features.Players
             CustomRolePlus?.RemoveRole(this);
             dictionary.Remove(ExPlayer.Id);
             UI.Clean();
-            ExPlayer = null;
+            exPlayer = null;
         }
 
         public static implicit operator Player(FramePlayer yPlayer) => yPlayer.ExPlayer;
