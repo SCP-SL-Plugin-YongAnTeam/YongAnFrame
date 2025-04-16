@@ -3,9 +3,11 @@ using HintServiceMeow.Core.Models.Hints;
 using HintServiceMeow.Core.Utilities;
 using MEC;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using YongAnFrame.Components;
 using YongAnFrame.Features.Players;
+using YongAnFrame.Features.Roles;
 using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Features.UI
@@ -116,7 +118,16 @@ namespace YongAnFrame.Features.UI
                 customRoleHint.Text = null;
                 return;
             }
-            customRoleHint.Text = $"<size=26><color=\"{FPlayer.CustomRolePlus.NameColor}\">{FPlayer.CustomRolePlus.Name}</color></size>\n\r{FPlayer.CustomRolePlus.Description}";
+            StringBuilder builder = new($"<size=26><color=\"{FPlayer.CustomRolePlus.NameColor}\">{FPlayer.CustomRolePlus.Name}</color></size>\n\r{FPlayer.CustomRolePlus.Description}");
+            Skill[] Skills = FPlayer.CustomRolePlus.BaseData[FPlayer].Skills;
+            if (FPlayer.CustomRolePlus.BaseData[FPlayer].Skills != null)
+            {
+                foreach (var skill in Skills)
+                {
+                    builder.AppendLine($"{skill.Name}({skill.UseItem}):{skill.Description}(激活:{skill.ActiveMaxTime}|冷却:{skill.BurialMaxTime})");
+                }
+            }
+            customRoleHint.Text = builder.ToString();
         }
 
         /// <summary>
