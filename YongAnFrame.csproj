@@ -33,6 +33,11 @@
     <None Remove=".gitignore" />
     <None Remove="LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\dev.yml" />
+    <None Include=".github\workflows\docs.yml" />
+    <None Include=".github\workflows\master.yml" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Update="README.md">

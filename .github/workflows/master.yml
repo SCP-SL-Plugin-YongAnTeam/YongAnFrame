@@ -18,21 +18,15 @@ jobs:
     
     - name: Setup Dotnet
       uses: actions/setup-dotnet@v4
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2
-
-    - name: Restore NuGet packages
-      run: nuget restore YongAnFrame.sln
         
     - name: Restore dependencies
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release
       
     - name: Generate NuGet packages
-      run: nuget pack
+      run: dotnet pack
 
     - name: Upload NuGet package
       uses: actions/upload-artifact@v4
