@@ -19,12 +19,6 @@ jobs:
     - name: Setup Dotnet
       uses: actions/setup-dotnet@v4
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2
-
-    - name: Restore NuGet
-      run: nuget restore
-
     - name: Restore dependencies
       run: dotnet restore
       
@@ -32,7 +26,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Generate NuGet packages
-      run: nuget pack
+      run: dotnet pack
 
     - name: Upload NuGet package
       uses: actions/upload-artifact@v4
