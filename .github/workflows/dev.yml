@@ -22,9 +22,9 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
 
-    - name: Restore NuGet packages
-      run: nuget restore YongAnFrame.sln
-        
+    - name: Restore NuGet
+      run: nuget restore
+
     - name: Restore dependencies
       run: dotnet restore
       

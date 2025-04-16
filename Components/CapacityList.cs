@@ -10,10 +10,10 @@ namespace YongAnFrame.Components
     /// <typeparam name="T">存储</typeparam>
     /// <param name="capacity">容量</param>
     /// <param name="modify">修改委托</param>
-    public class CapacityList<T>(int capacity, Action modify = null) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
+    public class CapacityList<T>(int capacity, Action? modify = null) : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
     {
         private readonly List<T> list = new(capacity);
-        private readonly Action modify = modify;
+        private readonly Action? modify = modify;
 
         /// <summary>
         /// 获取容量
@@ -29,11 +29,7 @@ namespace YongAnFrame.Components
         {
             get
             {
-                if (Count > index)
-                {
-                    return list[index];
-                }
-                return default;
+                return list[index];
             }
             set
             {

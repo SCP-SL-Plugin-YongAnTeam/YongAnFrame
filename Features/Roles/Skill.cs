@@ -1,12 +1,9 @@
 ﻿using MEC;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using YongAnFrame.Features.Players;
-using YongAnFrame.Features.Roles.Interfaces;
 using YongAnFrame.Features.Roles.Properties;
 using YongAnFrame.Features.UI.Enums;
 using YongAnFrame.Features.UI.Texts;
-using static YongAnFrame.Features.Roles.Skill;
 
 namespace YongAnFrame.Features.Roles
 {
@@ -109,7 +106,7 @@ namespace YongAnFrame.Features.Roles
             BurialRemainingTime = BurialMaxTime;
 
             coroutineHandle = Timing.RunCoroutine(Timer());
-            fPlayer.UI.MessageList.Add(new MessageText($"{(string.IsNullOrEmpty(Statement)?$"技能[{Name}]已经发动": $"{Name}:{Statement}")}（持续时间：{ActiveMaxTime}）", ActiveMaxTime, MessageType.System));
+            fPlayer.UI.MessageList.Add(new MessageText($"{(string.IsNullOrEmpty(Statement) ? $"技能[{Name}]已经发动" : $"{Name}:{Statement}")}（持续时间：{ActiveMaxTime}）", ActiveMaxTime, MessageType.System));
         }
 
         /// <summary>
@@ -134,7 +131,7 @@ namespace YongAnFrame.Features.Roles
 
         private IEnumerator<float> Timer()
         {
-            string musicNameName = ActiveStartAction?.Invoke(fPlayer);
+            string? musicNameName = ActiveStartAction?.Invoke(fPlayer);
             if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能发动语音", fPlayer, 10);
             while (IsActive)
             {

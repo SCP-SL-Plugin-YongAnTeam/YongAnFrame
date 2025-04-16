@@ -2,7 +2,6 @@
 using Exiled.API.Features;
 using HarmonyLib;
 using SCPSLAudioApi;
-using YongAnFrame.Features;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
 using YongAnFrame.Patch;
@@ -14,11 +13,11 @@ namespace YongAnFrame
     /// </summary>
     public sealed class YongAnFramePlugin : Plugin<Config, Translation>
     {
-        private static YongAnFramePlugin instance;
+        private static YongAnFramePlugin? instance;
         /// <summary>
         /// 获取<seealso cref="YongAnFramePlugin"/>单例
         /// </summary>
-        public static YongAnFramePlugin Instance => instance;
+        public static YongAnFramePlugin Instance => instance!;
         /// <summary>
         /// 获取<seealso cref="HarmonyLib.Harmony"/>实例
         /// </summary>
