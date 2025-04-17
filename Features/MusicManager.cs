@@ -35,7 +35,7 @@ namespace YongAnFrame.Features
             {
                 if (d.TryGetValue(track, out TrackEvent trackEvent))
                 {
-                    trackEvent.PlayMusicAction.Invoke(playerBase, directPlay, queuePos);
+                    trackEvent.PlayMusicAction?.Invoke(playerBase, directPlay, queuePos);
                 }
             }
         }
@@ -46,7 +46,7 @@ namespace YongAnFrame.Features
             {
                 if (d.TryGetValue(track, out TrackEvent trackEvent))
                 {
-                    trackEvent.StopMusicAction.Invoke(playerBase, directPlay, ref nextQueuePos);
+                    trackEvent.StopMusicAction?.Invoke(playerBase, directPlay, ref nextQueuePos);
                 }
             }
             KillMusicNpc(playerBase);
@@ -191,7 +191,7 @@ namespace YongAnFrame.Features
     /// </summary>
     /// <param name="playMusic">播放音频委托</param>
     /// <param name="stopMusic">停止音频委托</param>
-    public readonly struct TrackEvent(PlayMusic playMusic, StopMusic stopMusic)
+    public readonly struct TrackEvent(PlayMusic? playMusic, StopMusic? stopMusic)
     {
         /// <summary>
         /// 播放音频
@@ -210,10 +210,10 @@ namespace YongAnFrame.Features
         /// <summary>
         /// 获取播放音频委托
         /// </summary>
-        public PlayMusic PlayMusicAction { get; } = playMusic;
+        public PlayMusic? PlayMusicAction { get; } = playMusic;
         /// <summary>
         /// 获取停止音频委托
         /// </summary>
-        public StopMusic StopMusicAction { get; } = stopMusic;
+        public StopMusic? StopMusicAction { get; } = stopMusic;
     }
 }

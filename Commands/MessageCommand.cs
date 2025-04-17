@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.UI.Enums;
@@ -55,11 +56,7 @@ namespace YongAnFrame.Commands
 
                         if (int.TryParse(idString, out int id))
                         {
-                            FramePlayer? yPlayer = FramePlayer.Get(id);
-                            if (yPlayer is not null)
-                            {
-                                choicePlayer.Add(yPlayer);
-                            }
+                            choicePlayer.Add(FramePlayer.Get(id));
                         }
                         break;
                     }
