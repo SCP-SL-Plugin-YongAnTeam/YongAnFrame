@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using System;
+using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 
 namespace YongAnFrame.Commands
@@ -19,7 +20,7 @@ namespace YongAnFrame.Commands
             response = "NULL";
             if (arguments.Count >= 1 && Player.TryGet(sender, out Player player))
             {
-                FramePlayer? fPlayer = FramePlayer.Get(player);
+                FramePlayer fPlayer = player.ToFPlayer();
                 switch (arguments.Array[1])
                 {
                     case "BDNT":
