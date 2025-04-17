@@ -9,6 +9,7 @@ using Exiled.Events.Features;
 using Exiled.Loader;
 using PlayerRoles;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles.Enums;
@@ -101,8 +102,6 @@ namespace YongAnFrame.Features.Roles
         {
             if (Check(fPlayer)) return;
 
-            Log.Debug($"已添加{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
-
             base.AddRole(fPlayer.ExPlayer);
             fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
@@ -124,6 +123,7 @@ namespace YongAnFrame.Features.Roles
                 MusicManager.Play(SpawnProperties.MusicNameName!, $"{Name}");
             }
             fPlayer.UpdateShowInfo();
+            Log.Info($"已为{fPlayer.ExPlayer.Nickname}添加{Name}({Id})角色");
         }
 
         protected virtual void AddRoleData(FramePlayer fPlayer)
@@ -158,7 +158,6 @@ namespace YongAnFrame.Features.Roles
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
             if (!Check(fPlayer)) return;
-            Log.Debug($"已删除{fPlayer.ExPlayer.Nickname}的{Name}({Id})角色");
             if (Check(fPlayer, out DataProperties data) && !data.IsDeathHandling)
             {
                 Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
@@ -167,6 +166,7 @@ namespace YongAnFrame.Features.Roles
             BaseData.Remove(fPlayer);
             fPlayer.ExPlayer.ShowHint($"", 0.1f);
             fPlayer.UpdateShowInfo();
+            Log.Info($"已为{fPlayer.ExPlayer.Nickname}删除{Name}({Id})角色");
         }
 
         #region TrySpawn
@@ -387,12 +387,12 @@ namespace YongAnFrame.Features.Roles
         /// </summary>
         /// <param name="player">框架玩家</param>
         /// <param name="data">返回的数据</param>
-        /// <returns></returns>
+        /// <returns>是否拥有该角色</returns>
         public virtual bool Check(FramePlayer player, out T? data)
         {
             if (BaseData.TryGetValue(player, out DataProperties baseData))
             {
-                data = baseData as T;
+                data = (T)baseData;
                 return true;
             }
             data = null;

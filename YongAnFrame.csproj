@@ -6,7 +6,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <NeutralLanguage>zh-CN</NeutralLanguage>
+    <NeutralLanguage>zh-Hans</NeutralLanguage>
     <SignAssembly>False</SignAssembly>
     <VersionPrefix>1.0.0-beta6</VersionPrefix>
     <Authors>YongAn404</Authors>
@@ -22,6 +22,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>EXILED;SCPSL;SCP:SL</PackageTags>
     <RepositoryUrl>https://github.com/YongAn404/YongAnFrame</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/YongAn404/YongAnFrame</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="lib\**" />

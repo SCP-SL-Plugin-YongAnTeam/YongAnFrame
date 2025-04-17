@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using HarmonyLib;
 using SCPSLAudioApi;
+using System;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
 using YongAnFrame.Patch;
@@ -17,7 +18,17 @@ namespace YongAnFrame
         /// <summary>
         /// 获取<seealso cref="YongAnFramePlugin"/>单例
         /// </summary>
-        public static YongAnFramePlugin Instance => instance!;
+        public static YongAnFramePlugin Instance 
+        { 
+            get
+            {
+                if (instance is null)
+                {
+                    throw new InvalidCastException("YongAnFramePlugin实例已无效");
+                }
+                return instance;
+            }
+        }
         /// <summary>
         /// 获取<seealso cref="HarmonyLib.Harmony"/>实例
         /// </summary>

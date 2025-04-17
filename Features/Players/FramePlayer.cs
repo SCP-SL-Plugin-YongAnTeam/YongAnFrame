@@ -34,7 +34,7 @@ namespace YongAnFrame.Features.Players
             {
                 if (exPlayer is null)
                 {
-                    throw new InvalidCastException("该实例已无效");
+                    throw new InvalidCastException("FramePlayer实例已无效");
                 }
                 return exPlayer;
             }
@@ -374,13 +374,13 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         /// <param name="player">Exiled玩家</param>
         /// <returns>框架玩家</returns>
-        public static FramePlayer? Get(Player player)
+        public static FramePlayer Get(Player? player)
         {
-            if (dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
+            if (player is not null && dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
             {
                 return yPlayer;
             }
-            return null;
+            throw new InvalidCastException("Player实例无效?");
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         /// <param name="numId">玩家数字ID</param>
         /// <returns>框架玩家</returns>
-        public static FramePlayer? Get(int numId) => Get(Player.Get(numId));
+        public static FramePlayer Get(int numId) => Get(Player.Get(numId));
 
         /// <summary>
         /// 调用后该实例会立刻无效<br/>
