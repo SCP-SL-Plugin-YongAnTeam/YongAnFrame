@@ -18,7 +18,7 @@ namespace YongAnFrame.Features.Roles.Properties
     /// <param name="burialEnd">冷却结束委托</param>
     /// <param name="useItem">绑定物品</param>
     public readonly struct SkillProperties(string name, string statement, string description, float activeMaxTime, float burialMaxTime,
-        ActiveStart activeStart, ActiveEnd activeEnd, BurialEnd burialEnd, ItemType useItem = ItemType.Coin)
+        ActiveStart? activeStart = null, ActiveEnd? activeEnd = null, BurialEnd? burialEnd = null, ItemType useItem = ItemType.Coin)
     {
         /// <summary>
         /// 获取名称
@@ -47,14 +47,14 @@ namespace YongAnFrame.Features.Roles.Properties
         /// <summary>
         /// 获取激活开始委托
         /// </summary>
-        public ActiveStart ActiveStartAction { get; } = activeStart;
+        public ActiveStart? ActiveStartAction { get; } = activeStart;
         /// <summary>
         /// 获取激活结束委托
         /// </summary>
-        public ActiveEnd ActiveEndAction { get; } = activeEnd;
+        public ActiveEnd? ActiveEndAction { get; } = activeEnd;
         /// <summary>
         /// 获取冷却结束委托
         /// </summary>
-        public BurialEnd BurialEndAction { get; } = burialEnd;
+        public BurialEnd? BurialEndAction { get; } = burialEnd;
     }
 }

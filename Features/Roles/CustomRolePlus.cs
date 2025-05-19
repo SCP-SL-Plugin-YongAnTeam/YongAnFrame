@@ -108,8 +108,8 @@ namespace YongAnFrame.Features.Roles
 
             if (BaseProperties.BaseMovementSpeedMultiplier < 1f)
             {
-                fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Disabled);
-                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Disabled, 1);
+                fPlayer.ExPlayer.EnableEffect(Exiled.API.Enums.EffectType.Slowness);
+                fPlayer.ExPlayer.ChangeEffectIntensity(Exiled.API.Enums.EffectType.Slowness, (byte)((1f - BaseProperties.BaseMovementSpeedMultiplier) * 100));
             }
 
             if (BaseProperties.BaseMovementSpeedMultiplier > 1f)

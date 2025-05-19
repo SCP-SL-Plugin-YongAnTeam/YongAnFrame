@@ -32,15 +32,15 @@ namespace YongAnFrame.Features.Roles.Properties
         /// </summary>
         public string? Info { get; set; } = null;
         /// <summary>
-        /// 获取或设置生成的数量限制
+        /// 获取或设置生成数量限制
         /// </summary>
         public uint Limit { get; set; } = 1;
         /// <summary>
-        /// 获取或设置每次生成的概率
+        /// 获取或设置生成概率
         /// </summary>
         public float Chance { get; set; } = 100;
         /// <summary>
-        /// 获取或设置的刷新波次
+        /// 获取或设置刷新波次
         /// </summary>
         /// <remarks>
         /// 只适用于除 <seealso cref="RefreshTeamType.Start"/> 以外的所有内容
