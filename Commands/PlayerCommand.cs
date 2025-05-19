@@ -20,7 +20,7 @@ namespace YongAnFrame.Commands
             response = "NULL";
             if (arguments.Count >= 1 && Player.TryGet(sender, out Player player))
             {
-                FramePlayer fPlayer = player.ToFPlayer();
+                //FramePlayer fPlayer = player.ToFPlayer();
                 switch (arguments.Array[1])
                 {
                     case "BDNT":
