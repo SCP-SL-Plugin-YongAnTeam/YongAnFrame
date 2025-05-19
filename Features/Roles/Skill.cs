@@ -18,17 +18,17 @@ namespace YongAnFrame.Features.Roles
         /// 激活开始
         /// </summary>
         /// <returns>播放音乐文件名称</returns>
-        public delegate string ActiveStart(FramePlayer fPlayer);
+        public delegate string? ActiveStart(FramePlayer fPlayer);
         /// <summary>
         /// 激活结束
         /// </summary>
         /// <returns>播放音乐文件名称</returns>
-        public delegate string ActiveEnd(FramePlayer fPlayer);
+        public delegate string? ActiveEnd(FramePlayer fPlayer);
         /// <summary>
         /// 冷却结束
         /// </summary>
         /// <returns>播放音乐文件名称</returns>
-        public delegate string BurialEnd(FramePlayer fPlayer);
+        public delegate string? BurialEnd(FramePlayer fPlayer);
         /// <summary>
         /// 获取原始属性
         /// </summary>
@@ -60,15 +60,15 @@ namespace YongAnFrame.Features.Roles
         /// <summary>
         /// 获取激活开始委托
         /// </summary>
-        public ActiveStart ActiveStartAction { get; set; } = properties.ActiveStartAction;
+        public ActiveStart? ActiveStartAction { get; set; } = properties.ActiveStartAction;
         /// <summary>
         /// 获取激活结束委托
         /// </summary>
-        public ActiveEnd ActiveEndAction { get; set; } = properties.ActiveEndAction;
+        public ActiveEnd? ActiveEndAction { get; set; } = properties.ActiveEndAction;
         /// <summary>
         /// 获取冷却结束委托
         /// </summary>
-        public BurialEnd BurialEndAction { get; set; } = properties.BurialEndAction;
+        public BurialEnd? BurialEndAction { get; set; } = properties.BurialEndAction;
         /// <summary>
         /// 获取是否激活
         /// </summary>
@@ -131,22 +131,22 @@ namespace YongAnFrame.Features.Roles
 
         private IEnumerator<float> Timer()
         {
-            string? musicNameName = ActiveStartAction?.Invoke(fPlayer);
-            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能发动语音", fPlayer, 10);
+            string? musicName = ActiveStartAction?.Invoke(fPlayer);
+            if (musicName is not null) MusicManager.Play(musicName, $"技能发动语音", fPlayer, 10);
             while (IsActive)
             {
                 ActiveRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicNameName = ActiveEndAction?.Invoke(fPlayer);
-            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能结束语音", fPlayer, 10);
+            musicName = ActiveEndAction?.Invoke(fPlayer);
+            if (musicName is not null) MusicManager.Play(musicName, $"技能结束语音", fPlayer, 10);
             while (IsBurial)
             {
                 BurialRemainingTime--;
                 yield return Timing.WaitForSeconds(1f);
             }
-            musicNameName = BurialEndAction?.Invoke(fPlayer);
-            if (musicNameName is not null) MusicManager.Play(musicNameName, $"技能准备好语音", fPlayer, 10);
+            musicName = BurialEndAction?.Invoke(fPlayer);
+            if (musicName is not null) MusicManager.Play(musicName, $"技能准备好语音", fPlayer, 10);
         }
     }
 }

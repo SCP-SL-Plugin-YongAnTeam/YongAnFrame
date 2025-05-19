@@ -35,7 +35,7 @@ namespace YongAnFrame
         public Harmony Harmony { get; } = new Harmony("YongAnFrame.Harmony");
 
         ///<inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.First - 1;
+        public override PluginPriority Priority => PluginPriority.First;
 
         ///<inheritdoc/>
         public override void OnEnabled()
