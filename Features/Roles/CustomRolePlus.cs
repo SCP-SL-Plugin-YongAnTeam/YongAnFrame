@@ -8,6 +8,7 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Features;
 using Exiled.Loader;
 using PlayerRoles;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using YongAnFrame.Extensions;
@@ -26,6 +27,13 @@ namespace YongAnFrame.Features.Roles
         /// 不要修改这个值
         /// </summary>
         public override bool IgnoreSpawnSystem { get; set; } = false;
+        /// <summary>
+        /// 获取禁用的自定义角色生成
+        /// </summary>
+        /// <remarks>
+        /// 只能用于继承<seealso cref="CustomRolePlus"/>的类
+        /// </remarks>
+        public List<string> DisableCustomRolePlusList => YongAnFramePlugin.Instance.Config.DisableCustomRolePlus;
         /// <summary>
         /// 获取或设置自定义角色的生成属性
         /// </summary>
@@ -103,7 +111,6 @@ namespace YongAnFrame.Features.Roles
             if (Check(fPlayer)) return;
 
             base.AddRole(fPlayer.ExPlayer);
-            fPlayer.UI.UpdateCustomRoleUI();
             AddRoleData(fPlayer);
 
             if (BaseProperties.BaseMovementSpeedMultiplier < 1f)
@@ -122,7 +129,10 @@ namespace YongAnFrame.Features.Roles
             {
                 MusicManager.Play(SpawnProperties.MusicNameName!, $"{Name}");
             }
+
             fPlayer.UpdateShowInfo();
+            fPlayer.UI.UpdateCustomRoleUI();
+
             Log.Info($"已为{fPlayer.ExPlayer.Nickname}添加{Name}({Id})角色");
         }
 
@@ -145,11 +155,11 @@ namespace YongAnFrame.Features.Roles
         /// <param name="player">EX玩家</param>
         public override void RemoveRole(Player player)
         {
-            FramePlayer fPlayer = player.ToFPlayer();
-            if (fPlayer is not null)
+            try
             {
                 RemoveRole(player.ToFPlayer());
             }
+            catch (InvalidCastException){ }
         }
         /// <summary>
         /// 给玩家移除这个角色
@@ -157,19 +167,21 @@ namespace YongAnFrame.Features.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (!Check(fPlayer)) return;
-            if (Check(fPlayer, out DataProperties data) && !data.IsDeathHandling)
+            if (Check(fPlayer, out DataProperties data))
             {
-                Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
+                if (!data.IsDeathHandling)
+                {
+                    Cassie.MessageTranslated($"Died", $"{Name}游玩二游被榨干而死(非常正常死亡)");
+                }
+                base.RemoveRole(fPlayer.ExPlayer);
+                BaseData.Remove(fPlayer);
+                fPlayer.UpdateShowInfo();
+                Log.Info($"已为{fPlayer.ExPlayer.Nickname}删除{Name}({Id})角色");
             }
-            base.RemoveRole(fPlayer.ExPlayer);
-            BaseData.Remove(fPlayer);
-            fPlayer.ExPlayer.ShowHint($"", 0.1f);
-            fPlayer.UpdateShowInfo();
-            Log.Info($"已为{fPlayer.ExPlayer.Nickname}删除{Name}({Id})角色");
+
         }
 
-        #region TrySpawn
+        #region Spawn
         private uint limitCount = 0;
         private uint spawnCount = 0;
 
@@ -177,15 +189,10 @@ namespace YongAnFrame.Features.Roles
         /// 尝试给这个玩家生成这个角色
         /// </summary>
         /// <param name="fPlayer">框架玩家</param>
-        /// <param name="chanceRef">是否重置limitCount</param>
-        /// <returns></returns>
-        public virtual bool TrySpawn(FramePlayer fPlayer, bool chanceRef = false)
+        /// <returns>是否成功</returns>
+        public virtual bool TrySpawn(FramePlayer fPlayer)
         {
-            if (chanceRef)
-            {
-                limitCount = 0;
-            }
-            if (fPlayer.CustomRolePlus is null && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
+            if (fPlayer.CustomRolePlus is null && ((OldRole != RoleTypeId.None && fPlayer.ExPlayer.Role.Type == OldRole) || (OldRole == RoleTypeId.None && fPlayer.ExPlayer.Role.Type == Role)) && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
             {
                 limitCount++;
                 spawnCount++;
@@ -215,14 +222,16 @@ namespace YongAnFrame.Features.Roles
         private void OnStaticRestartingRound() => SpawnChanceNum = Loader.Random.StrictNext(1, 101);
 
 
-        private void OnSpawning(SpawningEventArgs args)
+        private void OnSpawned(SpawnedEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (fPlayer.ExPlayer?.GetCustomRoles().Count > 0)
+
+            if (fPlayer.ExPlayer.GetCustomRoles().Count > 0)
             {
                 return;
             }
-            if (IsStartSpawn && (OldRole != RoleTypeId.None && args.Player.Role.Type == OldRole) || (OldRole == RoleTypeId.None && args.Player.Role.Type == Role))
+
+            if (IsStartSpawn && !DisableCustomRolePlusList.Contains(Id.ToString()))
             {
                 switch (SpawnProperties.RefreshTeam)
                 {
@@ -342,7 +351,7 @@ namespace YongAnFrame.Features.Roles
         protected override void SubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
-            Exiled.Events.Handlers.Player.Spawning += new CustomEventHandler<SpawningEventArgs>(OnSpawning);
+            Exiled.Events.Handlers.Player.Spawned += new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
             Exiled.Events.Handlers.Player.Hurting += new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound += new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem += new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
@@ -354,7 +363,6 @@ namespace YongAnFrame.Features.Roles
             {
                 Inventory.Add(ItemType.Coin.ToString());
             }
-
         }
         protected override void UnsubscribeEvents()
         {
@@ -362,7 +370,7 @@ namespace YongAnFrame.Features.Roles
             Exiled.Events.Handlers.Player.Hurting -= new CustomEventHandler<HurtingEventArgs>(OnHurting);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnRestartingRound);
             Exiled.Events.Handlers.Player.DroppingItem -= new CustomEventHandler<DroppingItemEventArgs>(OnDroppingItem);
-            Exiled.Events.Handlers.Player.Spawning -= new CustomEventHandler<SpawningEventArgs>(OnSpawning);
+            Exiled.Events.Handlers.Player.Spawned -= new CustomEventHandler<SpawnedEventArgs>(OnSpawned);
             Exiled.Events.Handlers.Player.Dying -= new CustomEventHandler<DyingEventArgs>(OnDying);
             Exiled.Events.Handlers.Server.RestartingRound -= new CustomEventHandler(OnStaticRestartingRound);
             base.UnsubscribeEvents();

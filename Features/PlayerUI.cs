@@ -48,53 +48,55 @@ namespace YongAnFrame.Features
             FontSize = 20,
             Alignment = HintAlignment.Center,
             YCoordinateAlign = HintVerticalAlign.Bottom,
-            YCoordinate = 0
+            YCoordinate = 1200
         };
         private readonly Hint chatHint = new()
         {
             FontSize = 20,
             Alignment = HintAlignment.Right,
-            YCoordinate = 700
+            YCoordinate = 400
         };
         private readonly Hint messageHint = new()
         {
             FontSize = 20,
             Alignment = HintAlignment.Left,
-            YCoordinate = 700
+            YCoordinate = 400
         };
         #endregion
 
         private IEnumerator<float> Timer()
         {
-            bool isUpdate = false;
-
-            for (int i = 0; i < MessageList.Count; i++)
+            while (true)
             {
-                MessageText message = MessageList[i];
-                if (message.Duration <= 0)
+
+
+                for (int i = 0; i < MessageList.Count; i++)
                 {
-                    MessageList.Remove(message);
-                    i--;
-                    isUpdate = true;
+                    MessageText message = MessageList[i];
+                    if (message.Duration-- <= 0)
+                    {
+                        MessageList.Remove(message);
+                        i--;
+                    }
+                    UpdateMessageUI();
                 }
-            }
 
-            if (isUpdate) UpdateMessageUI();
+                bool isUpdate = false;
 
-            isUpdate = false;
-            for (int i = 0; i < ChatList.Count; i++)
-            {
-                ChatText chat = ChatList[i];
-                if (chat.Duration <= 0)
+                for (int i = 0; i < ChatList.Count; i++)
                 {
-                    ChatList.Remove(chat);
-                    i--;
-                    isUpdate = true;
+                    ChatText chat = ChatList[i];
+                    if (chat.Duration-- <= 0)
+                    {
+                        ChatList.Remove(chat);
+                        i--;
+                        isUpdate = true;
+                    }
                 }
-            }
-            if (isUpdate) UpdateChatUI();
+                if (isUpdate) UpdateChatUI();
 
-            yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(1f);
+            }
         }
 
         /// <summary>

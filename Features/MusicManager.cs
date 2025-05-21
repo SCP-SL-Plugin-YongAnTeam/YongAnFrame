@@ -1,13 +1,13 @@
-﻿using Exiled.API.Features;
+﻿using AudioApi.AudioCore;
+using AudioApi.AudioCore.EventArgs.Voice;
+using Exiled.API.Features;
 using Exiled.API.Features.Components;
 using Mirror;
-using SCPSLAudioApi.AudioCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using YongAnFrame.Features.Players;
-using static SCPSLAudioApi.AudioCore.AudioPlayerBase;
 using static YongAnFrame.Features.TrackEvent;
 
 namespace YongAnFrame.Features
@@ -22,34 +22,29 @@ namespace YongAnFrame.Features
         /// 获取放音频的玩家(NPC)
         /// </summary>
         public static Dictionary<string, ReferenceHub> MusicNpc { get; } = [];
-        private static readonly Dictionary<AudioPlayerBase, Dictionary<string, TrackEvent>> trackEventDic = [];
+        private static readonly Dictionary<VoicePlayerBase, TrackEvent> trackEventDic = [];
+
         static MusicManager()
         {
-            OnTrackLoaded += TrackLoaded;
-            OnFinishedTrack += TrackFinished;
+            VoicePlayerBase.OnTrackLoaded += TrackLoaded;
+            VoicePlayerBase.OnFinishedTrack += FinishedTrack;
         }
 
-        private static void TrackLoaded(AudioPlayerBase playerBase, bool directPlay, int queuePos, string track)
+        private static void TrackLoaded(TrackLoadedEventArgs args)
         {
-            if (trackEventDic.TryGetValue(playerBase, out Dictionary<string, TrackEvent> d))
+            if (trackEventDic.TryGetValue(args.VoicePlayerBase, out TrackEvent trackEvent))
             {
-                if (d.TryGetValue(track, out TrackEvent trackEvent))
-                {
-                    trackEvent.PlayMusicAction?.Invoke(playerBase, directPlay, queuePos);
-                }
+                 trackEvent.PlayMusicAction?.Invoke(args);
             }
         }
 
-        private static void TrackFinished(AudioPlayerBase playerBase, string track, bool directPlay, ref int nextQueuePos)
+        private static void FinishedTrack(TrackFinishedEventArgs args)
         {
-            if (trackEventDic.TryGetValue(playerBase, out Dictionary<string, TrackEvent> d))
+            if (trackEventDic.TryGetValue(args.VoicePlayerBase, out TrackEvent trackEvent))
             {
-                if (d.TryGetValue(track, out TrackEvent trackEvent))
-                {
-                    trackEvent.StopMusicAction?.Invoke(playerBase, directPlay, ref nextQueuePos);
-                }
+                trackEvent.StopMusicAction?.Invoke(args);
             }
-            KillMusicNpc(playerBase);
+            
         }
 
         private static ReferenceHub CreateMusicNpc(string name)
@@ -63,7 +58,7 @@ namespace YongAnFrame.Features
             return hubNpc;
         }
 
-        private static void KillMusicNpc(AudioPlayerBase playerBase)
+        private static void KillMusicNpc(VoicePlayerBase playerBase)
         {
             if (playerBase is null) return;
             ReferenceHub npc = playerBase.Owner;
@@ -76,8 +71,8 @@ namespace YongAnFrame.Features
         /// <summary>
         /// 立刻停止播放音频
         /// </summary>
-        /// <param name="playerBase">AudioPlayerBase</param>
-        public static void Stop(AudioPlayerBase playerBase)
+        /// <param name="playerBase">voicePlayerBase</param>
+        public static void Stop(VoicePlayerBase playerBase)
         {
             if (playerBase is null) return;
             playerBase.Stoptrack(true);
@@ -89,7 +84,7 @@ namespace YongAnFrame.Features
         /// <param name="musicName">音频文件</param>
         /// <param name="npcName">NPC名称</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName) => Play(musicName, npcName, -1);
+        public static VoicePlayerBase Play(string musicName, string npcName) => Play(musicName, npcName, -1);
         /// <summary>
         /// 向玩家(<paramref name="source"/>)播放音频
         /// </summary>
@@ -97,7 +92,7 @@ namespace YongAnFrame.Features
         /// <param name="npcName">NPC名称</param>
         /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, FramePlayer source) => Play(musicName, npcName, source, 0);
+        public static VoicePlayerBase Play(string musicName, string npcName, FramePlayer source) => Play(musicName, npcName, source, 0);
         /// <summary>
         /// NPC在<paramref name="distance"/>米内向玩家播放音频
         /// </summary>
@@ -105,7 +100,7 @@ namespace YongAnFrame.Features
         /// <param name="npcName">NPC名称</param>
         /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, float distance) => Play(musicName, npcName, null, distance);
+        public static VoicePlayerBase Play(string musicName, string npcName, float distance) => Play(musicName, npcName, null, distance);
         /// <summary>
         /// 在<paramref name="distance"/>米内向玩家播放音频
         /// </summary>
@@ -114,7 +109,7 @@ namespace YongAnFrame.Features
         /// <param name="source">传播距离检测源头玩家(可null，null时是NPC)</param>
         /// <param name="distance">传播距离(-1时是全部玩家，0时是源头玩家)</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, FramePlayer? source, float distance) => Play(musicName, npcName, null, source, distance, null, 80, false);
+        public static VoicePlayerBase Play(string musicName, string npcName, FramePlayer? source, float distance) => Play(musicName, npcName, null, source, distance, null, 80, false);
         /// <summary>
         /// 播放音频
         /// </summary>
@@ -127,23 +122,23 @@ namespace YongAnFrame.Features
         /// <param name="volume">音量大小</param>
         /// <param name="isLoop">是否循环</param>
         /// <returns></returns>
-        public static AudioPlayerBase Play(string musicName, string npcName, TrackEvent? trackEvent, FramePlayer? source, float distance, FramePlayer[]? extraPlay, float volume = 80, bool isLoop = false)
+        public static VoicePlayerBase Play(string musicName, string npcName, TrackEvent? trackEvent, FramePlayer? source, float distance, FramePlayer[]? extraPlay, float volume = 80, bool isLoop = false)
         {
-            AudioPlayerBase? audioPlayerBase = null;
+            VoicePlayerBase? voicePlayerBase = null;
             ReferenceHub npc = CreateMusicNpc(npcName);
-            audioPlayerBase = Get(npc);
+            voicePlayerBase = VoicePlayerBase.Get(npc);
 
             try
             {
                 if (trackEvent is not null)
                 {
-                    if (trackEventDic.TryGetValue(audioPlayerBase, out Dictionary<string, TrackEvent> d))
+                    if (trackEventDic.ContainsKey(voicePlayerBase))
                     {
-                        d.Add(musicName, (TrackEvent)trackEvent);
+                        trackEventDic[voicePlayerBase] = (TrackEvent)trackEvent;
                     }
                     else
                     {
-                        d = new() { { musicName, (TrackEvent)trackEvent } };
+                        trackEventDic.Add(voicePlayerBase, (TrackEvent)trackEvent);
                     }
                 }
 
@@ -153,11 +148,11 @@ namespace YongAnFrame.Features
                     {
                         if (distance == 0)
                         {
-                            audioPlayerBase.BroadcastTo.Add(npc.PlayerId);
+                            voicePlayerBase.BroadcastTo.Add(npc.PlayerId);
                         }
                         else
                         {
-                            audioPlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer!.Position, source.ExPlayer!.Position) <= distance).Select((s) => s.ExPlayer!.Id)];
+                            voicePlayerBase.BroadcastTo = [.. FramePlayer.List.Where(p => Vector3.Distance(p.ExPlayer!.Position, source.ExPlayer!.Position) <= distance).Select((s) => s.ExPlayer!.Id)];
                         }
                     }
 
@@ -165,25 +160,24 @@ namespace YongAnFrame.Features
                     {
                         foreach (var player in extraPlay)
                         {
-                            if (!audioPlayerBase.BroadcastTo.Contains(player.ExPlayer.Id))
+                            if (!voicePlayerBase.BroadcastTo.Contains(player.ExPlayer.Id))
                             {
-                                audioPlayerBase.BroadcastTo.Add(player.ExPlayer.Id);
+                                voicePlayerBase.BroadcastTo.Add(player.ExPlayer.Id);
                             }
                         }
                     }
                 }
 
-                audioPlayerBase.CurrentPlay = $"{PathManager.Music}/{musicName}.ogg";
-                audioPlayerBase.Volume = volume;
-                audioPlayerBase.Loop = isLoop;
-                audioPlayerBase.AllowUrl = true;
-                audioPlayerBase.Play(-1);
+                voicePlayerBase.CurrentPlay = $"{PathManager.Music}/{musicName}.ogg";
+                voicePlayerBase.Volume = volume;
+                voicePlayerBase.Loop = isLoop;
+                voicePlayerBase.Play(-1);
             }
             catch (Exception)
             {
-                Stop(audioPlayerBase);
+                Stop(voicePlayerBase);
             }
-            return audioPlayerBase;
+            return voicePlayerBase;
         }
     }
     /// <summary>
@@ -196,17 +190,13 @@ namespace YongAnFrame.Features
         /// <summary>
         /// 播放音频
         /// </summary>
-        /// <param name="playerBase">音频处理的<seealso cref="AudioPlayerBase"/>类</param>
-        /// <param name="directPlay">是否直接播放</param>
-        /// <param name="queuePos">音频排队牵引</param>
-        public delegate void PlayMusic(AudioPlayerBase playerBase, bool directPlay, int queuePos);
+        /// <param name="args"><seealso cref="TrackFinishedEventArgs"/></param>
+        public delegate void PlayMusic(TrackLoadedEventArgs args);
         /// <summary>
         /// 停止音频
         /// </summary>
-        /// <param name="playerBase">音频处理的<seealso cref="AudioPlayerBase"/>类</param>
-        /// <param name="directPlay">是否直接播放</param>
-        /// <param name="nextQueuePos">下一个音频排队牵引</param>
-        public delegate void StopMusic(AudioPlayerBase playerBase, bool directPlay, ref int nextQueuePos);
+        /// <param name="args"><seealso cref="TrackFinishedEventArgs"/></param>
+        public delegate void StopMusic(TrackFinishedEventArgs args);
         /// <summary>
         /// 获取播放音频委托
         /// </summary>

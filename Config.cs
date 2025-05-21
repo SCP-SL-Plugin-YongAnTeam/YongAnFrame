@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace YongAnFrame
@@ -18,5 +19,13 @@ namespace YongAnFrame
         [Description("全局的经验加成")]
         public float GlobalExpMultiplier { get; set; } = 1;
 
+        /// <summary>
+        /// 获取或设置禁用自定义角色生成
+        /// </summary>
+        /// <remarks>
+        /// 只能用于继承<seealso cref="CustomRolePlus"/>的类
+        /// </remarks>
+        [Description("禁用自定义角色生成(只能用于继承CustomRolePlus的类)")]
+        public List<string> DisableCustomRolePlus { get; set; } = ["114514", "1"];
     }
 }

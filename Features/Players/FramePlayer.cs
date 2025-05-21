@@ -1,10 +1,13 @@
 ﻿using Exiled.API.Features;
+using Exiled.CustomRoles;
 using Exiled.CustomRoles.API;
+using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Features;
 using MEC;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using YongAnFrame.Events.EventArgs.FramePlayer;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players.Interfaces;
@@ -50,7 +53,8 @@ namespace YongAnFrame.Features.Players
         {
             get
             {
-                if (ExPlayer.GetCustomRoles().Count is not 0 && ExPlayer.GetCustomRoles()[0] is CustomRolePlus custom)
+                ReadOnlyCollection<CustomRole> customRoleList = ExPlayer.GetCustomRoles();
+                if (customRoleList.Count != 0 && customRoleList[0] is CustomRolePlus custom)
                 {
                     return custom;
                 }
@@ -74,6 +78,10 @@ namespace YongAnFrame.Features.Players
         /// 获取或设置玩家的经验
         /// </summary>
         public ulong Exp { get; set; }
+        /// <summary>
+        /// 获取全局的经验加成
+        /// </summary>
+        public float GlobalExpMultiplier => YongAnFramePlugin.Instance.Config.GlobalExpMultiplier;
         /// <summary>
         /// 获取或设置玩家的经验倍率
         /// </summary>
@@ -161,20 +169,17 @@ namespace YongAnFrame.Features.Players
         public static void SubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
-            //Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
 
         public static void UnsubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
-            //Exiled.Events.Handlers.Server.WaitingForPlayers += new CustomEventHandler(OnStaticWaitingForPlayers);
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
 
         private static void OnStaticVerified(VerifiedEventArgs args)
         {
-            if (args.Player.IsNPC) return;
             new FramePlayer(args.Player);
         }
         private static void OnStaticDestroying(DestroyingEventArgs args)
@@ -182,10 +187,6 @@ namespace YongAnFrame.Features.Players
             FramePlayer fPlayer = args.Player.ToFPlayer();
             fPlayer.Invalid();
         }
-        //private static void OnStaticWaitingForPlayers()
-        //{
-        //    dictionary.Clear();
-        //}
 
         #endregion
 
@@ -210,8 +211,7 @@ namespace YongAnFrame.Features.Players
         /// <param name="name">原因</param>
         public void AddExp(ulong exp, string name = "未知原因")
         {
-            float globalExpMultiplier = YongAnFramePlugin.Instance.Config.GlobalExpMultiplier;
-            float expMultiplier = ExpMultiplier * globalExpMultiplier;
+            float expMultiplier = ExpMultiplier * GlobalExpMultiplier;
             ulong addExp = (ulong)(exp * expMultiplier);
 
             Exp += addExp;
@@ -243,8 +243,6 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         public void UpdateShowInfo()
         {
-            if (ExPlayer.IsNPC) return;
-
             if (ExPlayer.GlobalBadge is not null)
             {
                 CustomName = $"[LV:{Level}][全球徽章]{ExPlayer.Nickname}";
@@ -376,11 +374,15 @@ namespace YongAnFrame.Features.Players
         /// <returns>框架玩家</returns>
         public static FramePlayer Get(Player? player)
         {
-            if (player is not null && dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
+            if (player is null)
             {
-                return yPlayer;
+                throw new InvalidCastException("Player实例无效");
             }
-            throw new InvalidCastException("Player实例无效?");
+            if (!dictionary.TryGetValue(player.Id, out FramePlayer yPlayer))
+            {
+                throw new InvalidCastException("FramePlayer实例无效");
+            }
+            return yPlayer;
         }
 
         /// <summary>
