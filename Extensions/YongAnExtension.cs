@@ -23,6 +23,6 @@ namespace YongAnFrame.Extensions
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public static FramePlayer ToFPlayer(this Player p) => FramePlayer.Get(p);
+        public static FramePlayer ToFPlayer(this Player? p) => FramePlayer.Get(p);
     }
 }

@@ -56,14 +56,14 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>lib\net48\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="AudioApi">
+      <HintPath>lib\net48\AudioApi.dll</HintPath>
+    </Reference>
     <Reference Include="HintServiceMeow">
       <HintPath>lib\net48\HintServiceMeow-Exiled.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>lib\net48\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="SCPSLAudioApi">
-      <HintPath>lib\net48\SCPSLAudioApi.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>lib\net48\UnityEngine.CoreModule.dll</HintPath>
