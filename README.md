@@ -1,7 +1,7 @@
 # YongAnFrame
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSCP-SL-Plugin-YongAnTeam%2FYongAnFrame?ref=badge_shield)
 
-基于[EXILED](https://github.com/ExMod-Team/EXILED)写的框架，为国内服务器常见的插件需求简化开发
+基于[EXILED](https://github.com/ExSLMod-Team/EXILED)写的框架，为国内服务器常见的插件需求简化开发
 
 ## YongAnFrame是什么类型的插件/框架？
 **YongAnFrame** 是一个集成了命令系统、整合了自定义角色及技能系统、称号系统、UI系统等的免费框架，使用 **[EXILED](https://github.com/ExMod-Team/EXILED)** 开发。\

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,7 +20,7 @@ namespace YongAnFrame.Patch
         private static void Prefix(string q, ConsoleColor color = ConsoleColor.Gray, bool hideFromOutputs = false)
 #pragma warning restore IDE0060 // 删除未使用的参数
         {
-            StackFrame stack = new StackTrace().GetFrame(2);
+            StackFrame stack = new StackTrace().GetFrame(3);
             if (stack is not null)
             {
                 SaveLog(q, stack.GetMethod().ReflectedType.Name);

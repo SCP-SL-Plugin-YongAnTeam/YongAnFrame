@@ -24,7 +24,7 @@ namespace YongAnFrame
             {
                 if (instance is null)
                 {
-                    throw new InvalidCastException("YongAnFramePlugin实例已无效");
+                    throw new InvalidCastException("YongAnFramePlugin实例无效");
                 }
                 return instance;
             }
@@ -35,14 +35,13 @@ namespace YongAnFrame
         public Harmony Harmony { get; } = new Harmony("YongAnFrame.Harmony");
 
         ///<inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.First;
+        public override PluginPriority Priority => PluginPriority.Higher;
 
         ///<inheritdoc/>
         public override void OnEnabled()
         {
             instance = this;
             Log.Info("\r\n __  __     ______     __   __     ______     ______     __   __    \r\n/\\ \\_\\ \\   /\\  __ \\   /\\ \"-.\\ \\   /\\  ___\\   /\\  __ \\   /\\ \"-.\\ \\   \r\n\\ \\____ \\  \\ \\ \\/\\ \\  \\ \\ \\-.  \\  \\ \\ \\__ \\  \\ \\  __ \\  \\ \\ \\-.  \\  \r\n \\/\\_____\\  \\ \\_____\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\\\\"\\_\\ \r\n  \\/_____/   \\/_____/   \\/_/ \\/_/   \\/_____/   \\/_/\\/_/   \\/_/ \\/_/ \r\n                                                                    \r\n ______   ______     ______     __    __     ______                 \r\n/\\  ___\\ /\\  == \\   /\\  __ \\   /\\ \"-./  \\   /\\  ___\\                \r\n\\ \\  __\\ \\ \\  __<   \\ \\  __ \\  \\ \\ \\-./\\ \\  \\ \\  __\\                \r\n \\ \\_\\    \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_\\ \\ \\_\\  \\ \\_____\\              \r\n  \\/_/     \\/_/ /_/   \\/_/\\/_/   \\/_/  \\/_/   \\/_____/              \r\n                                                                    \r\n ");
-            Log.Info("============System============");
             FramePlayer.SubscribeStaticEvents();
             CustomRolePlus.SubscribeStaticEvents();
             Startup.SetupDependencies();
