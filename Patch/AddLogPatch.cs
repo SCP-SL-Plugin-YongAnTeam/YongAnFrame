@@ -20,13 +20,7 @@ namespace YongAnFrame.Patch
         private static void Prefix(string q, ConsoleColor color = ConsoleColor.Gray, bool hideFromOutputs = false)
 #pragma warning restore IDE0060 // 删除未使用的参数
         {
-            StackFrame stack = new StackTrace().GetFrame(3);
-            if (stack is not null)
-            {
-                SaveLog(q, stack.GetMethod().ReflectedType.Name);
-                return;
-            }
-            SaveLog(q);
+            SaveLog(q, new StackTrace());
         }
 
         private static readonly Queue<InfoData> logQueue = new();
@@ -37,12 +31,7 @@ namespace YongAnFrame.Patch
                 while (logQueue.Count != 0)
                 {
                     InfoData infoData = logQueue.Dequeue();
-                    string path = $"{PathManager.Log}/{(infoData.ClassName is null ? "__unknown__" : infoData.ClassName)}";
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    using StreamWriter writer = new($"{path}/{DateTime.Now:yyyy-MM-dd}.log", true, Encoding.UTF8);
+                    using StreamWriter writer = new($"{PathManager.Log}/{DateTime.Now:yyyy-MM-dd}.log", true, Encoding.UTF8);
                     writer.WriteLine(infoData);
                 }
                 await Task.Delay(1000);
@@ -60,16 +49,16 @@ namespace YongAnFrame.Patch
             }
         }
 
-        private static void SaveLog(string log, string? className = null)
+        private static void SaveLog(string log, StackTrace trace)
         {
-            logQueue.Enqueue(new InfoData(log, className));
+            logQueue.Enqueue(new InfoData(log, trace));
         }
 
-        private readonly struct InfoData(string content, string? className)
+        private readonly struct InfoData(string content, StackTrace trace)
         {
             public string Content { get; } = content;
-            public string? ClassName { get; } = className;
-            public override readonly string ToString() => Content;
+            public StackTrace StackTrace { get; } = trace;
+            public override readonly string ToString() => $"{Content}::{StackTrace}";
             public static implicit operator string(InfoData data) => data.ToString();
         }
     }
