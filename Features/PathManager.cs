@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using System.IO;
 
 namespace YongAnFrame.Features
 {
@@ -15,5 +16,16 @@ namespace YongAnFrame.Features
         /// 获取日志路径
         /// </summary>
         public static string Log => $"{Paths.Exiled}/YongAnFrame/{Server.Port}/Log";
+        public static void CheckPath()
+        {
+            if (!Directory.Exists(Music))
+            {
+                Directory.CreateDirectory(Music);
+            }
+            if (!Directory.Exists(Log))
+            {
+                Directory.CreateDirectory(Log);
+            }
+        }
     }
 }
