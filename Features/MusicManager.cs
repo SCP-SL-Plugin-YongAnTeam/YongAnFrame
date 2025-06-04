@@ -1,6 +1,6 @@
 ﻿
-using AudioApi.AudioCore;
-using AudioApi.AudioCore.EventArgs.Voice;
+using AudioApi;
+using AudioApi.EventArgs.Voice;
 using Exiled.API.Features;
 using Exiled.API.Features.Components;
 using Mirror;
