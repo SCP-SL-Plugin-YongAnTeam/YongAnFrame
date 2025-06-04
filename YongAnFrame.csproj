@@ -51,10 +51,7 @@
     <PackageReference Include="ExMod.Exiled" Version="9.6.0" />
     <PackageReference Include="HintServiceMeow-Exiled" Version="5.4.1" />
     <PackageReference Include="Lib.Harmony" Version="2.3.6" />
-    <PackageReference Include="MengXinSheQu.AudioApi" Version="0.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="MengXinSheQu.AudioApi" Version="0.0.4" />
   </ItemGroup>
 
   <ItemGroup>
