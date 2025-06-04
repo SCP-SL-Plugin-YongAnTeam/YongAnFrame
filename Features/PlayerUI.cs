@@ -163,7 +163,7 @@ namespace YongAnFrame.Features
             MessageList = new(7, UpdateMessageUI);
             ChatList = new(7, UpdateChatUI);
             coroutine = Timing.RunCoroutine(Timer());
-            PlayerDisplay = PlayerDisplay.Get(fPlayer.ExPlayer.ReferenceHub);
+            PlayerDisplay = PlayerDisplay.Get(fPlayer);
             PlayerDisplay.AddHint(customRoleHint);
             PlayerDisplay.AddHint(chatHint);
             PlayerDisplay.AddHint(messageHint);
