@@ -48,10 +48,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExMod.Exiled" Version="9.6.0" />
-    <PackageReference Include="HintServiceMeow-Exiled" Version="5.4.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.6.1" />
     <PackageReference Include="Lib.Harmony" Version="2.3.6" />
-    <PackageReference Include="MengXinSheQu.AudioApi" Version="0.0.4" />
+    <PackageReference Include="MengXinSheQu.AudioApi" Version="0.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(OutputPath)\HintServiceMeow-Exiled.dll">
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)</PackagePath>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -59,8 +65,8 @@
       <HintPath>lib\net48\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AudioApi">
-      <HintPath>lib\net48\AudioApi.dll</HintPath>
+    <Reference Include="HintServiceMeow-Exiled">
+      <HintPath>lib\net48\HintServiceMeow-Exiled.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>lib\net48\Mirror.dll</HintPath>

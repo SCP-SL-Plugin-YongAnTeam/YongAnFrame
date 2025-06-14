@@ -37,7 +37,7 @@ namespace YongAnFrame.Features
         #region Hint
         private readonly Hint versionHint = new()
         {
-            Text = "YongAnFrame 1.0.0-beta6+001",
+            Text = "YongAnFrame 1.0.0-beta6+002",
             FontSize = 20,
             Alignment = HintAlignment.Center,
             YCoordinateAlign = HintVerticalAlign.Top,
@@ -48,7 +48,7 @@ namespace YongAnFrame.Features
             FontSize = 20,
             Alignment = HintAlignment.Center,
             YCoordinateAlign = HintVerticalAlign.Bottom,
-            YCoordinate = 1280
+            YCoordinate = 1080
         };
         private readonly Hint chatHint = new()
         {
