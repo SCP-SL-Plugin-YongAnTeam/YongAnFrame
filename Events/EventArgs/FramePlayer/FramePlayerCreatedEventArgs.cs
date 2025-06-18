@@ -7,6 +7,9 @@ namespace YongAnFrame.Events.EventArgs.FramePlayer
     /// </summary>
     public sealed class FramePlayerCreatedEventArgs(Features.Players.FramePlayer fPlayer) : IExiledEvent
     {
+        /// <summary>
+        /// 获取框架玩家
+        /// </summary>
         public Features.Players.FramePlayer FPlayer { get; } = fPlayer;
     }
 }

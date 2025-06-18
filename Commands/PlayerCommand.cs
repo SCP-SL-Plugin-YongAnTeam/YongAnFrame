@@ -6,15 +6,19 @@ using YongAnFrame.Features.Players;
 
 namespace YongAnFrame.Commands
 {
+    /// <summary>
+    /// 框架玩家指令
+    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public class PlayerCommand : ICommand
     {
-        public string Command => "hPlayer";
-
-        public string[] Aliases => ["hPlay", "hp", "h"];
-
+        ///<inheritdoc cref="ExpCommand.Command"/>
+        public string Command => "FramePlayer";
+        ///<inheritdoc cref="ExpCommand.Aliases"/>
+        public string[] Aliases => ["player", "fp" ,"p"];
+        ///<inheritdoc cref="ExpCommand.Description"/>
         public string Description => "用于管理自己的YongAnFrame用户";
-
+        ///<inheritdoc cref="ExpCommand.Execute"/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "NULL";

@@ -1,6 +1,9 @@
 ﻿namespace YongAnFrame.Features.Roles.Properties
 {
-    public struct BaseProperties
+    /// <summary>
+    /// <seealso cref="CustomRolePlus"/>的基础属性
+    /// </summary>
+    public struct BaseProperties()
     {
         /// <summary>
         /// 获取或设置伤害加成倍数
@@ -22,9 +25,5 @@
         /// 获取或设置基础移动速度倍数
         /// </summary>
         public float BaseMovementSpeedMultiplier { get; set; } = 1;
-
-        public BaseProperties()
-        {
-        }
     }
 }

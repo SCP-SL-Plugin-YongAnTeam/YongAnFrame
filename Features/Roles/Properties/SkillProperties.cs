@@ -3,7 +3,7 @@
 namespace YongAnFrame.Features.Roles.Properties
 {
     /// <summary>
-    /// 给<seealso cref="Skill"/>准备的原始技能属性
+    /// <seealso cref="Skill"/>的原始技能属性
     /// </summary>
     /// <remarks>
     /// 你无法修改结构体里的任何对象，如果想修改对象请从<seealso cref="Skill"/>对象修改，因为要保留技能的原始属性，从而保证可以恢复到原始属性

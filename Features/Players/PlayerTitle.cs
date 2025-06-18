@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YongAnFrame.Features.Players
 {
     /// <summary>
-    /// 玩家称号
+    /// <seealso cref="FramePlayer"/>的称号
     /// </summary>
     public sealed class PlayerTitle
     {
@@ -39,6 +39,14 @@ namespace YongAnFrame.Features.Players
         /// </summary>
         public List<string[]>? DynamicCommand { get; private set; }
 
+        /// <summary>
+        /// 构造方法
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <param name="name">名称</param>
+        /// <param name="color">颜色</param>
+        /// <param name="isRank">是否为Rank</param>
+        /// <param name="dynamicCommandString">动态指令集</param>
         public PlayerTitle(uint id, string name, string color, bool isRank, string? dynamicCommandString = null)
         {
             Id = id;
@@ -66,6 +74,11 @@ namespace YongAnFrame.Features.Players
             DynamicCommand = dynamicCommands;
         }
 
+        /// <summary>
+        /// 获取称号
+        /// </summary>
+        /// <param name="id">称号ID</param>
+        /// <returns>获取的称号</returns>
         public static PlayerTitle? Get(uint id)
         {
             if (LoadFunc is null)

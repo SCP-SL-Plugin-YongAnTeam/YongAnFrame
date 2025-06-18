@@ -21,6 +21,9 @@ using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Features.Roles
 {
+    /// <summary>
+    /// 高级自定义角色
+    /// </summary>
     public abstract class CustomRolePlus : CustomRole
     {
         /// <summary>
@@ -42,7 +45,7 @@ namespace YongAnFrame.Features.Roles
         /// 获取或设置自定义角色是否开启生成
         /// </summary>
         public bool IsStartSpawn { get; set; } = true;
-        internal Dictionary<FramePlayer, DataProperties> BaseData { get; } = [];
+        internal Dictionary<FramePlayer, CustomRolePlusData> BaseData { get; } = [];
         /// <summary>
         /// 获取或设置自定义角色的基础属性
         /// </summary>
@@ -62,12 +65,21 @@ namespace YongAnFrame.Features.Roles
 
         #region Static
 
+        /// <summary>
+        /// 获取或设置全局刷新次数
+        /// </summary>
         public static int RespawnWave { get; private set; } = 0;
+        /// <summary>
+        /// 注册全局事件
+        /// </summary>
         public static void SubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnStaticRoundStarted);
             Exiled.Events.Handlers.Server.RespawningTeam += new CustomEventHandler<RespawningTeamEventArgs>(OnStaticRespawningTeam);
         }
+        /// <summary>
+        /// 注销全局事件
+        /// </summary>
         public static void UnsubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= new CustomEventHandler(OnStaticRoundStarted);
@@ -80,10 +92,10 @@ namespace YongAnFrame.Features.Roles
         #endregion
 
         /// <summary>
-        /// 获取这个角色所有自定义角色的属性
+        /// 获取这个角色的所有数据
         /// </summary>
         /// <returns>获取的值</returns>
-        public virtual DataProperties[] GetAllProperties() => [.. BaseData.Values];
+        public virtual CustomRolePlusData[] GetAllData() => [.. BaseData.Values];
 
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -91,7 +103,7 @@ namespace YongAnFrame.Features.Roles
         /// <param name="player">框架玩家</param>
         /// <param name="data">返回的数据</param>
         /// <returns></returns>
-        public virtual bool Check(FramePlayer player, out DataProperties data) => BaseData.TryGetValue(player, out data);
+        public virtual bool Check(FramePlayer player, out CustomRolePlusData data) => BaseData.TryGetValue(player, out data);
         /// <summary>
         /// 检查玩家是否拥有该角色
         /// </summary>
@@ -136,16 +148,20 @@ namespace YongAnFrame.Features.Roles
             Log.Info($"已为{fPlayer.ExPlayer.Nickname}添加{Name}({Id})角色");
         }
 
+        /// <summary>
+        /// 给玩家添加这个角色的数据
+        /// </summary>
+        /// <param name="fPlayer">框架玩家</param>
         protected virtual void AddRoleData(FramePlayer fPlayer)
         {
-            DataProperties properties = new();
-            BaseData.Add(fPlayer, properties);
+            CustomRolePlusData data = new();
+            BaseData.Add(fPlayer, data);
             if (this is ISkill skill)
             {
-                properties.Skills = new Skill[skill.SkillProperties.Length];
+                data.Skills = new Skill[skill.SkillProperties.Length];
                 for (int i = 0; i < skill.SkillProperties.Length; i++)
                 {
-                    properties.Skills[i] = new(fPlayer, skill.SkillProperties[i]);
+                    data.Skills[i] = new(fPlayer, skill.SkillProperties[i]);
                 }
             }
         }
@@ -167,7 +183,7 @@ namespace YongAnFrame.Features.Roles
         /// <param name="fPlayer">框架玩家</param>
         public virtual void RemoveRole(FramePlayer fPlayer)
         {
-            if (Check(fPlayer, out DataProperties data))
+            if (Check(fPlayer, out CustomRolePlusData data))
             {
                 if (!data.IsDeathHandling)
                 {
@@ -192,7 +208,7 @@ namespace YongAnFrame.Features.Roles
         /// <returns>是否成功</returns>
         public virtual bool TrySpawn(FramePlayer fPlayer)
         {
-            if (fPlayer.CustomRolePlus is null && ((OldRole != RoleTypeId.None && fPlayer.ExPlayer.Role.Type == OldRole) || (OldRole == RoleTypeId.None && fPlayer.ExPlayer.Role.Type == Role)) && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && SpawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
+            if (fPlayer.CustomRolePlus is null && ((OldRole != RoleTypeId.None && fPlayer.ExPlayer.Role.Type == OldRole) || (OldRole == RoleTypeId.None && fPlayer.ExPlayer.Role.Type == Role)) && spawnCount < SpawnProperties.MaxCount && Server.PlayerCount >= SpawnProperties.MinPlayer && spawnChanceNum <= SpawnProperties.Chance && SpawnProperties.Limit > limitCount)
             {
                 limitCount++;
                 spawnCount++;
@@ -217,9 +233,10 @@ namespace YongAnFrame.Features.Roles
         //        TrySpawn(NoCustomRole.FindAll((p) => OldRole == RoleTypeId.None && Role == p.ExPlayer.Role.Type || p.ExPlayer.Role.Type == OldRole));
         //    }
         //}
-        public int SpawnChanceNum { get; private set; } = Loader.Random.StrictNext(1, 101);
 
-        private void OnStaticRestartingRound() => SpawnChanceNum = Loader.Random.StrictNext(1, 101);
+        private int spawnChanceNum = Loader.Random.StrictNext(1, 101);
+
+        private void OnStaticRestartingRound() => spawnChanceNum = Loader.Random.StrictNext(1, 101);
 
 
         private void OnSpawned(SpawnedEventArgs args)
@@ -251,7 +268,7 @@ namespace YongAnFrame.Features.Roles
         private void OnDroppingItem(DroppingItemEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out DataProperties data))
+            if (Check(fPlayer, out CustomRolePlusData data))
             {
                 if (data.Skills is not null)
                 {
@@ -319,7 +336,7 @@ namespace YongAnFrame.Features.Roles
         private void OnDying(DyingEventArgs args)
         {
             FramePlayer fPlayer = args.Player.ToFPlayer();
-            if (Check(fPlayer, out DataProperties data))
+            if (Check(fPlayer, out CustomRolePlusData data))
             {
                 if (args.Attacker is null)
                 {
@@ -348,6 +365,9 @@ namespace YongAnFrame.Features.Roles
                 data.IsDeathHandling = true;
             }
         }
+        /// <summary>
+        /// 注册事件    
+        /// </summary>
         protected override void SubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted += new CustomEventHandler(OnRoundStarted);
@@ -364,6 +384,9 @@ namespace YongAnFrame.Features.Roles
                 Inventory.Add(ItemType.Coin.ToString());
             }
         }
+        /// <summary>
+        /// 注销事件
+        /// </summary>
         protected override void UnsubscribeEvents()
         {
             //Exiled.Events.Handlers.Server.RoundStarted -= new CustomEventHandler(OnRoundStarted);
@@ -382,13 +405,21 @@ namespace YongAnFrame.Features.Roles
         }
         #endregion
 
+        /// <summary>
+        /// 不要覆写
+        /// </summary>
+        /// <param name="player">EX玩家</param>
         protected override void ShowMessage(Player player)
         {
 
         }
 
     }
-    public abstract class CustomRolePlus<T> : CustomRolePlus where T : DataProperties, new()
+    /// <summary>
+    /// 带有自定义数据的高级自定义角色
+    /// </summary>
+    /// <typeparam name="T">自定义数据</typeparam>
+    public abstract class CustomRolePlus<T> : CustomRolePlus where T : CustomRolePlusData, new()
     {
         /// <summary>
         /// 检查玩家是否拥有该角色
@@ -398,7 +429,7 @@ namespace YongAnFrame.Features.Roles
         /// <returns>是否拥有该角色</returns>
         public virtual bool Check(FramePlayer player, out T? data)
         {
-            if (BaseData.TryGetValue(player, out DataProperties baseData))
+            if (BaseData.TryGetValue(player, out CustomRolePlusData baseData))
             {
                 data = (T)baseData;
                 return true;

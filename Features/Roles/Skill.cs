@@ -8,7 +8,7 @@ using YongAnFrame.Features.UI.Texts;
 namespace YongAnFrame.Features.Roles
 {
     /// <summary>
-    /// 玩家的自定义角色技能
+    /// <seealso cref="CustomRolePlus"/>的技能
     /// </summary>
     /// <param name="fPlayer">框架玩家</param>
     /// <param name="properties">技能原始属性</param>
@@ -42,9 +42,9 @@ namespace YongAnFrame.Features.Roles
         /// </summary>
         public ItemType UseItem => Properties.UseItem;
         /// <summary>
-        /// 获取发动描述(可null)
+        /// 获取发动描述
         /// </summary>
-        public string Statement { get; set; } = properties.Statement;
+        public string? Statement { get; set; } = properties.Statement;
         /// <summary>
         /// 获取介绍
         /// </summary>
