@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace YongAnFrame
 {
     /// <summary>
-    /// 插件的翻译
+    /// <seealso cref="YongAnFramePlugin"/>的翻译
     /// </summary>
     public sealed class Translation : ITranslation
     {

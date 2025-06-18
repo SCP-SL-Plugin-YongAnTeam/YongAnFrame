@@ -1,7 +1,7 @@
 ﻿namespace YongAnFrame.Features.UI.Texts
 {
     /// <summary>
-    /// 给<seealso cref="PlayerUI"/>准备的基础文本
+    /// <seealso cref="PlayerUI"/>的基础文本
     /// </summary>
     /// <param name="text">内容</param>
     /// <param name="duration">时效</param>

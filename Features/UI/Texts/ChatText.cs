@@ -4,7 +4,7 @@ using YongAnFrame.Features.UI.Enums;
 namespace YongAnFrame.Features.UI.Texts
 {
     /// <summary>
-    /// 给<seealso cref="PlayerUI.MessageList"/>准备的消息文本
+    /// <seealso cref="PlayerUI.MessageList"/>的消息文本
     /// </summary>
     /// <param name="text">内容</param>
     /// <param name="duration">时效</param>

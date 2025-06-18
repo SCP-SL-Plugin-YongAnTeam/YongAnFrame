@@ -17,6 +17,9 @@ using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Features.Players
 {
+    /// <summary>
+    /// 永安框架的玩家类
+    /// </summary>
     public sealed class FramePlayer : ICustomAlgorithm
     {
         private PlayerTitle? usingTitles = null;
@@ -25,11 +28,11 @@ namespace YongAnFrame.Features.Players
 
         private Player? exPlayer;
         /// <summary>
-        /// 获取拥有该实例的<seealso cref="Player"/>
+        /// 获取该实例拥有的<seealso cref="Player"/>
         /// </summary>
         /// <remarks>
-        /// 在运行<seealso cref="Events.Handlers.FramePlayer.FramePlayerInvalidating"/>后实例无效，再调用可能会引发<seealso cref="InvalidCastException"/>异常<br/>
-        /// 玩家退出后<seealso cref="Player"/>必须无引用，否则会造成数字ID重复的问题
+        /// 在运行<seealso cref="Events.Handlers.FramePlayer.FramePlayerInvalidating"/>事件后实例无效，再调用可能会引发<seealso cref="InvalidCastException"/>异常<br/>
+        /// 玩家退出后必须不再引用<seealso cref="Player"/>，否则会造成<seealso cref="Player"/>数字ID重复的问题
         /// </remarks>
         public Player ExPlayer 
         {
@@ -166,12 +169,17 @@ namespace YongAnFrame.Features.Players
         #endregion
 
         #region Static
+        /// <summary>
+        /// 注册全局事件
+        /// </summary>
         public static void SubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
             Exiled.Events.Handlers.Player.Destroying += new CustomEventHandler<DestroyingEventArgs>(OnStaticDestroying);
         }
-
+        /// <summary>
+        /// 注销全局事件
+        /// </summary>
         public static void UnsubscribeStaticEvents()
         {
             Exiled.Events.Handlers.Player.Verified += new CustomEventHandler<VerifiedEventArgs>(OnStaticVerified);
@@ -406,6 +414,10 @@ namespace YongAnFrame.Features.Players
             exPlayer = null;
         }
 
+        /// <summary>
+        /// 隐性转换
+        /// </summary>
+        /// <param name="yPlayer">框架玩家</param>
         public static implicit operator Player(FramePlayer yPlayer) => yPlayer.ExPlayer;
     }
 }

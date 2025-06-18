@@ -12,7 +12,7 @@ using YongAnFrame.Features.UI.Texts;
 namespace YongAnFrame.Features
 {
     /// <summary>
-    /// 玩家UI
+    /// <seealso cref="FramePlayer"/>的UI
     /// </summary>
     public class PlayerUI
     {
@@ -146,7 +146,7 @@ namespace YongAnFrame.Features
             chatHint.Text = string.Join("\n\r", ChatList);
         }
         /// <summary>
-        /// 构造方法，解构方法，更新聊天，，更新全部
+        /// 清除全部UI
         /// </summary>
         public void Clean()
         {

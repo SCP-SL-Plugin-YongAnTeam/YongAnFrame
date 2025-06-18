@@ -1,7 +1,9 @@
-﻿namespace YongAnFrame.Features.UI.Enums
+﻿using YongAnFrame.Features.UI.Texts;
+
+namespace YongAnFrame.Features.UI.Enums
 {
     /// <summary>
-    /// 聊天类型
+    /// <seealso cref="ChatText"/>的类型
     /// </summary>
     public enum ChatType : byte
     {
