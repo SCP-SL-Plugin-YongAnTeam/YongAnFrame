@@ -16,6 +16,10 @@ namespace YongAnFrame.Features
         /// 获取日志路径
         /// </summary>
         public static string Log => $"{Paths.Exiled}/YongAnFrame/{Server.Port}/Log";
+
+        /// <summary>
+        /// 检查路径是否存在
+        /// </summary>
         public static void CheckPath()
         {
             if (!Directory.Exists(Music))

@@ -17,12 +17,13 @@ namespace YongAnFrame.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public sealed class MessageCommand : ICommand
     {
+        ///<inheritdoc cref="ExpCommand.Command"/>
         public string Command => "message";
-
-        public string[] Aliases => ["mes", "msg"];
-
+        ///<inheritdoc cref="ExpCommand.Command"/>
+        public string[] Aliases => ["m", "msg"];
+        ///<inheritdoc cref="ExpCommand.Aliases"/>
         public string Description => "用于发送消息";
-
+        ///<inheritdoc cref="ExpCommand.Execute"/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             List<FramePlayer> choicePlayer = [];

@@ -1,11 +1,12 @@
 ﻿using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using YongAnFrame.Features.Roles;
 
 namespace YongAnFrame
 {
     /// <summary>
-    /// 插件的配置
+    /// <seealso cref="YongAnFramePlugin"/>的配置
     /// </summary>
     public sealed class Config : IConfig
     {

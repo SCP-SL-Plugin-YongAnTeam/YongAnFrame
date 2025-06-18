@@ -1,9 +1,9 @@
-﻿namespace YongAnFrame.Features.Roles.Properties
+﻿namespace YongAnFrame.Features.Roles
 {
     /// <summary>
-    /// 给<seealso cref="CustomRolePlus{T}"/>准备的数据属性
+    /// <seealso cref="CustomRolePlus"/>的数据
     /// </summary>
-    public class DataProperties
+    public class CustomRolePlusData
     {
         /// <summary>
         /// 获取或设置技能

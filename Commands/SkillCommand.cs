@@ -4,21 +4,24 @@ using System;
 using YongAnFrame.Extensions;
 using YongAnFrame.Features.Players;
 using YongAnFrame.Features.Roles;
-using YongAnFrame.Features.Roles.Properties;
 using YongAnFrame.Features.UI.Enums;
 using YongAnFrame.Features.UI.Texts;
 
 namespace YongAnFrame.Commands
 {
+    /// <summary>
+    /// 技能指令
+    /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public sealed class SkillsCommand : ICommand
     {
+        ///<inheritdoc cref="ExpCommand.Command"/>
         public string Command => "skills";
-
+        ///<inheritdoc cref="ExpCommand.Aliases"/>
         public string[] Aliases => ["sk"];
-
+        ///<inheritdoc cref="ExpCommand.Description"/>
         public string Description => "skills";
-
+        ///<inheritdoc cref="ExpCommand.Execute"/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "NO";
@@ -27,7 +30,7 @@ namespace YongAnFrame.Commands
             {
                 FramePlayer fPlayer = player.ToFPlayer();
 
-                if (fPlayer.CustomRolePlus is not null && fPlayer.CustomRolePlus.Check(fPlayer, out DataProperties data))
+                if (fPlayer.CustomRolePlus is not null && fPlayer.CustomRolePlus.Check(fPlayer, out CustomRolePlusData data))
                 {
                     if (data.Skills == null)
                     {

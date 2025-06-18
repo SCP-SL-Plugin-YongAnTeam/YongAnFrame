@@ -1,7 +1,9 @@
-﻿namespace YongAnFrame.Features.UI.Enums
+﻿using YongAnFrame.Features.UI.Texts;
+
+namespace YongAnFrame.Features.UI.Enums
 {
     /// <summary>
-    /// 信息类型
+    /// <seealso cref="MessageText"/>的类型
     /// </summary>
     public enum MessageType : byte
     {

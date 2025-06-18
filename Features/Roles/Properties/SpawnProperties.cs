@@ -3,7 +3,7 @@
 namespace YongAnFrame.Features.Roles.Properties
 {
     /// <summary>
-    /// 给<seealso cref="CustomRolePlus"/>准备的生成属性
+    /// <seealso cref="CustomRolePlus"/>的生成属性
     /// </summary>
     public struct SpawnProperties()
     {
