@@ -45,6 +45,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+	<None Include="$(OutputPath)\HintServiceMeow-Exiled.dll">
+	  <Pack>True</Pack>
+	  <PackagePath>lib\$(TargetFramework)\HintServiceMeow-Exiled.dll</PackagePath>
+	</None>
   </ItemGroup>
 
   <ItemGroup>
@@ -52,32 +56,24 @@
     <PackageReference Include="Lib.Harmony" Version="2.3.6" />
     <PackageReference Include="MengXinSheQu.AudioApi" Version="0.0.5" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="$(OutputPath)\HintServiceMeow-Exiled.dll">
-      <Pack>true</Pack>
-      <PackagePath>lib\$(TargetFramework)</PackagePath>
-    </Content>
-  </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>lib\net48\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>lib\$(TargetFramework)\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HintServiceMeow-Exiled">
-      <HintPath>lib\net48\HintServiceMeow-Exiled.dll</HintPath>
+    <Reference Include="HintServiceMeow">
+      <HintPath>lib\$(TargetFramework)\HintServiceMeow-Exiled.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>lib\net48\Mirror.dll</HintPath>
+      <HintPath>lib\$(TargetFramework)\Mirror.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>lib\net48\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>lib\$(TargetFramework)\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>lib\net48\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>lib\$(TargetFramework)\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
